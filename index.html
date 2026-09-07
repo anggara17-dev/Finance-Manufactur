@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>FinKuvek — Finance Manufaktur Konveksi</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --line:#e7e9ee; --line2:#f0f2f5;
+  --tx:#0f172a; --tx2:#64748b;
+  --ac:#4f46e5; --ac2:#eef2ff; --ac3:#c7d2fe;
+  --ok:#059669; --ok2:#ecfdf5; --warn:#b45309; --warn2:#fffbeb;
+  --bad:#dc2626; --bad2:#fef2f2; --r:14px;
+  --sh:0 1px 2px rgba(15,23,42,.04),0 2px 8px rgba(15,23,42,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:14px;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit}
+.up{color:var(--ok)} .down{color:var(--bad)} .mut{color:var(--tx2);font-size:13px}
+
+/* ---------- Sidebar ---------- */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:50;transition:transform .25s ease}
+.brand{display:flex;gap:10px;align-items:center;padding:18px 16px}
+.brand-logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+.brand-text b{display:block;font-size:15px;letter-spacing:-.2px}
+.brand-text span{font-size:11px;color:var(--tx2)}
+nav{flex:1;overflow-y:auto;padding:6px 10px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:#3f4a5c;cursor:pointer;font-weight:500;margin-bottom:2px;min-height:44px;border:none;background:none;width:100%;font-size:13.5px;text-align:left}
+.nav-item svg{width:18px;height:18px;flex:none;fill:currentColor;opacity:.75}
+.nav-item:hover{background:var(--line2)}
+.nav-item.active{background:var(--ac2);color:var(--ac)}
+.sidebar-foot{padding:14px 16px;font-size:11px;color:var(--tx2);border-top:1px solid var(--line2)}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.4);z-index:40;display:none}
+.overlay.show{display:block}
+
+/* ---------- Main ---------- */
+.main{margin-left:250px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(246,247,249,.86);backdrop-filter:blur(8px);display:flex;align-items:center;gap:12px;padding:13px 22px;border-bottom:1px solid var(--line)}
+.topbar h1{font-size:17px;font-weight:700;letter-spacing:-.2px}
+.topbar p{font-size:12px;color:var(--tx2)}
+.icon-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;display:none;place-items:center;cursor:pointer;font-size:17px;flex:none}
+.content{padding:20px 22px 48px;max-width:1280px;width:100%}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);box-shadow:0 0 40px rgba(15,23,42,.15)}
+  .sidebar.open{transform:none}
+  .main{margin-left:0}
+  .icon-btn{display:grid}
+  .content{padding:16px 14px 48px}
+  .topbar{padding:11px 14px}
+}
+
+/* ---------- Card & table ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:18px;overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line2);flex-wrap:wrap}
+.card-head b{font-size:14px}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th{text-align:left;padding:10px 14px;background:#fafbfc;color:var(--tx2);font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line2);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafbff}
+.mini-table{min-width:0;font-size:12.5px}
+.mini-table th,.mini-table td{padding:8px 10px}
+.r{text-align:right} .c{text-align:center}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--tx2)}
+.bold{font-weight:600}
+.empty{padding:36px 20px;text-align:center;color:var(--tx2);font-size:13px}
+tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#fafbfc}
+
+/* ---------- Button ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--ac);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:600;font-size:13px;cursor:pointer;min-height:40px;transition:.15s;white-space:nowrap}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:#fff;color:var(--tx);border:1px solid var(--line)}
+.btn.soft{background:var(--ac2);color:var(--ac)}
+.btn.danger{background:var(--bad)}
+.btn.sm{padding:6px 11px;min-height:34px;font-size:12px;border-radius:8px}
+.danger-t{color:var(--bad)!important}
+.act{display:flex;gap:6px;justify-content:flex-end}
+
+/* ---------- Badge & chip ---------- */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap}
+.b-green{background:var(--ok2);color:var(--ok)}
+.b-amber{background:var(--warn2);color:var(--warn)}
+.b-red{background:var(--bad2);color:var(--bad)}
+.b-gray{background:#f1f5f9;color:#475569}
+.b-indigo{background:var(--ac2);color:var(--ac)}
+.chip{background:var(--ac2);color:var(--ac);font-weight:600;font-size:12px;padding:7px 12px;border-radius:99px;white-space:nowrap}
+
+/* ---------- Stat ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:18px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.stat span{font-size:12px;color:var(--tx2);display:block;margin-bottom:6px}
+.stat b{font-size:19px;font-weight:700;letter-spacing:-.3px}
+.stat small{display:block;font-size:11px;color:var(--tx2);margin-top:5px}
+.stat.hi{border-color:var(--ac3);background:linear-gradient(180deg,#fbfbff,#f3f4ff)}
+
+/* ---------- Grid ---------- */
+.grid2c{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:820px){.grid2c{grid-template-columns:1fr}}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.kv:last-child{border-bottom:none}
+.kv span{color:var(--tx2)}
+
+/* ---------- Chart ---------- */
+.chart{display:flex;align-items:flex-end;gap:5px;height:150px;padding-top:8px}
+.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-width:0;height:100%}
+.chart .bar{width:100%;max-width:26px;background:linear-gradient(180deg,#6366f1,#4f46e5);border-radius:6px 6px 3px 3px;min-height:3px}
+.chart .lbl{font-size:9.5px;color:var(--tx2)}
+
+/* ---------- Form & modal ---------- */
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:5px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;font-family:inherit;background:#fff;min-height:44px;color:var(--tx)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
+@media(pointer:coarse){.field input,.field select,.tin{font-size:16px}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:480px){.grid2,.grid3{grid-template-columns:1fr}}
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:100}
+.modal-backdrop.show{display:flex}
+.modal{background:#fff;width:100%;max-width:560px;border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:20px;animation:up .22s ease}
+@media(min-width:640px){.modal-backdrop{align-items:center;padding:20px}.modal{border-radius:16px;animation:pop .16s ease}}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+@keyframes pop{from{transform:scale(.97);opacity:0}}
+.modal h3{font-size:16px;margin-bottom:12px}
+.modal h4{font-size:13px;margin:16px 0 8px}
+
+/* ---------- Search & inputs dalam tabel ---------- */
+.search{position:relative;flex:1;max-width:280px}
+.search input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px 9px 34px;font-size:13px;font-family:inherit;min-height:40px}
+.search input:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:none;stroke:var(--tx2);stroke-width:2;stroke-linecap:round}
+.tin{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;font-family:inherit;background:#fff;min-height:38px;color:var(--tx)}
+.tin:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
+.tin.r{text-align:right}
+select.tin{padding-right:6px}
+
+/* ---------- Mini cards & preview ---------- */
+.mini-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin:12px 0}
+.mini-cards>div{background:#f8fafc;border:1px solid var(--line2);border-radius:10px;padding:9px 10px}
+.mini-cards span{display:block;font-size:10.5px;color:var(--tx2);margin-bottom:2px}
+.mini-cards b{font-size:13.5px;letter-spacing:-.2px}
+.mini-cards .hl{background:var(--ac2);border-color:var(--ac3)}
+.mini-cards .tot{background:#0f172a;border-color:#0f172a}
+.mini-cards .tot span{color:#94a3b8}.mini-cards .tot b{color:#fff}
+.preview{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#f8fafc;border:1px solid var(--line2);border-radius:12px;padding:12px;margin-top:4px}
+.preview span{display:block;font-size:10.5px;color:var(--tx2)}
+.preview b{font-size:12.5px}
+.margin-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--ac2);border:1px solid var(--ac3);border-radius:12px;padding:12px;margin-top:14px}
+.margin-box span{display:block;font-size:10.5px;color:var(--tx2)}
+.margin-box b{font-size:13.5px}
+
+/* ---------- Toast ---------- */
+.toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;width:max-content;max-width:92vw}
+.toast{background:#0f172a;color:#fff;padding:11px 20px;border-radius:99px;font-size:13px;animation:up .2s;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:100%}
+.toast.err{background:var(--bad)}
+</style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-logo">FK</div>
+    <div class="brand-text"><b>FinKuvek</b><span>Finance Manufaktur Konveksi</span></div>
+  </div>
+  <nav id="nav"></nav>
+  <div class="sidebar-foot">v1.0 · Supabase + Vercel</div>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<main class="main">
+  <header class="topbar">
+    <button class="icon-btn" id="btnMenu" aria-label="Menu">☰</button>
+    <div><h1 id="pageTitle">Dashboard</h1><p id="pageSub"></p></div>
+  </header>
+  <div class="content" id="content"></div>
+</main>
+
+<div class="modal-backdrop" id="modalBack"><div class="modal" id="modalBox"></div></div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ================= HELPER ================= */
+const $ = s => document.querySelector(s);
+const rp  = n => 'Rp ' + Math.round(Number(n || 0)).toLocaleString('id-ID');
+const rp2 = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const nf  = n => Number(n || 0).toLocaleString('id-ID', { maximumFractionDigits: 2 });
+const pct = n => Number(n || 0).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + '%';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = () => new Date().toISOString().slice(0, 10);
+const fdate = d => d ? new Date(d + 'T00:00:00').toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+
+async function api(func, { method = 'GET', params = {}, body } = {}) {
+  const qs = new URLSearchParams(params).toString();
+  const res = await fetch(`/api/${func}${qs ? '?' + qs : ''}`, {
+    method,
+    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  let j = {}; try { j = await res.json(); } catch {}
+  if (!res.ok) throw new Error(j.error || 'HTTP ' + res.status);
+  return j;
+}
+function toast(msg, type = 'ok') {
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'err' ? ' err' : '');
+  t.textContent = msg;
+  $('#toastWrap').appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 320); }, 2600);
+}
+function openModal(html) { $('#modalBox').innerHTML = html; $('#modalBack').classList.add('show'); }
+function closeModal() { $('#modalBack').classList.remove('show'); $('#modalBox').innerHTML = ''; }
+function stBadge(s) { const c = s === 'Selesai' ? 'b-green' : s === 'Produksi' ? 'b-amber' : 'b-gray'; return `<span class="badge ${c}">${esc(s)}</span>`; }
+function mBadge(m) { const v = Number(m || 0); return `<span class="badge ${v >= 0 ? 'b-green' : 'b-red'}">${v >= 0 ? '+' : ''}${pct(v)}</span>`; }
+function setPage(t, s = '') { $('#pageTitle').textContent = t; $('#pageSub').textContent = s; closeSidebar(); window.scrollTo(0, 0); }
+function closeSidebar() { $('#sidebar').classList.remove('open'); $('#overlay').classList.remove('show'); }
+
+/* ================= IKON & NAV ================= */
+const IC = {
+  dashboard:'<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>',
+  produk:'<path d="M12.9 2.6a2 2 0 0 0-1.5-.6H5a2 2 0 0 0-2 2v6.4c0 .5.2 1 .6 1.4l8.5 8.5a2 2 0 0 0 2.9 0l6.9-6.9a2 2 0 0 0 0-2.9L12.9 2.6Z"/><circle cx="8.2" cy="8.2" r="1.7" fill="#fff"/>',
+  bahan:'<path d="m12 2 10 5.5-10 5.5L2 7.5 12 2Z"/><path d="M3.5 11 2 11.9l10 5.6 10-5.6-1.5-.9-8.5 4.8L3.5 11Z"/><path d="M3.5 15.6 2 16.5 12 22l10-5.5-1.5-.9-8.5 4.8-8.5-4.8Z"/>',
+  supplier:'<path d="M1 5.5A1.5 1.5 0 0 1 2.5 4H13a1 1 0 0 1 1 1v9H3.5A2.5 2.5 0 0 1 1 11.5v-6Z"/><path d="M14 8h3.4a1 1 0 0 1 .8.4l2.4 3.1c.26.35.4.78.4 1.2v1.4a1.9 1.9 0 0 1-1.9 1.9H14V8Z"/><circle cx="6.3" cy="17.8" r="2.1"/><circle cx="16.8" cy="17.8" r="2.1"/>',
+  tenagakerja:'<circle cx="12" cy="7.2" r="4.2"/><path d="M3.8 20.5c.4-3.9 4-6.3 8.2-6.3s7.8 2.4 8.2 6.3l.1.9H3.7l.1-.9Z"/>',
+  bom:'<path d="M9 2.5h6a1 1 0 0 1 1 1V4h1.5A2.5 2.5 0 0 1 20 6.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5v-13A2.5 2.5 0 0 1 6.5 4H8v-.5a1 1 0 0 1 1-1Z"/><rect x="8" y="10.5" width="8" height="1.8" rx=".9" fill="#fff"/><rect x="8" y="14.5" width="5.5" height="1.8" rx=".9" fill="#fff"/>',
+  po:'<path d="M2.5 20.5V9.2l5.5 3.4V9.2l5.5 3.4V4.5a1 1 0 0 1 1-1h6.5a1 1 0 0 1 1 1v16H2.5Z"/><rect x="14.5" y="13.5" width="3.2" height="3.2" rx=".6" fill="#fff"/>',
+  overhead:'<path d="M3.5 21h17v-1.8h-17V21Z"/><path d="M5.5 17.4h2.2v-7.5H5.5v7.5Zm4 0h2.2v-10H9.5v10Zm4 0h2.2v-7.5h-2.2v7.5Zm4 0h2.2v-10h-2.2v10Z"/><path d="M3 6.8 12 3l9 3.8v1.4H3V6.8Z"/>',
+  hpp:'<circle cx="12" cy="12" r="9.2"/><path d="M12 5.8v12.4" stroke="#fff" stroke-width="1.7" stroke-linecap="round" fill="none"/><path d="M15.2 9.3c-.4-1.1-1.6-1.7-3.1-1.7-1.8 0-3 .9-3 2.2 0 3 6.2 1.6 6.2 4.6 0 1.4-1.3 2.3-3.2 2.3-1.7 0-2.9-.7-3.4-1.9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
+  penjualan:'<path d="M2.3 3h2.8a1 1 0 0 1 1 .76L6.7 6h14a.8.8 0 0 1 .77 1l-1.9 7a2 2 0 0 1-1.93 1.5H9.2a2 2 0 0 1-1.95-1.54L4.6 4.8l-.3-1.1a.4.4 0 0 0-.4-.3H2.3a.7.7 0 1 1 0-1.4Z"/><circle cx="9.7" cy="19.3" r="1.7"/><circle cx="16.7" cy="19.3" r="1.7"/>',
+};
+const NAV = [
+  { id:'dashboard',  l:'Dashboard',          ic:'dashboard' },
+  { id:'produk',     l:'Master Produk',      ic:'produk' },
+  { id:'bahan',      l:'Master Bahan',       ic:'bahan' },
+  { id:'supplier',   l:'Master Supplier',    ic:'supplier' },
+  { id:'tenagakerja',l:'Tenaga Kerja',       ic:'tenagakerja' },
+  { id:'bom',        l:'BOM / Resep',        ic:'bom' },
+  { id:'po',         l:'Production Order',   ic:'po' },
+  { id:'overhead',   l:'Factory Overhead',   ic:'overhead' },
+  { id:'hpp',        l:'HPP & Margin',       ic:'hpp' },
+  { id:'penjualan',  l:'Penjualan',          ic:'penjualan' },
+];
+
+/* ================= KONFIG MASTER ================= */
+const MASTER = {
+  produk: {
+    t:'Master Produk', s:'Produk jadi & harga jual dasar',
+    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama Produk',bold:1},{k:'kategori',l:'Kategori'},{k:'ukuran',l:'Ukuran'},{k:'satuan',l:'Satuan'},{k:'harga_jual',l:'Harga Jual',fmt:rp,r:1}],
+    fields:[
+      {k:'kode',l:'Kode Produk',req:1,ph:'SLB001'},
+      {k:'nama',l:'Nama Produk',req:1,ph:'Slingbag Canvas A'},
+      {k:'kategori',l:'Kategori',ph:'Slingbag'},
+      {k:'ukuran',l:'Ukuran',ph:'20×15 cm'},
+      {k:'satuan',l:'Satuan',ph:'Pcs'},
+      {k:'harga_jual',l:'Harga Jual (Rp)',type:'number'},
+    ]},
+  bahan: {
+    t:'Master Bahan', s:'Material, komponen, pendukung, branding & packaging',
+    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama Bahan',bold:1},{k:'kelompok',l:'Kelompok',badge:'b-indigo'},{k:'satuan',l:'Satuan'},{k:'harga',l:'Harga Satuan',fmt:rp,r:1}],
+    fields:[
+      {k:'kode',l:'Kode Bahan',req:1,ph:'MAT001'},
+      {k:'nama',l:'Nama Bahan',req:1,ph:'Canvas'},
+      {k:'kelompok',l:'Kelompok',type:'select',opts:['Bahan Utama','Komponen','Pendukung','Branding','Packaging'],def:'Bahan Utama'},
+      {k:'satuan',l:'Satuan',req:1,ph:'Meter / Pcs / Roll'},
+      {k:'harga',l:'Harga per Satuan (Rp)',type:'number',req:1},
+    ]},
+  supplier: {
+    t:'Master Supplier', s:'Data pemasok bahan & komponen',
+    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama Supplier',bold:1},{k:'kontak',l:'Kontak'},{k:'telepon',l:'Telepon'},{k:'alamat',l:'Alamat'}],
+    fields:[
+      {k:'kode',l:'Kode Supplier',req:1,ph:'SUP001'},
+      {k:'nama',l:'Nama Supplier',req:1},
+      {k:'kontak',l:'Nama Kontak'},
+      {k:'telepon',l:'Telepon'},
+      {k:'alamat',l:'Alamat'},
+    ]},
+  tenagakerja: {
+    t:'Tenaga Kerja', s:'Direct Labor (borongan/harian) & Supervisor (FOH)',
+    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama',bold:1},{k:'proses',l:'Proses'},{k:'sistem',l:'Sistem',badge:'b-indigo'},{k:'tarif',l:'Tarif',fmt:rp,r:1},{k:'kategori',l:'Kategori',badge:'b-gray'}],
+    fields:[
+      {k:'kode',l:'Kode',req:1,ph:'DL001'},
+      {k:'nama',l:'Nama / Tim'},
+      {k:'proses',l:'Proses',req:1,ph:'Cutting / Jahit / Finishing / QC'},
+      {k:'sistem',l:'Sistem',type:'select',opts:['Borongan','Harian'],def:'Borongan'},
+      {k:'tarif',l:'Tarif (Rp)',type:'number',req:1},
+      {k:'kategori',l:'Kategori',type:'select',opts:['Direct Labor','Factory Overhead'],def:'Direct Labor'},
+    ]},
+  overhead: {
+    t:'Factory Overhead', s:'Pool biaya produksi tidak langsung per periode (YYYY-MM)',
+    cols:[{k:'nama',l:'Nama Biaya',bold:1},{k:'jumlah',l:'Jumlah',fmt:rp,r:1},{k:'periode',l:'Periode',mono:1},{k:'keterangan',l:'Keterangan'}],
+    fields:[
+      {k:'nama',l:'Nama Biaya',req:1,ph:'Listrik Pabrik'},
+      {k:'jumlah',l:'Jumlah (Rp)',type:'number',req:1},
+      {k:'periode',l:'Periode',type:'month',req:1},
+      {k:'keterangan',l:'Keterangan'},
+    ]},
+};
+
+/* ================= ROUTER ================= */
+let CURRENT = 'dashboard';
+const RENDER = {
+  dashboard: pageDashboard,
+  produk: () => pageMaster('produk'),
+  bahan: () => pageMaster('bahan'),
+  supplier: () => pageMaster('supplier'),
+  tenagakerja: () => pageMaster('tenagakerja'),
+  overhead: () => pageMaster('overhead'),
+  bom: pageBom, po: pagePO, hpp: pageHPP, penjualan: pagePenjualan,
+};
+async function go(id) {
+  CURRENT = id;
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.id === id));
+  $('#content').innerHTML = '<div class="empty">Memuat…</div>';
+  try { await RENDER[id](); }
+  catch (e) { $('#content').innerHTML = `<div class="card"><div class="empty">⚠ ${esc(e.message)}</div></div>`; }
+}
+
+/* ================= PAGE: GENERIC MASTER ================= */
+let SEARCHQ = {}, ROWS_CACHE = {};
+async function pageMaster(key) {
+  const cfg = MASTER[key];
+  setPage(cfg.t, cfg.s);
+  $('#content').innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" placeholder="Cari kode / nama…" value="${esc(SEARCHQ[key] || '')}">
+        </div>
+        <button class="btn" id="addBtn">+ Tambah</button>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr>${cfg.cols.map(c => `<th class="${c.r ? 'r' : ''}">${c.l}</th>`).join('')}<th class="r">Aksi</th></tr></thead>
+        <tbody id="tb"><tr><td colspan="${cfg.cols.length + 1}" class="empty">Memuat…</td></tr></tbody>
+      </table></div>
+    </div>`;
+  $('#addBtn').onclick = () => masterForm(key);
+  let deb;
+  $('#q').oninput = e => { SEARCHQ[key] = e.target.value; clearTimeout(deb); deb = setTimeout(() => loadMasterRows(key), 350); };
+  await loadMasterRows(key);
+}
+async function loadMasterRows(key) {
+  const cfg = MASTER[key], tb = $('#tb');
+  if (!tb) return;
+  try {
+    const rows = await api(key, { params: SEARCHQ[key] ? { q: SEARCHQ[key] } : {} });
+    ROWS_CACHE[key] = rows;
+    if (!rows.length) { tb.innerHTML = `<tr><td colspan="${cfg.cols.length + 1}" class="empty">Belum ada data. Klik “+ Tambah” untuk memulai.</td></tr>`; return; }
+    tb.innerHTML = rows.map(r => `<tr>
+      ${cfg.cols.map(c => {
+        if (c.fmt) return `<td class="${c.r ? 'r' : ''}">${c.fmt(r[c.k])}</td>`;
+        if (c.badge) return `<td><span class="badge ${c.badge}">${esc(r[c.k] || '-')}</span></td>`;
+        return `<td class="${c.bold ? 'bold' : ''} ${c.mono ? 'mono' : ''}">${esc(r[c.k] ?? '-')}</td>`;
+      }).join('')}
+      <td class="r"><div class="act">
+        <button class="btn ghost sm" onclick="masterForm('${key}',${r.id})">Edit</button>
+        <button class="btn ghost sm danger-t" onclick="delMaster('${key}',${r.id})">Hapus</button>
+      </div></td></tr>`).join('');
+  } catch (e) { tb.innerHTML = `<tr><td colspan="${cfg.cols.length + 1}" class="empty">⚠ ${esc(e.message)}</td></tr>`; }
+}
+function fieldHTML(f, val) {
+  const id = 'f_' + f.k, v = val ?? f.def ?? '';
+  const inp = f.type === 'select'
+    ? `<select id="${id}">${f.opts.map(o => `<option value="${esc(o)}" ${o === v ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`
+    : `<input id="${id}" type="${f.type || 'text'}" value="${esc(v)}" placeholder="${esc(f.ph || '')}" ${f.req ? 'required' : ''} ${f.type === 'number' ? 'min="0" step="any" inputmode="decimal"' : ''}>`;
+  return `<div class="field"><label>${esc(f.l)}${f.req ? ' *' : ''}</label>${inp}</div>`;
+}
+function masterForm(key, id) {
+  const cfg = MASTER[key];
+  const row = id ? (ROWS_CACHE[key] || []).find(r => r.id === id) : null;
+  openModal(`
+    <h3>${row ? 'Edit' : 'Tambah'} ${cfg.t}</h3>
+    <form id="mf">
+      ${cfg.fields.map(f => fieldHTML(f, row?.[f.k])).join('')}
+      <div class="form-actions">
+        <button type="button" class="btn ghost" data-close>Batal</button>
+        <button type="submit" class="btn">Simpan</button>
+      </div>
+    </form>`);
+  $('#mf').onsubmit = async e => {
+    e.preventDefault();
+    const data = {};
+    cfg.fields.forEach(f => {
+      const el = document.getElementById('f_' + f.k);
+      data[f.k] = f.type === 'number' ? (parseFloat(el.value) || 0) : (el.value || '').trim();
+    });
+    try {
+      await api(key, { method: row ? 'PUT' : 'POST', params: row ? { id: row.id } : {}, body: data });
+      toast('Data tersimpan ✓'); closeModal(); pageMaster(key);
+    } catch (err) { toast(err.message, 'err'); }
+  };
+}
+function delMaster(key, id) {
+  openModal(`<h3>Hapus data ini?</h3><p class="mut">Data yang dihapus tidak dapat dikembalikan.</p>
+    <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
+  $('#dl').onclick = async () => {
+    try { await api(key, { method: 'DELETE', params: { id } }); toast('Data dihapus'); closeModal(); pageMaster(key); }
+    catch (e) { toast(e.message, 'err'); }
+  };
+}
+
+/* ================= PAGE: BOM ================= */
+let BL = [], BPID = null, BROWS = [];
+async function pageBom() {
+  setPage('BOM / Resep Produk', 'Kebutuhan bahan per 1 pcs — termasuk % waste cutting');
+  const [produk, bahan] = await Promise.all([api('produk'), api('bahan')]);
+  BL = bahan;
+  if (!produk.length) { $('#content').innerHTML = `<div class="card"><div class="empty">Tambahkan <b>Master Produk</b> terlebih dahulu.</div></div>`; return; }
+  if (!bahan.length) { $('#content').innerHTML = `<div class="card"><div class="empty">Tambahkan <b>Master Bahan</b> terlebih dahulu.</div></div>`; return; }
+  $('#content').innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div class="field" style="margin:0;flex:1;max-width:340px">
+          <select id="bp"><option value="">— Pilih Produk —</option>
+            ${produk.map(p => `<option value="${p.id}">${esc(p.kode)} · ${esc(p.nama)}</option>`).join('')}
+          </select>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span id="bomTotal" class="chip">DM / pcs: —</span>
+          <button class="btn ghost" id="bomAdd">+ Baris</button>
+          <button class="btn" id="bomSave">Simpan BOM</button>
+        </div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Bahan</th><th class="r">Qty / pcs</th><th class="r">Waste %</th><th class="r">Qty Efektif</th><th class="r">Harga</th><th class="r">Biaya / pcs</th><th></th></tr></thead>
+        <tbody id="btb"><tr><td colspan="7" class="empty">Pilih produk untuk memuat / menyusun BOM.</td></tr></tbody>
+      </table></div>
+    </div>`;
+  $('#bp').onchange = e => loadBom(e.target.value);
+  $('#bomAdd').onclick = () => { if (!BPID) return toast('Pilih produk dulu', 'err'); BROWS.push({ bahan_id: 0, qty_standar: '', waste_pct: 0 }); renderBomRows(); };
+  $('#bomSave').onclick = saveBom;
+}
+async function loadBom(pid) {
+  BPID = pid || null; BROWS = [];
+  if (!pid) { renderBomRows(); return; }
+  const bom = await api('bom', { params: { produk_id: pid } });
+  BROWS = (bom?.bom_detail || []).map(d => ({ bahan_id: d.bahan_id, qty_standar: d.qty_standar, waste_pct: d.waste_pct }));
+  renderBomRows();
+}
+function bahanOptions(sel) {
+  const groups = {};
+  BL.forEach(b => { (groups[b.kelompok] = groups[b.kelompok] || []).push(b); });
+  return Object.entries(groups).map(([g, arr]) =>
+    `<optgroup label="${esc(g)}">${arr.map(b => `<option value="${b.id}" ${Number(sel) === b.id ? 'selected' : ''}>${esc(b.kode)} · ${esc(b.nama)}</option>`).join('')}</optgroup>`
+  ).join('');
+}
+function renderBomRows() {
+  const tb = $('#btb'); if (!tb) return;
+  if (!BROWS.length) { tb.innerHTML = '<tr><td colspan="7" class="empty">Belum ada baris. Klik “+ Baris”.</td></tr>'; bomTotal(); return; }
+  tb.innerHTML = BROWS.map((r, i) => {
+    const b = BL.find(x => x.id === Number(r.bahan_id));
+    const ef = (Number(r.qty_standar) || 0) * (1 + (Number(r.waste_pct) || 0) / 100);
+    return `<tr>
+      <td><select class="tin" style="min-width:200px" onchange="bomSet(${i},'bahan_id',this.value)"><option value="">— Pilih —</option>${bahanOptions(r.bahan_id)}</select></td>
+      <td class="r"><input class="tin r" type="number" step="any" min="0" style="width:90px" value="${r.qty_standar}" oninput="bomSet(${i},'qty_standar',this.value)"></td>
+      <td class="r"><input class="tin r" type="number" step="any" min="0" style="width:70px" value="${r.waste_pct}" oninput="bomSet(${i},'waste_pct',this.value)"></td>
+      <td class="r bold" id="ef_${i}">${nf(ef)} <small class="mono">${esc(b?.satuan || '')}</small></td>
+      <td class="r mono" id="hg_${i}">${rp(b?.harga || 0)}</td>
+      <td class="r bold" id="by_${i}">${rp(ef * (b?.harga || 0))}</td>
+      <td class="r"><button class="btn ghost sm danger-t" onclick="bomDel(${i})">✕</button></td>
+    </tr>`;
+  }).join('');
+  bomTotal();
+}
+function bomSet(i, k, v) {
+  const r = BROWS[i];
+  if (k === 'bahan_id') r.bahan_id = Number(v) || 0; else r[k] = parseFloat(v) || 0;
+  const b = BL.find(x => x.id === Number(r.bahan_id));
+  const ef = (Number(r.qty_standar) || 0) * (1 + (Number(r.waste_pct) || 0) / 100);
+  const set = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+  set('ef_' + i, nf(ef) + ' <small class="mono">' + esc(b?.satuan || '') + '</small>');
+  if (k === 'bahan_id') set('hg_' + i, rp(b?.harga || 0));
+  set('by_' + i, rp(ef * (b?.harga || 0)));
+  bomTotal();
+}
+function bomTotal() {
+  const el = $('#bomTotal'); if (!el) return;
+  let t = 0;
+  BROWS.forEach(r => {
+    const b = BL.find(x => x.id === Number(r.bahan_id));
+    t += (Number(r.qty_standar) || 0) * (1 + (Number(r.waste_pct) || 0) / 100) * (b?.harga || 0);
+  });
+  el.textContent = 'Direct Material / pcs: ' + rp(t);
+}
+function bomDel(i) { BROWS.splice(i, 1); renderBomRows(); }
+async function saveBom() {
+  if (!BPID) return toast('Pilih produk dulu', 'err');
+  const items = BROWS.filter(r => Number(r.bahan_id) > 0 && Number(r.qty_standar) > 0);
+  if (!items.length) return toast('Minimal 1 baris bahan valid', 'err');
+  try {
+    await api('bom', { method: 'POST', body: { produk_id: Number(BPID), items } });
+    toast('BOM tersimpan ✓');
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+/* ================= PAGE: PRODUCTION ORDER ================= */
+let PL = [];
+async function pagePO() {
+  setPage('Production Order', 'Order produksi & realisasi biaya aktual');
+  const [rows, produk] = await Promise.all([api('po'), api('produk')]);
+  PL = produk;
+  $('#content').innerHTML = `
+    <div class="card">
+      <div class="card-head"><div class="mut">${rows.length} production order</div><button class="btn" onclick="poForm()">+ PO Baru</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Kode PO</th><th>Tanggal</th><th>Produk</th><th class="r">Qty</th><th>Status</th><th class="r">HPP / pcs</th><th class="r">Total HPP</th><th class="r">Margin</th><th class="r">Aksi</th></tr></thead>
+        <tbody>${rows.length ? rows.map(poRow).join('') : '<tr><td colspan="9" class="empty">Belum ada PO. Klik “+ PO Baru”.</td></tr>'}</tbody>
+      </table></div>
+    </div>`;
+}
+function poRow(p) {
+  const okM = Number(p.hpp_per_pcs) > 0 && Number(p.harga_jual) > 0;
+  const margin = okM ? (Number(p.harga_jual) - Number(p.hpp_per_pcs)) / Number(p.harga_jual) * 100 : null;
+  return `<tr>
+    <td class="mono">${esc(p.kode_po)}</td>
+    <td>${fdate(p.tanggal)}</td>
+    <td><b>${esc(p.nama_produk)}</b><br><small class="mono">${esc(p.kode_produk)}</small></td>
+    <td class="r">${nf(p.qty)}</td>
+    <td>${stBadge(p.status)}</td>
+    <td class="r bold">${rp(p.hpp_per_pcs)}</td>
+    <td class="r">${rp(p.total_hpp)}</td>
+    <td class="r">${margin === null ? '—' : mBadge(margin)}</td>
+    <td class="r"><div class="act">
+      <button class="btn soft sm" onclick="poDetail(${p.id})">Detail</button>
+      ${p.status !== 'Selesai' ? `<button class="btn ghost sm" onclick="poStatus(${p.id},'${p.status}')">${p.status === 'Draft' ? '▶ Mulai' : '✓ Selesai'}</button>` : ''}
+      <button class="btn ghost sm danger-t" onclick="poDel(${p.id})">✕</button>
+    </div></td></tr>`;
+}
+function poForm() {
+  if (!PL.length) return toast('Tambahkan produk dulu di Master Produk', 'err');
+  openModal(`
+    <h3>Production Order Baru</h3>
+    <form id="pf">
+      <div class="field"><label>Produk *</label>
+        <select id="p_prod">${PL.map(p => `<option value="${p.id}">${esc(p.kode)} · ${esc(p.nama)} — ${rp(p.harga_jual)}</option>`).join('')}</select></div>
+      <div class="grid2">
+        <div class="field"><label>Qty Produksi *</label><input id="p_qty" type="number" min="1" step="1" required placeholder="2000"></div>
+        <div class="field"><label>Tanggal</label><input id="p_tgl" type="date" value="${today()}"></div>
+      </div>
+      <div class="field"><label>Kode PO (opsional)</label><input id="p_kode" placeholder="Kosongkan untuk otomatis"></div>
+      <div class="form-actions"><button type="button" class="btn ghost" data-close>Batal</button><button type="submit" class="btn">Buat PO</button></div>
+    </form>`);
+  $('#pf').onsubmit = async e => {
+    e.preventDefault();
+    try {
+      const d = await api('po', { method: 'POST', body: {
+        produk_id: Number($('#p_prod').value), qty: Number($('#p_qty').value),
+        tanggal: $('#p_tgl').value || today(), kode_po: $('#p_kode').value.trim(),
+      }});
+      toast('PO ' + d.kode_po + ' dibuat ✓'); closeModal(); pagePO();
+    } catch (err) { toast(err.message, 'err'); }
+  };
+}
+async function poStatus(id, cur) {
+  const next = cur === 'Draft' ? 'Produksi' : 'Selesai';
+  try {
+    await api('po', { method: 'PUT', params: { id }, body: { status: next } });
+    toast('Status PO → ' + next);
+    if (document.getElementById('labTb')) poDetail(id); else pagePO();
+  } catch (e) { toast(e.message, 'err'); }
+}
+function poDel(id) {
+  openModal(`<h3>Hapus PO ini?</h3><p class="mut">Data material & tenaga kerja terkait juga terhapus.</p>
+    <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
+  $('#dl').onclick = async () => {
+    try { await api('po', { method: 'DELETE', params: { id } }); toast('PO dihapus'); closeModal(); pagePO(); }
+    catch (e) { toast(e.message, 'err'); }
+  };
+}
+
+/* ---------- PO DETAIL ---------- */
+let PD = null;
+async function poDetail(id) {
+  const [d, tkAll] = await Promise.all([api('hpp-detail', { params: { po_id: id } }), api('tenagakerja')]);
+  const tk = tkAll.filter(t => t.kategori === 'Direct Labor');
+  PD = { id, tk, mat: d.material.map(m => ({ ...m, qty_aktual_in: m.qty_aktual ?? m.qty_std_total })),
+         lab: d.labor.map(l => ({ tk_id: l.tk_id, qty_output: l.qty_output, jumlah_hari: l.jumlah_hari, tarif: l.tarif, sistem: l.sistem, proses: l.proses })) };
+  const r = d.ringkasan;
+  setPage('PO ' + d.po.kode_po, `${d.po.produk.nama} · ${nf(d.po.qty)} pcs · ${fdate(d.po.tanggal)}`);
+  $('#content').innerHTML = `
+    <button class="btn ghost sm" onclick="go('po')" style="margin-bottom:14px">← Kembali ke daftar PO</button>
+    <div class="stats">
+      <div class="stat"><span>Direct Material</span><b>${rp(r.dm)}</b><small>${rp(r.dm_per_pcs)}/pcs</small></div>
+      <div class="stat"><span>Direct Labor</span><b>${rp(r.dl)}</b><small>${rp(r.dl_per_pcs)}/pcs</small></div>
+      <div class="stat"><span>Factory Overhead</span><b>${rp(r.foh)}</b><small>${rp(r.foh_per_pcs)}/pcs</small></div>
+      <div class="stat hi"><span>Total HPP</span><b>${rp(r.total_hpp)}</b><small><b>${rp2(r.hpp_per_pcs)}</b>/pcs</small></div>
+      <div class="stat"><span>Status</span>${stBadge(d.po.status)}<small>Periode OH: ${d.overhead.periode}</small></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>1 · Material — Standar (BOM) vs Aktual</b><button class="btn" onclick="saveMat()">Simpan Realisasi Material</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Bahan</th><th class="r">Std / pcs</th><th class="r">Std Total</th><th class="r">Aktual</th><th class="r">Selisih</th><th class="r">Harga</th><th class="r">Biaya Aktual</th></tr></thead>
+        <tbody>${PD.mat.map((m, i) => matRow(m, i)).join('')}</tbody>
+        <tfoot><tr><td colspan="6" class="r bold">Total Material</td><td class="r bold" id="matTot">${rp(PD.mat.reduce((s, m) => s + m.qty_aktual_in * m.harga, 0))}</td></tr></tfoot>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>2 · Tenaga Kerja Langsung</b>
+        <div style="display:flex;gap:8px"><button class="btn ghost" onclick="addLab()">+ Baris TK</button><button class="btn" onclick="saveLab()">Simpan Realisasi TK</button></div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tenaga Kerja</th><th>Sistem</th><th class="r">Qty Output</th><th class="r">Jml Hari</th><th class="r">Tarif</th><th class="r">Biaya</th><th></th></tr></thead>
+        <tbody id="labTb">${PD.lab.length ? PD.lab.map((l, i) => labRow(l, i)).join('') : '<tr><td colspan="7" class="empty">Belum ada baris. Klik “+ Baris TK”.</td></tr>'}</tbody>
+        <tfoot><tr><td colspan="5" class="r bold">Total Direct Labor</td><td class="r bold" id="labTot">${rp(PD.lab.reduce((s, l) => s + labBiaya(l), 0))}</td><td></td></tr></tfoot>
+      </table></div>
+    </div>
+
+    <div class="grid2c">
+      <div class="card">
+        <div class="card-head"><b>3 · Alokasi Factory Overhead</b></div>
+        <div style="padding:14px 16px">
+          ${d.overhead.note ? `<p class="mut">${esc(d.overhead.note)}</p>` : `
+          <div class="kv"><span>Total FOH periode ${d.overhead.periode}</span><b>${rp(d.overhead.total_overhead_bulan)}</b></div>
+          <div class="kv"><span>Basis alokasi (qty produksi selesai bulan itu)</span><b>${nf(d.overhead.basis_qty_bulan)} pcs</b></div>
+          <div class="kv"><span>Rate / pcs</span><b>${rp2(d.overhead.per_pcs)}</b></div>
+          <div class="kv"><span>Dialokasikan ke PO ini (${nf(d.po.qty)} pcs)</span><b>${rp(d.overhead.dialokasikan)}</b></div>`}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><b>4 · HPP & Estimasi Margin</b></div>
+        <div style="padding:14px 16px">
+          <div class="kv"><span>HPP / pcs</span><b>${rp2(r.hpp_per_pcs)}</b></div>
+          <div class="kv"><span>Harga jual</span><b>${rp(d.po.harga_jual)}</b></div>
+          <div class="kv"><span>Est. profit / pcs</span><b class="${r.margin_rp >= 0 ? 'up' : 'down'}">${rp(r.margin_rp)}</b></div>
+          <div class="kv"><span>Est. margin</span>${mBadge(r.margin_pct)}</div>
+          ${d.po.status !== 'Selesai' ? `<button class="btn" style="margin-top:14px" onclick="poStatus(${d.po.id},'${d.po.status}')">${d.po.status === 'Draft' ? '▶ Mulai Produksi' : '✓ Tandai Selesai'}</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+function matRow(m, i) {
+  const sel = m.qty_aktual_in - m.qty_std_total;
+  return `<tr>
+    <td><b>${esc(m.nama)}</b><br><small class="mono">${esc(m.kode)}</small></td>
+    <td class="r">${nf(m.qty_std_pcs)} <small class="mono">${esc(m.satuan)}</small></td>
+    <td class="r">${nf(m.qty_std_total)}</td>
+    <td class="r"><input class="tin r" type="number" step="any" min="0" style="width:100px" value="${m.qty_aktual_in}" oninput="matSet(${i},this.value)"></td>
+    <td class="r" id="sd_${i}"><span class="${Math.abs(sel) < 0.0001 ? '' : sel > 0 ? 'down' : 'up'}">${sel > 0 ? '+' : ''}${nf(sel)}</span></td>
+    <td class="r mono">${rp(m.harga)}</td>
+    <td class="r bold" id="ma_${i}">${rp(m.qty_aktual_in * m.harga)}</td></tr>`;
+}
+function matSet(i, v) {
+  PD.mat[i].qty_aktual_in = parseFloat(v) || 0;
+  const m = PD.mat[i], sel = m.qty_aktual_in - m.qty_std_total;
+  document.getElementById('sd_' + i).innerHTML = `<span class="${Math.abs(sel) < 0.0001 ? '' : sel > 0 ? 'down' : 'up'}">${sel > 0 ? '+' : ''}${nf(sel)}</span>`;
+  document.getElementById('ma_' + i).textContent = rp(m.qty_aktual_in * m.harga);
+  document.getElementById('matTot').textContent = rp(PD.mat.reduce((s, m2) => s + m2.qty_aktual_in * m2.harga, 0));
+}
+async function saveMat() {
+  try {
+    await api('po-material', { method: 'POST', params: { po_id: PD.id },
+      body: { items: PD.mat.filter(m => m.bahan_id).map(m => ({ bahan_id: m.bahan_id, qty_aktual: m.qty_aktual_in })) } });
+    toast('Realisasi material tersimpan ✓'); poDetail(PD.id);
+  } catch (e) { toast(e.message, 'err'); }
+}
+function labBiaya(l) {
+  const t = Number(l.tarif || 0);
+  return l.sistem === 'Harian' ? (Number(l.jumlah_hari) || 0) * t : (Number(l.qty_output) || 0) * t;
+}
+function labRow(l, i) {
+  return `<tr>
+    <td><select class="tin" style="min-width:190px" onchange="labSet(${i},'tk_id',this.value)">
+      <option value="">— Pilih —</option>
+      ${PD.tk.map(t => `<option value="${t.id}" ${Number(l.tk_id) === t.id ? 'selected' : ''}>${esc(t.kode)} · ${esc(t.proses)} (${esc(t.sistem)})</option>`).join('')}
+    </select></td>
+    <td id="ls_${i}">${l.sistem ? esc(l.sistem) : '—'}</td>
+    <td class="r"><input class="tin r" type="number" min="0" step="1" style="width:90px" value="${l.qty_output || ''}" ${l.sistem === 'Harian' ? 'disabled' : ''} oninput="labSet(${i},'qty_output',this.value)"></td>
+    <td class="r"><input class="tin r" type="number" min="0" step="0.5" style="width:80px" value="${l.jumlah_hari || ''}" ${l.sistem !== 'Harian' ? 'disabled' : ''} oninput="labSet(${i},'jumlah_hari',this.value)"></td>
+    <td class="r mono" id="lt_${i}">${rp(l.tarif || 0)}</td>
+    <td class="r bold" id="lb_${i}">${rp(labBiaya(l))}</td>
+    <td class="r"><button class="btn ghost sm danger-t" onclick="labDel(${i})">✕</button></td></tr>`;
+}
+function labSet(i, k, v) {
+  const l = PD.lab[i];
+  if (k === 'tk_id') {
+    l.tk_id = Number(v) || null;
+    const t = PD.tk.find(x => x.id === l.tk_id);
+    l.sistem = t?.sistem || null; l.tarif = Number(t?.tarif || 0);
+    renderLabTb(); return;
+  }
+  l[k] = parseFloat(v) || 0;
+  document.getElementById('lb_' + i).textContent = rp(labBiaya(l));
+  document.getElementById('labTot').textContent = rp(PD.lab.reduce((s, x) => s + labBiaya(x), 0));
+}
+function renderLabTb() {
+  $('#labTb').innerHTML = PD.lab.length ? PD.lab.map((l, i) => labRow(l, i)).join('') : '<tr><td colspan="7" class="empty">Belum ada baris.</td></tr>';
+  $('#labTot').textContent = rp(PD.lab.reduce((s, x) => s + labBiaya(x), 0));
+}
+function addLab() { PD.lab.push({ tk_id: null, qty_output: '', jumlah_hari: '', sistem: null, tarif: 0 }); renderLabTb(); }
+function labDel(i) { PD.lab.splice(i, 1); renderLabTb(); }
+async function saveLab() {
+  const items = PD.lab.filter(l => l.tk_id).map(l => ({ tenaga_kerja_id: l.tk_id, qty_output: l.qty_output || 0, jumlah_hari: l.jumlah_hari || 0 }));
+  try {
+    await api('po-labor', { method: 'POST', params: { po_id: PD.id }, body: { items } });
+    toast('Realisasi tenaga kerja tersimpan ✓'); poDetail(PD.id);
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+/* ================= PAGE: HPP & MARGIN ================= */
+async function pageHPP() {
+  setPage('Analisa HPP & Margin', 'Struktur biaya per production order — klik baris untuk rincian');
+  const rows = await api('po');
+  $('#content').innerHTML = `
+    <div class="card">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Kode PO</th><th>Produk</th><th class="r">Qty</th><th class="r">DM</th><th class="r">DL</th><th class="r">FOH</th><th class="r">HPP / pcs</th><th class="r">Harga Jual</th><th class="r">Margin</th><th>Status</th></tr></thead>
+        <tbody>${rows.length ? rows.map(p => `
+          <tr style="cursor:pointer" onclick="showHppBreakdown(${p.id})">
+            <td class="mono">${esc(p.kode_po)}</td>
+            <td><b>${esc(p.nama_produk)}</b><br><small class="mono">${esc(p.kode_produk)}</small></td>
+            <td class="r">${nf(p.qty)}</td>
+            <td class="r">${rp(p.material_aktual)}</td>
+            <td class="r">${rp(p.biaya_labor)}</td>
+            <td class="r">${rp(p.biaya_overhead)}</td>
+            <td class="r bold">${rp(p.hpp_per_pcs)}</td>
+            <td class="r">${rp(p.harga_jual)}</td>
+            <td class="r">${Number(p.hpp_per_pcs) > 0 && Number(p.harga_jual) > 0 ? mBadge((Number(p.harga_jual) - Number(p.hpp_per_pcs)) / Number(p.harga_jual) * 100) : '—'}</td>
+            <td>${stBadge(p.status)}</td></tr>`).join('') : '<tr><td colspan="10" class="empty">Belum ada data PO.</td></tr>'}
+        </tbody></table></div>
+    </div>`;
+}
+async function showHppBreakdown(poId) {
+  openModal('<div class="empty">Memuat rincian…</div>');
+  try {
+    const d = await api('hpp-detail', { params: { po_id: poId } });
+    const r = d.ringkasan;
+    openModal(`
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0">${esc(d.po.kode_po)} · ${esc(d.po.produk.nama)}</h3>
+        <button class="btn ghost sm" data-close>✕</button>
+      </div>
+      <p class="mut" style="margin-top:4px">${fdate(d.po.tanggal)} · ${nf(d.po.qty)} pcs · ${esc(d.po.status)}</p>
+      <div class="mini-cards">
+        <div><span>Direct Material</span><b>${rp(r.dm)}</b></div>
+        <div><span>Direct Labor</span><b>${rp(r.dl)}</b></div>
+        <div><span>Overhead</span><b>${rp(r.foh)}</b></div>
+        <div class="tot"><span>Total HPP</span><b>${rp(r.total_hpp)}</b></div>
+        <div class="hl"><span>HPP / pcs</span><b>${rp2(r.hpp_per_pcs)}</b></div>
+      </div>
+      <h4>Material — Standar vs Aktual</h4>
+      <div class="table-wrap"><table class="mini-table">
+        <thead><tr><th>Bahan</th><th class="r">Std</th><th class="r">Aktual</th><th class="r">Biaya</th></tr></thead>
+        <tbody>${d.material.map(m => `<tr><td>${esc(m.nama)}</td><td class="r">${nf(m.qty_std_total)}</td><td class="r">${m.qty_aktual === null ? '<i class="mut">(std)</i>' : nf(m.qty_aktual)}</td><td class="r">${rp(m.biaya_aktual ?? m.biaya_std * d.po.qty)}</td></tr>`).join('')}</tbody>
+      </table></div>
+      <h4>Tenaga Kerja</h4>
+      ${d.labor.length ? `<div class="table-wrap"><table class="mini-table">
+        <thead><tr><th>Proses</th><th>Sistem</th><th class="r">Biaya</th></tr></thead>
+        <tbody>${d.labor.map(l => `<tr><td>${esc(l.proses)}</td><td>${esc(l.sistem)}</td><td class="r">${rp(l.biaya)}</td></tr>`).join('')}</tbody>
+      </table></div>` : '<p class="mut">Belum ada realisasi tenaga kerja.</p>'}
+      <h4>Factory Overhead</h4>
+      <p class="mut" style="font-size:12.5px">Periode ${d.overhead.periode} · rate ${rp2(d.overhead.per_pcs)}/pcs${d.overhead.note ? ' · ' + esc(d.overhead.note) : ''}</p>
+      <div class="margin-box">
+        <div><span>Harga jual</span><b>${rp(d.po.harga_jual)}</b></div>
+        <div><span>Est. profit / pcs</span><b class="${r.margin_rp >= 0 ? 'up' : 'down'}">${rp(r.margin_rp)}</b></div>
+        <div><span>Est. margin</span><b>${pct(r.margin_pct)}</b></div>
+      </div>`);
+  } catch (e) { openModal(`<div class="empty">⚠ ${esc(e.message)}</div>`); }
+}
+
+/* ================= PAGE: PENJUALAN ================= */
+const CHANNELS = ['Toko Sendiri','Shopee','Tokopedia','TikTok Shop','Lazada','Instagram','WhatsApp','Lainnya'];
+let PJ = [], PJ_CACHE = [];
+async function pagePenjualan() {
+  setPage('Penjualan', 'Net sales, fee marketplace, HPP & margin per channel');
+  const [rows, produk] = await Promise.all([api('penjualan'), api('produk')]);
+  PJ = produk; PJ_CACHE = rows;
+  const tot = rows.reduce((a, r) => { a.net += Number(r.net_sales || 0); a.laba += Number(r.laba_bersih || 0); return a; }, { net: 0, laba: 0 });
+  $('#content').innerHTML = `
+    <div class="stats">
+      <div class="stat"><span>Total Net Sales</span><b>${rp(tot.net)}</b></div>
+      <div class="stat"><span>Total Laba Bersih</span><b class="${tot.laba >= 0 ? 'up' : 'down'}">${rp(tot.laba)}</b></div>
+      <div class="stat"><span>Margin Gabungan</span><b>${tot.net ? mBadge(tot.laba / tot.net * 100) : '—'}</b></div>
+      <div class="stat"><span>Jumlah Transaksi</span><b>${rows.length}</b></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="mut">Semua kanal penjualan</div><button class="btn" onclick="pjlForm()">+ Catat Penjualan</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tanggal</th><th>Produk</th><th>Channel</th><th class="r">Qty</th><th class="r">Net Sales</th><th class="r">Fee</th><th class="r">HPP</th><th class="r">Laba</th><th class="r">Margin</th><th class="r">Aksi</th></tr></thead>
+        <tbody>${rows.length ? rows.map(pjlRow).join('') : '<tr><td colspan="10" class="empty">Belum ada penjualan.</td></tr>'}</tbody>
+      </table></div>
+    </div>`;
+}
+function pjlRow(j) {
+  const margin = Number(j.net_sales) ? Number(j.laba_bersih) / Number(j.net_sales) * 100 : 0;
+  return `<tr>
+    <td>${fdate(j.tanggal)}</td>
+    <td><b>${esc(j.nama_produk)}</b><br><small class="mono">${esc(j.kode_produk)}</small></td>
+    <td><span class="badge b-indigo">${esc(j.channel)}</span></td>
+    <td class="r">${nf(j.qty)}</td>
+    <td class="r">${rp(j.net_sales)}</td>
+    <td class="r mono">${rp(j.biaya_fee)}</td>
+    <td class="r mono">${rp(j.total_hpp)}</td>
+    <td class="r bold ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td>
+    <td class="r">${mBadge(margin)}</td>
+    <td class="r"><div class="act">
+      <button class="btn ghost sm" onclick="pjlForm(${j.id})">Edit</button>
+      <button class="btn ghost sm danger-t" onclick="pjlDel(${j.id})">✕</button>
+    </div></td></tr>`;
+}
+function pjlForm(id) {
+  if (!PJ.length) return toast('Tambahkan produk dulu di Master Produk', 'err');
+  const row = id ? PJ_CACHE.find(x => x.id === id) : null;
+  openModal(`
+    <h3>${row ? 'Edit' : 'Catat'} Penjualan</h3>
+    <form id="jf">
+      <div class="grid2">
+        <div class="field"><label>Produk *</label>
+          <select id="j_prod">${PJ.map(p => `<option value="${p.id}" data-hj="${p.harga_jual}" ${row && row.produk_id === p.id ? 'selected' : ''}>${esc(p.kode)} · ${esc(p.nama)}</option>`).join('')}</select></div>
+        <div class="field"><label>Tanggal</label><input id="j_tgl" type="date" value="${row?.tanggal || today()}"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Qty *</label><input id="j_qty" type="number" min="1" step="1" value="${row?.qty || 1}" required></div>
+        <div class="field"><label>Channel</label><select id="j_ch">${CHANNELS.map(c => `<option ${row?.channel === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label>Harga Jual / pcs *</label><input id="j_hj" type="number" min="0" step="any" value="${row?.harga_jual || ''}" required></div>
+        <div class="field"><label>Diskon %</label><input id="j_dis" type="number" min="0" step="any" value="${row?.diskon_pct ?? 0}"></div>
+        <div class="field"><label>Fee Marketplace %</label><input id="j_fee" type="number" min="0" step="any" value="${row?.fee_pct ?? 0}"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>HPP / pcs <span class="mut">(auto dari PO terakhir)</span></label><input id="j_hpp" type="number" min="0" step="any" value="${row?.hpp_satuan || 0}"></div>
+        <div class="field"><label>Biaya lain (ads, packaging)</label><input id="j_lain" type="number" min="0" step="any" value="${row?.biaya_lain || 0}"></div>
+      </div>
+      <div class="preview" id="j_prev"></div>
+      <div class="form-actions"><button type="button" class="btn ghost" data-close>Batal</button><button type="submit" class="btn">Simpan</button></div>
+    </form>`);
+  $('#j_prod').onchange = async () => {
+    if (!row) $('#j_hj').value = $('#j_prod').selectedOptions[0].dataset.hj || 0;
+    try { const h = await api('hpp-latest', { params: { produk_id: $('#j_prod').value } }); if (h.hpp) $('#j_hpp').value = Math.round(h.hpp); } catch {}
+    jPrev();
+  };
+  ['j_qty','j_hj','j_dis','j_fee','j_hpp','j_lain'].forEach(x => document.getElementById(x).addEventListener('input', jPrev));
+  jPrev();
+  $('#jf').onsubmit = async e => {
+    e.preventDefault();
+    const g = x => parseFloat(document.getElementById(x).value) || 0;
+    try {
+      await api('penjualan', { method: row ? 'PUT' : 'POST', params: row ? { id: row.id } : {}, body: {
+        produk_id: Number($('#j_prod').value), tanggal: $('#j_tgl').value || today(),
+        qty: parseInt($('#j_qty').value, 10) || 1, channel: $('#j_ch').value,
+        harga_jual: g('j_hj'), diskon_pct: g('j_dis'), fee_pct: g('j_fee'),
+        hpp_satuan: g('j_hpp'), biaya_lain: g('j_lain'),
+      }});
+      toast('Penjualan tersimpan ✓'); closeModal(); pagePenjualan();
+    } catch (err) { toast(err.message, 'err'); }
+  };
+}
+function jPrev() {
+  const g = id => parseFloat(document.getElementById(id).value) || 0;
+  const bruto = g('j_qty') * g('j_hj'), net = bruto * (1 - g('j_dis') / 100);
+  const fee = net * g('j_fee') / 100, hppT = g('j_qty') * g('j_hpp');
+  const laba = net - fee - hppT - g('j_lain'), m = net ? laba / net * 100 : 0;
+  document.getElementById('j_prev').innerHTML = `
+    <div><span>Bruto</span><b>${rp(bruto)}</b></div>
+    <div><span>Net Sales</span><b>${rp(net)}</b></div>
+    <div><span>Fee</span><b>${rp(fee)}</b></div>
+    <div><span>HPP</span><b>${rp(hppT)}</b></div>
+    <div><span>Laba</span><b class="${laba >= 0 ? 'up' : 'down'}">${rp(laba)}</b></div>
+    <div><span>Margin</span><b>${pct(m)}</b></div>`;
+}
+function pjlDel(id) {
+  openModal(`<h3>Hapus transaksi ini?</h3>
+    <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
+  $('#dl').onclick = async () => {
+    try { await api('penjualan', { method: 'DELETE', params: { id } }); toast('Transaksi dihapus'); closeModal(); pagePenjualan(); }
+    catch (e) { toast(e.message, 'err'); }
+  };
+}
+
+/* ================= PAGE: DASHBOARD ================= */
+async function pageDashboard() {
+  setPage('Dashboard', 'Ringkasan performa produksi & penjualan');
+  const d = await api('dashboard');
+  const max = Math.max(...d.chart.map(c => c.nilai), 1);
+  $('#content').innerHTML = `
+    <div class="stats">
+      <div class="stat"><span>Net Sales — ${d.periode}</span><b>${rp(d.bulan_ini.net_sales)}</b></div>
+      <div class="stat"><span>Laba Bersih — ${d.periode}</span><b class="${d.bulan_ini.laba >= 0 ? 'up' : 'down'}">${rp(d.bulan_ini.laba)}</b><small>Margin ${pct(d.bulan_ini.margin_pct)}</small></div>
+      <div class="stat"><span>HPP Terjual — ${d.periode}</span><b>${rp(d.bulan_ini.hpp)}</b></div>
+      <div class="stat"><span>PO Berjalan</span><b>${d.counts.po_aktif}</b><small>${d.counts.produk} produk · ${d.counts.bahan} bahan</small></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><b>Penjualan 14 Hari Terakhir</b><span class="chip">Net Sales / hari</span></div>
+      <div style="padding:16px"><div class="chart">
+        ${d.chart.map(c => `<div class="col" title="${fdate(c.tanggal)}: ${rp(c.nilai)}">
+          <div class="bar" style="height:${Math.max(2, c.nilai / max * 118)}px"></div>
+          <span class="lbl">${c.tanggal.slice(8)}</span></div>`).join('')}
+      </div></div>
+    </div>
+    <div class="grid2c">
+      <div class="card">
+        <div class="card-head"><b>HPP Terbaru</b><button class="btn ghost sm" onclick="go('hpp')">Lihat semua</button></div>
+        <div class="table-wrap"><table class="mini-table">
+          <thead><tr><th>PO</th><th>Produk</th><th class="r">HPP / pcs</th><th>Status</th></tr></thead>
+          <tbody>${d.hpp_terbaru.length ? d.hpp_terbaru.map(h => `<tr style="cursor:pointer" onclick="showHppBreakdown(${h.id})"><td class="mono">${esc(h.kode_po)}</td><td>${esc(h.nama_produk)}</td><td class="r bold">${rp(h.hpp_per_pcs)}</td><td>${stBadge(h.status)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Belum ada PO.</td></tr>'}</tbody>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><b>Penjualan Terbaru</b><button class="btn ghost sm" onclick="go('penjualan')">Lihat semua</button></div>
+        <div class="table-wrap"><table class="mini-table">
+          <thead><tr><th>Tanggal</th><th>Produk</th><th class="r">Net</th><th class="r">Laba</th></tr></thead>
+          <tbody>${d.penjualan_terbaru.length ? d.penjualan_terbaru.map(j => `<tr><td>${fdate(j.tanggal)}</td><td>${esc(j.nama_produk)}<br><span class="badge b-indigo" style="margin-top:2px">${esc(j.channel)}</span></td><td class="r">${rp(j.net_sales)}</td><td class="r ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Belum ada penjualan.</td></tr>'}</tbody>
+        </table></div>
+      </div>
+    </div>`;
+}
+
+/* ================= INIT ================= */
+ $('#nav').innerHTML = NAV.map(n => `
+  <button class="nav-item" data-id="${n.id}" onclick="go('${n.id}')">
+    <svg viewBox="0 0 24 24">${IC[n.ic]}</svg><span>${n.l}</span>
+  </button>`).join('');
+ $('#btnMenu').onclick = () => { $('#sidebar').classList.add('open'); $('#overlay').classList.add('show'); };
+ $('#overlay').onclick = closeSidebar;
+ $('#modalBack').addEventListener('click', e => { if (e.target.id === 'modalBack') closeModal(); });
+ $('#modalBox').addEventListener('click', e => { if (e.target.closest('[data-close]')) closeModal(); });
+go('dashboard');
+</script>
+</body>
+</html>
