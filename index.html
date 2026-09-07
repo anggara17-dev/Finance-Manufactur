@@ -91,7 +91,7 @@ tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#fafbfc}
 .chip{background:var(--ac2);color:var(--ac);font-weight:600;font-size:12px;padding:7px 12px;border-radius:99px;white-space:nowrap}
 
 /* ---------- Stat ---------- */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:18px}
 .stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
 .stat span{font-size:12px;color:var(--tx2);display:block;margin-bottom:6px}
 .stat b{font-size:19px;font-weight:700;letter-spacing:-.3px}
@@ -114,16 +114,17 @@ tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#fafbfc}
 /* ---------- Form & modal ---------- */
 .field{margin-bottom:12px}
 .field label{display:block;font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:5px}
-.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;font-family:inherit;background:#fff;min-height:44px;color:var(--tx)}
-.field input:focus,.field select:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
-@media(pointer:coarse){.field input,.field select,.tin{font-size:16px}}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;font-family:inherit;background:#fff;min-height:44px;color:var(--tx)}
+.field textarea{resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
+@media(pointer:coarse){.field input,.field select,.field textarea,.tin{font-size:16px}}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 @media(max-width:480px){.grid2,.grid3{grid-template-columns:1fr}}
 .form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
 .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:100}
 .modal-backdrop.show{display:flex}
-.modal{background:#fff;width:100%;max-width:560px;border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:20px;animation:up .22s ease}
+.modal{background:#fff;width:100%;max-width:580px;border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:20px;animation:up .22s ease}
 @media(min-width:640px){.modal-backdrop{align-items:center;padding:20px}.modal{border-radius:16px;animation:pop .16s ease}}
 @keyframes up{from{transform:translateY(40px);opacity:0}}
 @keyframes pop{from{transform:scale(.97);opacity:0}}
@@ -140,20 +141,38 @@ tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#fafbfc}
 .tin.r{text-align:right}
 select.tin{padding-right:6px}
 
-/* ---------- Mini cards & preview ---------- */
-.mini-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin:12px 0}
-.mini-cards>div{background:#f8fafc;border:1px solid var(--line2);border-radius:10px;padding:9px 10px}
-.mini-cards span{display:block;font-size:10.5px;color:var(--tx2);margin-bottom:2px}
-.mini-cards b{font-size:13.5px;letter-spacing:-.2px}
-.mini-cards .hl{background:var(--ac2);border-color:var(--ac3)}
-.mini-cards .tot{background:#0f172a;border-color:#0f172a}
-.mini-cards .tot span{color:#94a3b8}.mini-cards .tot b{color:#fff}
+/* ---------- Preview ---------- */
 .preview{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#f8fafc;border:1px solid var(--line2);border-radius:12px;padding:12px;margin-top:4px}
 .preview span{display:block;font-size:10.5px;color:var(--tx2)}
 .preview b{font-size:12.5px}
 .margin-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--ac2);border:1px solid var(--ac3);border-radius:12px;padding:12px;margin-top:14px}
 .margin-box span{display:block;font-size:10.5px;color:var(--tx2)}
-.margin-box b{font-size:13.5px}
+.margin-box b{font-size:13px}
+
+/* ---------- Invoice paper ---------- */
+.inv{background:#fff;color:#111;font-size:12.5px}
+.inv table{min-width:0}
+.inv-table th{background:#f4f5f7;color:#333;font-size:10px}
+.inv-table td{padding:9px 10px;border-bottom:1px solid #eef0f3}
+.inv-head{display:flex;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:3px solid var(--ac);margin-bottom:16px}
+@media(max-width:520px){.inv-head{flex-direction:column}}
+.inv-totals{margin-left:auto;max-width:320px;margin-top:14px}
+.inv-totals .kv{padding:6px 0;font-size:12.5px}
+.inv-totals .grand{border-top:2px solid #0f172a;font-size:14px;padding-top:8px;margin-top:4px}
+.inv-totals .grand b{font-weight:800}
+.inv-pay{margin-top:16px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px}
+.inv-note{margin-top:10px;font-size:12px}
+.inv-foot{margin-top:26px;padding-top:12px;border-top:1px solid var(--line);text-align:center;color:var(--tx2);font-size:11px}
+
+/* ---------- Print ---------- */
+#printArea{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  body.print-mode>*:not(#printArea){display:none!important}
+  body.print-mode{background:#fff}
+  body.print-mode #printArea{display:block!important}
+  .inv{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 
 /* ---------- Toast ---------- */
 .toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;width:max-content;max-width:92vw}
@@ -169,7 +188,7 @@ select.tin{padding-right:6px}
     <div class="brand-text"><b>FinKuvek</b><span>Finance Manufaktur Konveksi</span></div>
   </div>
   <nav id="nav"></nav>
-  <div class="sidebar-foot">v1.0 · Supabase + Vercel</div>
+  <div class="sidebar-foot">v1.1 · Supabase + Vercel</div>
 </aside>
 <div class="overlay" id="overlay"></div>
 
@@ -183,6 +202,7 @@ select.tin{padding-right:6px}
 
 <div class="modal-backdrop" id="modalBack"><div class="modal" id="modalBox"></div></div>
 <div class="toast-wrap" id="toastWrap"></div>
+<div id="printArea"></div>
 
 <script>
 /* ================= HELPER ================= */
@@ -216,9 +236,18 @@ function toast(msg, type = 'ok') {
 function openModal(html) { $('#modalBox').innerHTML = html; $('#modalBack').classList.add('show'); }
 function closeModal() { $('#modalBack').classList.remove('show'); $('#modalBox').innerHTML = ''; }
 function stBadge(s) { const c = s === 'Selesai' ? 'b-green' : s === 'Produksi' ? 'b-amber' : 'b-gray'; return `<span class="badge ${c}">${esc(s)}</span>`; }
+function payBadge(s) { return `<span class="badge ${s === 'Lunas' ? 'b-green' : s === 'DP' ? 'b-amber' : 'b-red'}">${esc(s)}</span>`; }
 function mBadge(m) { const v = Number(m || 0); return `<span class="badge ${v >= 0 ? 'b-green' : 'b-red'}">${v >= 0 ? '+' : ''}${pct(v)}</span>`; }
 function setPage(t, s = '') { $('#pageTitle').textContent = t; $('#pageSub').textContent = s; closeSidebar(); window.scrollTo(0, 0); }
 function closeSidebar() { $('#sidebar').classList.remove('open'); $('#overlay').classList.remove('show'); }
+function printHTML(html) {
+  const pa = document.getElementById('printArea');
+  pa.innerHTML = html;
+  const done = () => { document.body.classList.remove('print-mode'); pa.innerHTML = ''; };
+  window.addEventListener('afterprint', done, { once: true });
+  document.body.classList.add('print-mode');
+  setTimeout(() => { window.print(); setTimeout(done, 600); }, 60);
+}
 
 /* ================= IKON & NAV ================= */
 const IC = {
@@ -229,9 +258,12 @@ const IC = {
   tenagakerja:'<circle cx="12" cy="7.2" r="4.2"/><path d="M3.8 20.5c.4-3.9 4-6.3 8.2-6.3s7.8 2.4 8.2 6.3l.1.9H3.7l.1-.9Z"/>',
   bom:'<path d="M9 2.5h6a1 1 0 0 1 1 1V4h1.5A2.5 2.5 0 0 1 20 6.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5v-13A2.5 2.5 0 0 1 6.5 4H8v-.5a1 1 0 0 1 1-1Z"/><rect x="8" y="10.5" width="8" height="1.8" rx=".9" fill="#fff"/><rect x="8" y="14.5" width="5.5" height="1.8" rx=".9" fill="#fff"/>',
   po:'<path d="M2.5 20.5V9.2l5.5 3.4V9.2l5.5 3.4V4.5a1 1 0 0 1 1-1h6.5a1 1 0 0 1 1 1v16H2.5Z"/><rect x="14.5" y="13.5" width="3.2" height="3.2" rx=".6" fill="#fff"/>',
+  pembelian:'<path d="M2 7a1.5 1.5 0 0 1 1.5-1.5h8.6a1 1 0 0 1 1 1V15H4a2 2 0 0 1-2-2V7Z"/><path d="M13.1 8.2h3.1c.3 0 .58.13.77.36l2.7 3.2c.28.33.43.74.43 1.17v1.77A1.5 1.5 0 0 1 18.6 16H13.1V8.2Z"/><circle cx="6.6" cy="18.3" r="2"/><circle cx="16.6" cy="18.3" r="2"/>',
   overhead:'<path d="M3.5 21h17v-1.8h-17V21Z"/><path d="M5.5 17.4h2.2v-7.5H5.5v7.5Zm4 0h2.2v-10H9.5v10Zm4 0h2.2v-7.5h-2.2v7.5Zm4 0h2.2v-10h-2.2v10Z"/><path d="M3 6.8 12 3l9 3.8v1.4H3V6.8Z"/>',
   hpp:'<circle cx="12" cy="12" r="9.2"/><path d="M12 5.8v12.4" stroke="#fff" stroke-width="1.7" stroke-linecap="round" fill="none"/><path d="M15.2 9.3c-.4-1.1-1.6-1.7-3.1-1.7-1.8 0-3 .9-3 2.2 0 3 6.2 1.6 6.2 4.6 0 1.4-1.3 2.3-3.2 2.3-1.7 0-2.9-.7-3.4-1.9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
   penjualan:'<path d="M2.3 3h2.8a1 1 0 0 1 1 .76L6.7 6h14a.8.8 0 0 1 .77 1l-1.9 7a2 2 0 0 1-1.93 1.5H9.2a2 2 0 0 1-1.95-1.54L4.6 4.8l-.3-1.1a.4.4 0 0 0-.4-.3H2.3a.7.7 0 1 1 0-1.4Z"/><circle cx="9.7" cy="19.3" r="1.7"/><circle cx="16.7" cy="19.3" r="1.7"/>',
+  invoice:'<path d="M5 2h14a1 1 0 0 1 1 1v18.5l-3-1.8-2.5 1.8-2.5-1.8-2.5 1.8-2.5-1.8-3 1.8V3a1 1 0 0 1 1-1Z"/><rect x="7.5" y="6.8" width="9" height="1.7" rx=".85" fill="#fff"/><rect x="7.5" y="10.5" width="9" height="1.7" rx=".85" fill="#fff"/><rect x="7.5" y="14.2" width="5.4" height="1.7" rx=".85" fill="#fff"/>',
+  pengaturan:'<path d="M4 7.2h9.2M17.6 7.2H20M4 16.8h4.4M12.8 16.8H20" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="15.3" cy="7.2" r="2.5"/><circle cx="10.7" cy="16.8" r="2.5"/>',
 };
 const NAV = [
   { id:'dashboard',  l:'Dashboard',          ic:'dashboard' },
@@ -241,12 +273,38 @@ const NAV = [
   { id:'tenagakerja',l:'Tenaga Kerja',       ic:'tenagakerja' },
   { id:'bom',        l:'BOM / Resep',        ic:'bom' },
   { id:'po',         l:'Production Order',   ic:'po' },
+  { id:'pembelian',  l:'Pembelian Bahan',    ic:'pembelian' },
   { id:'overhead',   l:'Factory Overhead',   ic:'overhead' },
   { id:'hpp',        l:'HPP & Margin',       ic:'hpp' },
   { id:'penjualan',  l:'Penjualan',          ic:'penjualan' },
+  { id:'invoice',    l:'Invoice',            ic:'invoice' },
+  { id:'pengaturan', l:'Pengaturan',         ic:'pengaturan' },
 ];
+const CHANNELS = ['Toko Sendiri','Shopee','Tokopedia','TikTok Shop','Lazada','Instagram','WhatsApp','Lainnya'];
 
-/* ================= KONFIG MASTER ================= */
+/* ================= ROUTER ================= */
+let CURRENT = 'dashboard';
+const RENDER = {
+  dashboard: pageDashboard,
+  produk: () => pageMaster('produk'),
+  bahan: () => pageMaster('bahan'),
+  supplier: () => pageMaster('supplier'),
+  tenagakerja: () => pageMaster('tenagakerja'),
+  overhead: () => pageMaster('overhead'),
+  bom: pageBom, po: pagePO, pembelian: pagePembelian,
+  hpp: pageHPP, penjualan: pagePenjualan, invoice: pageInvoice,
+  pengaturan: pagePengaturan,
+};
+async function go(id) {
+  CURRENT = id;
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.id === id));
+  $('#content').innerHTML = '<div class="empty">Memuat…</div>';
+  try { await RENDER[id](); }
+  catch (e) { $('#content').innerHTML = `<div class="card"><div class="empty">⚠ ${esc(e.message)}</div></div>`; }
+}
+
+/* ================= PAGE: GENERIC MASTER ================= */
+let SEARCHQ = {}, ROWS_CACHE = {};
 const MASTER = {
   produk: {
     t:'Master Produk', s:'Produk jadi & harga jual dasar',
@@ -300,28 +358,6 @@ const MASTER = {
       {k:'keterangan',l:'Keterangan'},
     ]},
 };
-
-/* ================= ROUTER ================= */
-let CURRENT = 'dashboard';
-const RENDER = {
-  dashboard: pageDashboard,
-  produk: () => pageMaster('produk'),
-  bahan: () => pageMaster('bahan'),
-  supplier: () => pageMaster('supplier'),
-  tenagakerja: () => pageMaster('tenagakerja'),
-  overhead: () => pageMaster('overhead'),
-  bom: pageBom, po: pagePO, hpp: pageHPP, penjualan: pagePenjualan,
-};
-async function go(id) {
-  CURRENT = id;
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.id === id));
-  $('#content').innerHTML = '<div class="empty">Memuat…</div>';
-  try { await RENDER[id](); }
-  catch (e) { $('#content').innerHTML = `<div class="card"><div class="empty">⚠ ${esc(e.message)}</div></div>`; }
-}
-
-/* ================= PAGE: GENERIC MASTER ================= */
-let SEARCHQ = {}, ROWS_CACHE = {};
 async function pageMaster(key) {
   const cfg = MASTER[key];
   setPage(cfg.t, cfg.s);
@@ -365,9 +401,13 @@ async function loadMasterRows(key) {
 }
 function fieldHTML(f, val) {
   const id = 'f_' + f.k, v = val ?? f.def ?? '';
-  const inp = f.type === 'select'
-    ? `<select id="${id}">${f.opts.map(o => `<option value="${esc(o)}" ${o === v ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`
-    : `<input id="${id}" type="${f.type || 'text'}" value="${esc(v)}" placeholder="${esc(f.ph || '')}" ${f.req ? 'required' : ''} ${f.type === 'number' ? 'min="0" step="any" inputmode="decimal"' : ''}>`;
+  let inp;
+  if (f.type === 'select')
+    inp = `<select id="${id}">${f.opts.map(o => `<option value="${esc(o)}" ${o === v ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+  else if (f.type === 'textarea')
+    inp = `<textarea id="${id}" rows="3" placeholder="${esc(f.ph || '')}">${esc(v)}</textarea>`;
+  else
+    inp = `<input id="${id}" type="${f.type || 'text'}" value="${esc(v)}" placeholder="${esc(f.ph || '')}" ${f.req ? 'required' : ''} ${f.type === 'number' ? 'min="0" step="any" inputmode="decimal"' : ''}>`;
   return `<div class="field"><label>${esc(f.l)}${f.req ? ' *' : ''}</label>${inp}</div>`;
 }
 function masterForm(key, id) {
@@ -406,6 +446,13 @@ function delMaster(key, id) {
 
 /* ================= PAGE: BOM ================= */
 let BL = [], BPID = null, BROWS = [];
+function bahanOptions(list, sel) {
+  const g = {};
+  (list || []).forEach(b => { (g[b.kelompok] = g[b.kelompok] || []).push(b); });
+  return Object.entries(g).map(([k, arr]) =>
+    `<optgroup label="${esc(k)}">${arr.map(b => `<option value="${b.id}" ${Number(sel) === b.id ? 'selected' : ''}>${esc(b.kode)} · ${esc(b.nama)}</option>`).join('')}</optgroup>`
+  ).join('');
+}
 async function pageBom() {
   setPage('BOM / Resep Produk', 'Kebutuhan bahan per 1 pcs — termasuk % waste cutting');
   const [produk, bahan] = await Promise.all([api('produk'), api('bahan')]);
@@ -442,13 +489,6 @@ async function loadBom(pid) {
   BROWS = (bom?.bom_detail || []).map(d => ({ bahan_id: d.bahan_id, qty_standar: d.qty_standar, waste_pct: d.waste_pct }));
   renderBomRows();
 }
-function bahanOptions(sel) {
-  const groups = {};
-  BL.forEach(b => { (groups[b.kelompok] = groups[b.kelompok] || []).push(b); });
-  return Object.entries(groups).map(([g, arr]) =>
-    `<optgroup label="${esc(g)}">${arr.map(b => `<option value="${b.id}" ${Number(sel) === b.id ? 'selected' : ''}>${esc(b.kode)} · ${esc(b.nama)}</option>`).join('')}</optgroup>`
-  ).join('');
-}
 function renderBomRows() {
   const tb = $('#btb'); if (!tb) return;
   if (!BROWS.length) { tb.innerHTML = '<tr><td colspan="7" class="empty">Belum ada baris. Klik “+ Baris”.</td></tr>'; bomTotal(); return; }
@@ -456,7 +496,7 @@ function renderBomRows() {
     const b = BL.find(x => x.id === Number(r.bahan_id));
     const ef = (Number(r.qty_standar) || 0) * (1 + (Number(r.waste_pct) || 0) / 100);
     return `<tr>
-      <td><select class="tin" style="min-width:200px" onchange="bomSet(${i},'bahan_id',this.value)"><option value="">— Pilih —</option>${bahanOptions(r.bahan_id)}</select></td>
+      <td><select class="tin" style="min-width:200px" onchange="bomSet(${i},'bahan_id',this.value)"><option value="">— Pilih —</option>${bahanOptions(BL, r.bahan_id)}</select></td>
       <td class="r"><input class="tin r" type="number" step="any" min="0" style="width:90px" value="${r.qty_standar}" oninput="bomSet(${i},'qty_standar',this.value)"></td>
       <td class="r"><input class="tin r" type="number" step="any" min="0" style="width:70px" value="${r.waste_pct}" oninput="bomSet(${i},'waste_pct',this.value)"></td>
       <td class="r bold" id="ef_${i}">${nf(ef)} <small class="mono">${esc(b?.satuan || '')}</small></td>
@@ -591,7 +631,6 @@ async function poDetail(id) {
       <div class="stat hi"><span>Total HPP</span><b>${rp(r.total_hpp)}</b><small><b>${rp2(r.hpp_per_pcs)}</b>/pcs</small></div>
       <div class="stat"><span>Status</span>${stBadge(d.po.status)}<small>Periode OH: ${d.overhead.periode}</small></div>
     </div>
-
     <div class="card">
       <div class="card-head"><b>1 · Material — Standar (BOM) vs Aktual</b><button class="btn" onclick="saveMat()">Simpan Realisasi Material</button></div>
       <div class="table-wrap"><table>
@@ -600,7 +639,6 @@ async function poDetail(id) {
         <tfoot><tr><td colspan="6" class="r bold">Total Material</td><td class="r bold" id="matTot">${rp(PD.mat.reduce((s, m) => s + m.qty_aktual_in * m.harga, 0))}</td></tr></tfoot>
       </table></div>
     </div>
-
     <div class="card">
       <div class="card-head"><b>2 · Tenaga Kerja Langsung</b>
         <div style="display:flex;gap:8px"><button class="btn ghost" onclick="addLab()">+ Baris TK</button><button class="btn" onclick="saveLab()">Simpan Realisasi TK</button></div></div>
@@ -610,7 +648,6 @@ async function poDetail(id) {
         <tfoot><tr><td colspan="5" class="r bold">Total Direct Labor</td><td class="r bold" id="labTot">${rp(PD.lab.reduce((s, l) => s + labBiaya(l), 0))}</td><td></td></tr></tfoot>
       </table></div>
     </div>
-
     <div class="grid2c">
       <div class="card">
         <div class="card-head"><b>3 · Alokasi Factory Overhead</b></div>
@@ -702,6 +739,138 @@ async function saveLab() {
   } catch (e) { toast(e.message, 'err'); }
 }
 
+/* ================= PAGE: PEMBELIAN BAHAN (v1.1) ================= */
+let PB_SUP = [], PB_BAHAN = [], PB_ITEMS = [], PB_CACHE = [];
+async function pagePembelian() {
+  setPage('Pembelian Bahan', 'Harga beli aktual dari supplier & sinkronisasi harga master');
+  const [rows, sup, bh] = await Promise.all([api('pembelian'), api('supplier'), api('bahan')]);
+  PB_SUP = sup; PB_BAHAN = bh; PB_CACHE = rows;
+  const bulan = today().slice(0, 7);
+  const totB = rows.filter(r => (r.tanggal || '').startsWith(bulan)).reduce((s, r) => s + Number(r.total || 0), 0);
+  $('#content').innerHTML = `
+    <div class="stats">
+      <div class="stat"><span>Pembelian — ${bulan}</span><b>${rp(totB)}</b></div>
+      <div class="stat"><span>Total Transaksi</span><b>${rows.length}</b></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="mut">Nota pembelian bahan — harga di sini bisa jadi harga master terbaru</div><button class="btn" onclick="pbForm()">+ Pembelian Baru</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Kode</th><th>Tanggal</th><th>Supplier</th><th>No. Nota</th><th class="r">Item</th><th class="r">Total</th><th class="r">Aksi</th></tr></thead>
+        <tbody>${rows.length ? rows.map(r => `<tr>
+          <td class="mono">${esc(r.kode)}</td><td>${fdate(r.tanggal)}</td>
+          <td><b>${esc(r.nama_supplier || '—')}</b></td><td>${esc(r.nomor_nota || '—')}</td>
+          <td class="r">${r.jml_item}</td><td class="r bold">${rp(r.total)}</td>
+          <td class="r"><div class="act">
+            <button class="btn soft sm" onclick="pbDetail(${r.id})">Detail</button>
+            <button class="btn ghost sm" onclick="pbForm(${r.id})">Edit</button>
+            <button class="btn ghost sm danger-t" onclick="pbDel(${r.id})">✕</button>
+          </div></td></tr>`).join('') : '<tr><td colspan="7" class="empty">Belum ada pembelian.</td></tr>'}</tbody>
+      </table></div>
+    </div>`;
+}
+async function pbForm(id) {
+  if (!PB_BAHAN.length) return toast('Tambahkan Master Bahan dulu', 'err');
+  let row = null;
+  if (id) { const d = await api('pembelian', { params: { id } }); row = d; PB_ITEMS = d.items.map(x => ({ bahan_id: x.bahan_id, qty: Number(x.qty), harga_beli: Number(x.harga_beli) })); }
+  else PB_ITEMS = [{ bahan_id: 0, qty: '', harga_beli: '' }];
+  openModal(`
+    <h3>${row ? 'Edit' : 'Pembelian'} Bahan</h3>
+    <form id="pbf">
+      <div class="grid2">
+        <div class="field"><label>Supplier</label><select id="pb_sup">
+          <option value="">— Tanpa supplier —</option>
+          ${PB_SUP.map(s => `<option value="${s.id}" ${row && row.supplier_id === s.id ? 'selected' : ''}>${esc(s.kode)} · ${esc(s.nama)}</option>`).join('')}</select></div>
+        <div class="field"><label>Tanggal</label><input id="pb_tgl" type="date" value="${row?.tanggal || today()}"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>No. Nota</label><input id="pb_nota" value="${esc(row?.nomor_nota || '')}" placeholder="opsional"></div>
+        <div class="field"><label>Keterangan</label><input id="pb_ket" value="${esc(row?.keterangan || '')}"></div>
+      </div>
+      <h4>Item Pembelian</h4>
+      <div class="table-wrap"><table class="mini-table">
+        <thead><tr><th>Bahan</th><th class="r">Qty</th><th class="r">Harga Beli</th><th class="r">Jumlah</th><th></th></tr></thead>
+        <tbody id="pb_tb"></tbody>
+        <tfoot><tr><td colspan="3" class="r bold">Total</td><td class="r bold" id="pb_tot"></td><td></td></tr></tfoot>
+      </table></div>
+      <button type="button" class="btn ghost sm" style="margin-top:10px" onclick="pbAdd()">+ Baris Bahan</button>
+      <label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:12.5px">
+        <input type="checkbox" id="pb_master" ${row ? '' : 'checked'} style="width:16px;height:16px">
+        Perbarui harga master bahan dengan harga beli ini
+      </label>
+      <div class="form-actions"><button type="button" class="btn ghost" data-close>Batal</button><button type="submit" class="btn">Simpan</button></div>
+    </form>`);
+  renderPbRows();
+  $('#pbf').onsubmit = async e => {
+    e.preventDefault();
+    const items = PB_ITEMS.filter(x => x.bahan_id && Number(x.qty) > 0);
+    if (!items.length) return toast('Minimal 1 item valid', 'err');
+    try {
+      await api('pembelian', { method: row ? 'PUT' : 'POST', params: row ? { id: row.id } : {}, body: {
+        tanggal: $('#pb_tgl').value || today(), supplier_id: Number($('#pb_sup').value) || null,
+        nomor_nota: $('#pb_nota').value.trim(), keterangan: $('#pb_ket').value.trim(),
+        items, update_master: $('#pb_master').checked } });
+      toast('Pembelian tersimpan ✓'); closeModal(); pagePembelian();
+    } catch (err) { toast(err.message, 'err'); }
+  };
+}
+function pbRowHtml(r, i) {
+  return `<tr>
+    <td><select class="tin" style="min-width:190px" onchange="pbSet(${i},'bahan_id',this.value)">
+      <option value="">— Pilih —</option>${bahanOptions(PB_BAHAN, r.bahan_id)}</select></td>
+    <td class="r"><input class="tin r" type="number" min="0" step="any" style="width:85px" value="${r.qty}" oninput="pbSet(${i},'qty',this.value)"></td>
+    <td class="r"><input class="tin r" type="number" min="0" step="any" style="width:110px" value="${r.harga_beli}" oninput="pbSet(${i},'harga_beli',this.value)"></td>
+    <td class="r bold" id="pbj_${i}">${rp((Number(r.qty) || 0) * (Number(r.harga_beli) || 0))}</td>
+    <td class="r"><button type="button" class="btn ghost sm danger-t" onclick="pbDelRow(${i})">✕</button></td></tr>`;
+}
+function renderPbRows() {
+  const tb = document.getElementById('pb_tb'); if (!tb) return;
+  tb.innerHTML = PB_ITEMS.map(pbRowHtml).join(''); pbTotal();
+}
+function pbTotal() {
+  const t = PB_ITEMS.reduce((s, x) => s + (Number(x.qty) || 0) * (Number(x.harga_beli) || 0), 0);
+  const el = document.getElementById('pb_tot'); if (el) el.textContent = rp(t);
+}
+function pbSet(i, k, v) {
+  const r = PB_ITEMS[i];
+  if (k === 'bahan_id') {
+    r.bahan_id = Number(v) || 0;
+    const b = PB_BAHAN.find(z => z.id === r.bahan_id);
+    if (b) r.harga_beli = Number(b.harga);
+    renderPbRows(); return;
+  }
+  r[k] = parseFloat(v) || 0;
+  const el = document.getElementById('pbj_' + i);
+  if (el) el.textContent = rp((Number(r.qty) || 0) * (Number(r.harga_beli) || 0));
+  pbTotal();
+}
+function pbAdd() { PB_ITEMS.push({ bahan_id: 0, qty: '', harga_beli: '' }); renderPbRows(); }
+function pbDelRow(i) { PB_ITEMS.splice(i, 1); renderPbRows(); }
+async function pbDetail(id) {
+  openModal('<div class="empty">Memuat…</div>');
+  try {
+    const d = await api('pembelian', { params: { id } });
+    const tot = (d.items || []).reduce((s, x) => s + Number(x.qty) * Number(x.harga_beli), 0);
+    openModal(`
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0">${esc(d.kode)} · ${fdate(d.tanggal)}</h3>
+        <button class="btn ghost sm" data-close>✕</button></div>
+      <p class="mut" style="margin-top:4px">${esc(d.supplier?.nama || 'Tanpa supplier')}${d.nomor_nota ? ' · Nota: ' + esc(d.nomor_nota) : ''}${d.keterangan ? ' · ' + esc(d.keterangan) : ''}</p>
+      <div class="table-wrap"><table class="mini-table">
+        <thead><tr><th>Bahan</th><th class="r">Qty</th><th class="r">Harga Beli</th><th class="r">Jumlah</th></tr></thead>
+        <tbody>${d.items.map(x => `<tr><td><b>${esc(x.bahan?.nama)}</b> <small class="mono">${esc(x.bahan?.kode)}</small></td><td class="r">${nf(x.qty)} <small class="mono">${esc(x.bahan?.satuan || '')}</small></td><td class="r">${rp(x.harga_beli)}</td><td class="r bold">${rp(Number(x.qty) * Number(x.harga_beli))}</td></tr>`).join('')}</tbody>
+        <tfoot><tr><td colspan="3" class="r bold">Total</td><td class="r bold">${rp(tot)}</td></tr></tfoot>
+      </table></div>`);
+  } catch (e) { openModal(`<div class="empty">⚠ ${esc(e.message)}</div>`); }
+}
+function pbDel(id) {
+  openModal(`<h3>Hapus pembelian ini?</h3><p class="mut">Item di dalamnya juga terhapus. Harga master tidak ikut berubah.</p>
+    <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
+  $('#dl').onclick = async () => {
+    try { await api('pembelian', { method: 'DELETE', params: { id } }); toast('Pembelian dihapus'); closeModal(); pagePembelian(); }
+    catch (e) { toast(e.message, 'err'); }
+  };
+}
+
 /* ================= PAGE: HPP & MARGIN ================= */
 async function pageHPP() {
   setPage('Analisa HPP & Margin', 'Struktur biaya per production order — klik baris untuk rincian');
@@ -736,12 +905,12 @@ async function showHppBreakdown(poId) {
         <button class="btn ghost sm" data-close>✕</button>
       </div>
       <p class="mut" style="margin-top:4px">${fdate(d.po.tanggal)} · ${nf(d.po.qty)} pcs · ${esc(d.po.status)}</p>
-      <div class="mini-cards">
-        <div><span>Direct Material</span><b>${rp(r.dm)}</b></div>
-        <div><span>Direct Labor</span><b>${rp(r.dl)}</b></div>
-        <div><span>Overhead</span><b>${rp(r.foh)}</b></div>
-        <div class="tot"><span>Total HPP</span><b>${rp(r.total_hpp)}</b></div>
-        <div class="hl"><span>HPP / pcs</span><b>${rp2(r.hpp_per_pcs)}</b></div>
+      <div class="preview" style="grid-template-columns:repeat(5,1fr)">
+        <div><span>DM</span><b>${rp(r.dm)}</b></div>
+        <div><span>DL</span><b>${rp(r.dl)}</b></div>
+        <div><span>FOH</span><b>${rp(r.foh)}</b></div>
+        <div><span>Total HPP</span><b>${rp(r.total_hpp)}</b></div>
+        <div><span>HPP / pcs</span><b>${rp2(r.hpp_per_pcs)}</b></div>
       </div>
       <h4>Material — Standar vs Aktual</h4>
       <div class="table-wrap"><table class="mini-table">
@@ -764,7 +933,6 @@ async function showHppBreakdown(poId) {
 }
 
 /* ================= PAGE: PENJUALAN ================= */
-const CHANNELS = ['Toko Sendiri','Shopee','Tokopedia','TikTok Shop','Lazada','Instagram','WhatsApp','Lainnya'];
 let PJ = [], PJ_CACHE = [];
 async function pagePenjualan() {
   setPage('Penjualan', 'Net sales, fee marketplace, HPP & margin per channel');
@@ -779,7 +947,7 @@ async function pagePenjualan() {
       <div class="stat"><span>Jumlah Transaksi</span><b>${rows.length}</b></div>
     </div>
     <div class="card">
-      <div class="card-head"><div class="mut">Semua kanal penjualan</div><button class="btn" onclick="pjlForm()">+ Catat Penjualan</button></div>
+      <div class="card-head"><div class="mut">Klik 🧾 untuk buat invoice dari transaksi</div><button class="btn" onclick="pjlForm()">+ Catat Penjualan</button></div>
       <div class="table-wrap"><table>
         <thead><tr><th>Tanggal</th><th>Produk</th><th>Channel</th><th class="r">Qty</th><th class="r">Net Sales</th><th class="r">Fee</th><th class="r">HPP</th><th class="r">Laba</th><th class="r">Margin</th><th class="r">Aksi</th></tr></thead>
         <tbody>${rows.length ? rows.map(pjlRow).join('') : '<tr><td colspan="10" class="empty">Belum ada penjualan.</td></tr>'}</tbody>
@@ -799,6 +967,7 @@ function pjlRow(j) {
     <td class="r bold ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td>
     <td class="r">${mBadge(margin)}</td>
     <td class="r"><div class="act">
+      ${!j.invoice_id ? `<button class="btn soft sm" onclick="invForm(null,{id:${j.id},produk_id:${j.produk_id},qty:${j.qty},harga_jual:${Number(j.harga_jual) || 0},diskon_pct:${Number(j.diskon_pct) || 0},channel:'${esc(j.channel)}',tanggal:'${j.tanggal}'})">🧾 Invoice</button>` : '<span class="badge b-green">Invoiced</span>'}
       <button class="btn ghost sm" onclick="pjlForm(${j.id})">Edit</button>
       <button class="btn ghost sm danger-t" onclick="pjlDel(${j.id})">✕</button>
     </div></td></tr>`;
@@ -873,9 +1042,339 @@ function pjlDel(id) {
   };
 }
 
+/* ================= PAGE: INVOICE (v1.1) ================= */
+let INV_PRODUK = [], INV_CACHE = [], INV_ITEMS = [], SRC_IDS = [], INV_DIRTY = false, INV_VIEW = null;
+async function pageInvoice() {
+  setPage('Invoice', 'Tagihan pelanggan — PDF siap kirim & share WhatsApp');
+  const [rows, produk] = await Promise.all([api('invoice'), api('produk')]);
+  INV_PRODUK = produk; INV_CACHE = rows;
+  const sisa = rows.reduce((s, r) => s + (r.status_bayar === 'Lunas' ? 0 : Math.max(0, Number(r.total) - Number(r.nominal_bayar))), 0);
+  const lunas = rows.filter(r => r.status_bayar === 'Lunas').reduce((s, r) => s + Number(r.total || 0), 0);
+  $('#content').innerHTML = `
+    <div class="stats">
+      <div class="stat"><span>Piutang Belum Dibayar</span><b class="${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</b></div>
+      <div class="stat"><span>Sudah Lunas</span><b class="up">${rp(lunas)}</b></div>
+      <div class="stat"><span>Jumlah Invoice</span><b>${rows.length}</b></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="mut">Klik 📄 untuk lihat, cetak PDF, atau kirim WA</div><button class="btn" onclick="invForm()">+ Invoice Baru</button></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Nomor</th><th>Tanggal</th><th>Pelanggan</th><th class="r">Item</th><th class="r">Total</th><th class="r">Sisa</th><th>Status</th><th class="r">Aksi</th></tr></thead>
+        <tbody>${rows.length ? rows.map(invRow).join('') : '<tr><td colspan="8" class="empty">Belum ada invoice.</td></tr>'}</tbody>
+      </table></div>
+    </div>`;
+}
+function invRow(r) {
+  const sisa = Math.max(0, Number(r.total) - Number(r.nominal_bayar));
+  const late = r.jatuh_tempo && sisa > 0 && r.jatuh_tempo < today();
+  return `<tr>
+    <td class="mono">${esc(r.nomor)}</td>
+    <td>${fdate(r.tanggal)}<br><small class="mut">Tempo: ${fdate(r.jatuh_tempo)}${late ? ' <span class="down" style="font-weight:700">⚠</span>' : ''}</small></td>
+    <td><b>${esc(r.customer_nama)}</b><br><small class="mono">${esc(r.customer_telepon || '—')}</small></td>
+    <td class="r">${r.jml_item}</td>
+    <td class="r bold">${rp(r.total)}</td>
+    <td class="r ${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</td>
+    <td>${payBadge(r.status_bayar)}</td>
+    <td class="r"><div class="act">
+      <button class="btn soft sm" onclick="invView(${r.id})">📄 PDF</button>
+      ${r.status_bayar !== 'Lunas' ? `<button class="btn ghost sm" onclick="invLunas(${r.id})">✓ Lunas</button>` : ''}
+      <button class="btn ghost sm" onclick="invForm(${r.id})">Edit</button>
+      <button class="btn ghost sm danger-t" onclick="invDel(${r.id})">✕</button>
+    </div></td></tr>`;
+}
+async function invForm(id, sumber) {
+  if (!INV_PRODUK.length) INV_PRODUK = await api('produk');
+  let row = null, srcIds = sumber ? [sumber.id] : [], items;
+  if (id) {
+    const d = await api('invoice', { params: { id } });
+    row = d;
+    items = (d.items || []).map(x => ({ produk_id: x.produk_id, qty: Number(x.qty), harga: Number(x.harga), diskon_pct: Number(x.diskon_pct || 0) }));
+  } else if (sumber) {
+    items = [{ produk_id: sumber.produk_id, qty: Number(sumber.qty), harga: Number(sumber.harga_jual), diskon_pct: Number(sumber.diskon_pct || 0) }];
+  } else {
+    items = [{ produk_id: 0, qty: 1, harga: 0, diskon_pct: 0 }];
+  }
+  SRC_IDS = srcIds; INV_ITEMS = items; INV_DIRTY = !row;
+  const tempo = row?.jatuh_tempo || new Date(Date.now() + 7 * 864e5).toISOString().slice(0, 10);
+  const chDef = (row?.channel) || (sumber?.channel) || 'Invoice';
+  const chOpts = ['Invoice', ...CHANNELS.filter(c => c !== 'Invoice')];
+  openModal(`
+    <h3>${row ? 'Edit ' + esc(row.nomor) : 'Invoice Baru'}</h3>
+    <form id="ivf">
+      <div class="grid2">
+        <div class="field"><label>Nama Pelanggan *</label><input id="iv_nama" required value="${esc(row?.customer_nama || '')}" placeholder="Nama / toko pembeli"></div>
+        <div class="field"><label>No. WhatsApp</label><input id="iv_telp" value="${esc(row?.customer_telepon || '')}" placeholder="08xxxxxxxxxx"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Email (opsional)</label><input id="iv_email" type="email" value="${esc(row?.customer_email || '')}"></div>
+        <div class="field"><label>Channel</label><select id="iv_ch">${chOpts.map(c => `<option ${chDef === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
+      </div>
+      <div class="field"><label>Alamat</label><textarea id="iv_alamat" rows="2">${esc(row?.customer_alamat || '')}</textarea></div>
+      <div class="grid2">
+        <div class="field"><label>Tanggal</label><input id="iv_tgl" type="date" value="${row?.tanggal || sumber?.tanggal || today()}"></div>
+        <div class="field"><label>Jatuh Tempo</label><input id="iv_jt" type="date" value="${tempo}"></div>
+      </div>
+      <h4>Item Invoice</h4>
+      <div class="table-wrap"><table class="mini-table">
+        <thead><tr><th>Produk</th><th class="r">Qty</th><th class="r">Harga</th><th class="r">Disc %</th><th class="r">Jumlah</th><th></th></tr></thead>
+        <tbody id="iv_tb"></tbody>
+      </table></div>
+      <button type="button" class="btn ghost sm" style="margin-top:10px" onclick="invAdd()">+ Baris Produk</button>
+      <div class="grid3" style="margin-top:14px">
+        <div class="field"><label>Ongkir (Rp)</label><input id="iv_ongkir" type="number" min="0" step="any" value="${row?.ongkir ?? 0}" oninput="invPrev()"></div>
+        <div class="field"><label>Potongan (Rp)</label><input id="iv_pot" type="number" min="0" step="any" value="${row?.potongan ?? 0}" oninput="invPrev()"></div>
+        <div class="field"><label>Pajak %</label><input id="iv_pjk" type="number" min="0" step="any" value="${row?.pajak_pct ?? 0}" oninput="invPrev()"></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label>Status Bayar</label><select id="iv_st" onchange="ivStatus()">
+          ${['Belum Bayar','DP','Lunas'].map(s => `<option ${((row?.status_bayar) || 'Belum Bayar') === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+        <div class="field"><label>Sudah Dibayar (Rp)</label><input id="iv_bayar" type="number" min="0" step="any" value="${row?.nominal_bayar ?? 0}" oninput="invPrev()"></div>
+        <div class="field"><label>Metode Bayar</label><input id="iv_met" value="${esc(row?.metode_bayar || '')}" placeholder="Transfer / QRIS / Cash"></div>
+      </div>
+      <div class="field"><label>Catatan (tampil di invoice)</label><input id="iv_cat" value="${esc(row?.catatan || '')}"></div>
+      ${SRC_IDS.length
+        ? `<p class="mut" style="font-size:12px;background:var(--ok2);padding:9px 12px;border-radius:10px">🔗 Terhubung ke transaksi Penjualan — tidak akan ada pencatatan ganda.</p>`
+        : `<label style="display:flex;gap:8px;align-items:flex-start;margin-top:4px;font-size:12.5px"><input type="checkbox" id="iv_catat" checked style="width:16px;height:16px;margin-top:1px"><span>Catat otomatis ke menu <b>Penjualan</b><br><span class="mut" style="font-size:11px">Nonaktifkan bila transaksi sudah dicatat manual di menu Penjualan.</span></span></label>`}
+      <div class="margin-box" id="iv_prev"></div>
+      <div class="form-actions"><button type="button" class="btn ghost" data-close>Batal</button><button type="submit" class="btn">Simpan Invoice</button></div>
+    </form>`);
+  renderInvRows();
+  $('#ivf').onsubmit = async e => {
+    e.preventDefault();
+    const g = x => parseFloat(document.getElementById(x).value) || 0;
+    const body = {
+      tanggal: $('#iv_tgl').value || today(), jatuh_tempo: $('#iv_jt').value || null,
+      customer_nama: $('#iv_nama').value.trim(), customer_telepon: $('#iv_telp').value.trim(),
+      customer_email: $('#iv_email').value.trim(), customer_alamat: $('#iv_alamat').value.trim(),
+      channel: $('#iv_ch').value, ongkir: g('iv_ongkir'), potongan: g('iv_pot'), pajak_pct: g('iv_pjk'),
+      status_bayar: $('#iv_st').value, nominal_bayar: g('iv_bayar'), metode_bayar: $('#iv_met').value.trim(),
+      catatan: $('#iv_cat').value.trim(),
+    };
+    if (!row || INV_DIRTY)
+      body.items = INV_ITEMS.filter(i => Number(i.produk_id) > 0 && Number(i.qty) > 0)
+        .map(i => ({ produk_id: Number(i.produk_id), qty: parseInt(i.qty, 10), harga: Number(i.harga), diskon_pct: Number(i.diskon_pct) || 0 }));
+    if (SRC_IDS.length) body.sumber_penjualan_ids = SRC_IDS;
+    const cb = document.getElementById('iv_catat');
+    if (cb) body.catat_penjualan = cb.checked;
+    try {
+      const d = await api('invoice', { method: row ? 'PUT' : 'POST', params: row ? { id: row.id } : {}, body });
+      toast('Invoice ' + d.nomor + ' tersimpan ✓'); closeModal(); pageInvoice();
+    } catch (err) { toast(err.message, 'err'); }
+  };
+}
+function invRowHtml(r, i) {
+  return `<tr>
+    <td><select class="tin" style="min-width:190px" onchange="invSet(${i},'produk_id',this.value)">
+      <option value="">— Pilih —</option>
+      ${INV_PRODUK.map(p2 => `<option value="${p2.id}" ${Number(r.produk_id) === p2.id ? 'selected' : ''}>${esc(p2.kode)} · ${esc(p2.nama)}</option>`).join('')}</select></td>
+    <td class="r"><input class="tin r" type="number" min="1" step="1" style="width:70px" value="${r.qty}" oninput="invSet(${i},'qty',this.value)"></td>
+    <td class="r"><input class="tin r" type="number" min="0" step="any" style="width:110px" value="${r.harga}" oninput="invSet(${i},'harga',this.value)"></td>
+    <td class="r"><input class="tin r" type="number" min="0" step="any" style="width:60px" value="${r.diskon_pct}" oninput="invSet(${i},'diskon_pct',this.value)"></td>
+    <td class="r bold" id="ivj_${i}">${rp((Number(r.qty) || 0) * (Number(r.harga) || 0) * (1 - (Number(r.diskon_pct) || 0) / 100))}</td>
+    <td class="r"><button type="button" class="btn ghost sm danger-t" onclick="invDelRow(${i})">✕</button></td></tr>`;
+}
+function renderInvRows() {
+  const tb = document.getElementById('iv_tb'); if (!tb) return;
+  tb.innerHTML = INV_ITEMS.length ? INV_ITEMS.map(invRowHtml).join('') : '<tr><td colspan="6" class="empty">Klik “+ Baris Produk”.</td></tr>';
+  invPrev();
+}
+function invSet(i, k, v) {
+  const r = INV_ITEMS[i]; INV_DIRTY = true;
+  if (k === 'produk_id') {
+    r.produk_id = Number(v) || 0;
+    const p = INV_PRODUK.find(x => x.id === r.produk_id);
+    if (p) r.harga = Number(p.harga_jual);
+    renderInvRows(); return;
+  }
+  r[k] = parseFloat(v) || 0;
+  const j = document.getElementById('ivj_' + i);
+  if (j) j.textContent = rp((Number(r.qty) || 0) * (Number(r.harga) || 0) * (1 - (Number(r.diskon_pct) || 0) / 100));
+  invPrev();
+}
+function invAdd() { INV_ITEMS.push({ produk_id: 0, qty: 1, harga: 0, diskon_pct: 0 }); INV_DIRTY = true; renderInvRows(); }
+function invDelRow(i) { INV_ITEMS.splice(i, 1); INV_DIRTY = true; renderInvRows(); }
+function invTotCalc() {
+  const g = x => parseFloat(document.getElementById(x)?.value) || 0;
+  const sub = INV_ITEMS.reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.harga) || 0) * (1 - (Number(i.diskon_pct) || 0) / 100), 0);
+  const dpp = Math.max(sub - g('iv_pot'), 0);
+  const pajak = dpp * g('iv_pjk') / 100;
+  const total = dpp + pajak + g('iv_ongkir');
+  return { sub, pajak, total, sisa: Math.max(0, total - g('iv_bayar')) };
+}
+function invPrev() {
+  const el = document.getElementById('iv_prev'); if (!el) return;
+  const t = invTotCalc();
+  el.innerHTML = `
+    <div><span>Subtotal</span><b>${rp(t.sub)}</b></div>
+    <div><span>Pajak</span><b>${rp(t.pajak)}</b></div>
+    <div><span>Ongkir</span><b>${rp(parseFloat(document.getElementById('iv_ongkir')?.value) || 0)}</b></div>
+    <div><span>Total Tagihan</span><b>${rp(t.total)}</b></div>
+    <div><span>Sisa</span><b class="${t.sisa > 0 ? 'down' : 'up'}">${rp(t.sisa)}</b></div>`;
+}
+function ivStatus() {
+  const st = document.getElementById('iv_st').value;
+  if (st === 'Lunas') document.getElementById('iv_bayar').value = Math.round(invTotCalc().total);
+  if (st === 'Belum Bayar') document.getElementById('iv_bayar').value = 0;
+  invPrev();
+}
+async function invView(id) {
+  openModal('<div class="empty">Memuat invoice…</div>');
+  try {
+    const d = await api('invoice', { params: { id } });
+    INV_VIEW = d;
+    const sisa = Math.max(0, Number(d.total) - Number(d.nominal_bayar));
+    openModal(`
+      <div class="no-print" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <div><b>${esc(d.nomor)}</b><div class="mut" style="font-size:12px">${esc(d.customer_nama)}</div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" onclick="printHTML(document.getElementById('invPaper').outerHTML)">🖨️ Cetak / PDF</button>
+          <button class="btn soft" onclick="waInv()">💬 WhatsApp</button>
+          ${d.status_bayar !== 'Lunas' ? `<button class="btn ghost" onclick="invLunas(${d.id})">✓ Lunas</button>` : ''}
+          <button class="btn ghost" data-close>✕</button>
+        </div>
+      </div>
+      ${invPaper(d, sisa)}`);
+  } catch (e) { openModal(`<div class="empty">⚠ ${esc(e.message)}</div>`); }
+}
+function invPaper(d, sisa) {
+  const s = d.set || {};
+  const pajakRp = Number(d.total) - Number(d.ongkir || 0) - Math.max(Number(d.subtotal || 0) - Number(d.potongan || 0), 0);
+  const initial = esc((s.nama_usaha || 'U').trim().charAt(0).toUpperCase());
+  const logo = s.logo_url
+    ? `<img src="${esc(s.logo_url)}" style="height:46px;border-radius:8px;margin-bottom:6px" alt="logo">`
+    : `<div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;margin-bottom:6px">${initial}</div>`;
+  return `<div class="inv" id="invPaper">
+    <div class="inv-head">
+      <div>${logo}<b style="font-size:16px">${esc(s.nama_usaha || '—')}</b>
+        ${s.alamat ? `<div class="mut" style="white-space:pre-line">${esc(s.alamat)}</div>` : ''}
+        <div class="mut">${esc([s.telepon, s.email].filter(Boolean).join(' · '))}</div></div>
+      <div style="text-align:right">
+        <div style="font-size:21px;font-weight:800;letter-spacing:4px;color:var(--ac)">INVOICE</div>
+        <div class="mono" style="font-size:12px">${esc(d.nomor)}</div>
+        <div class="mut" style="font-size:11.5px;margin-top:4px">Tanggal: ${fdate(d.tanggal)}</div>
+        <div class="mut" style="font-size:11.5px">Jatuh Tempo: ${fdate(d.jatuh_tempo)}</div>
+        <div style="margin-top:6px">${payBadge(d.status_bayar)}</div>
+      </div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div class="mut" style="font-size:10px;letter-spacing:1px;font-weight:700;margin-bottom:3px">DITAGIHKAN KEPADA</div>
+      <b>${esc(d.customer_nama)}</b>
+      ${d.customer_alamat ? `<div class="mut" style="white-space:pre-line">${esc(d.customer_alamat)}</div>` : ''}
+      ${d.customer_telepon || d.customer_email ? `<div class="mut">${esc([d.customer_telepon, d.customer_email].filter(Boolean).join(' · '))}</div>` : ''}
+    </div>
+    <div class="table-wrap"><table class="inv-table">
+      <thead><tr><th class="c">#</th><th>Deskripsi</th><th class="r">Qty</th><th class="r">Harga</th><th class="r">Disc</th><th class="r">Jumlah</th></tr></thead>
+      <tbody>${(d.items || []).map((it, ix) => `<tr>
+        <td class="c mut">${ix + 1}</td>
+        <td><b>${esc(it.deskripsi || it.produk?.nama || '—')}</b> <small class="mono">${esc(it.produk?.kode || '')}</small></td>
+        <td class="r">${nf(it.qty)}</td>
+        <td class="r">${rp(it.harga)}</td>
+        <td class="r">${Number(it.diskon_pct) ? pct(it.diskon_pct) : '—'}</td>
+        <td class="r bold">${rp(Number(it.qty) * Number(it.harga) * (1 - Number(it.diskon_pct || 0) / 100))}</td></tr>`).join('')}</tbody>
+    </table></div>
+    <div class="inv-totals">
+      <div class="kv"><span>Subtotal</span><b>${rp(d.subtotal)}</b></div>
+      ${Number(d.potongan) ? `<div class="kv"><span>Potongan</span><b>- ${rp(d.potongan)}</b></div>` : ''}
+      ${Number(d.pajak_pct) ? `<div class="kv"><span>Pajak ${pct(d.pajak_pct)}</span><b>${rp(pajakRp)}</b></div>` : ''}
+      ${Number(d.ongkir) ? `<div class="kv"><span>Ongkos Kirim</span><b>${rp(d.ongkir)}</b></div>` : ''}
+      <div class="kv grand"><span>TOTAL</span><b>${rp(d.total)}</b></div>
+      ${Number(d.nominal_bayar) ? `<div class="kv"><span>Dibayar${d.metode_bayar ? ' (' + esc(d.metode_bayar) + ')' : ''}</span><b class="up">- ${rp(d.nominal_bayar)}</b></div>
+      <div class="kv grand"><span>SISA</span><b class="${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</b></div>` : ''}
+    </div>
+    ${s.rekening ? `<div class="inv-pay"><b>💳 Pembayaran</b><div style="white-space:pre-line;margin-top:4px">${esc(s.rekening)}</div></div>` : ''}
+    ${d.catatan ? `<div class="inv-note"><b>Catatan:</b> <span style="white-space:pre-line">${esc(d.catatan)}</span></div>` : ''}
+    <div class="inv-foot">${esc(s.footer_invoice || 'Terima kasih!')}</div>
+  </div>`;
+}
+function waInv() {
+  const d = INV_VIEW; if (!d) return;
+  const s = d.set || {};
+  const sisa = Math.max(0, Number(d.total) - Number(d.nominal_bayar));
+  const L = [];
+  L.push(`*INVOICE ${d.nomor}*`);
+  L.push(s.nama_usaha || '');
+  L.push('');
+  L.push(`Kepada: *${d.customer_nama}*`);
+  L.push(`Tanggal: ${fdate(d.tanggal)}${d.jatuh_tempo ? ` | Tempo: ${fdate(d.jatuh_tempo)}` : ''}`);
+  L.push('');
+  L.push('*Rincian:*');
+  (d.items || []).forEach((it, i) => L.push(`${i + 1}. ${it.deskripsi || it.produk?.nama || ''} (${nf(it.qty)} x ${rp(it.harga)}${Number(it.diskon_pct) ? ` -${pct(it.diskon_pct)}` : ''}) = *${rp(Number(it.qty) * Number(it.harga) * (1 - Number(it.diskon_pct || 0) / 100))}*`));
+  L.push('');
+  if (Number(d.potongan)) L.push(`Potongan: -${rp(d.potongan)}`);
+  if (Number(d.ongkir)) L.push(`Ongkir: ${rp(d.ongkir)}`);
+  L.push(`*TOTAL: ${rp(d.total)}*`);
+  if (Number(d.nominal_bayar)) { L.push(`Dibayar: ${rp(d.nominal_bayar)}`); L.push(`*Sisa: ${rp(sisa)}*`); }
+  L.push('');
+  L.push(`Status: *${d.status_bayar}*`);
+  if (s.rekening) L.push('');
+  if (s.rekening) L.push('Pembayaran:');
+  if (s.rekening) L.push(s.rekening);
+  if (d.catatan) { L.push(''); L.push('_' + d.catatan + '_'); }
+  L.push('');
+  L.push(s.footer_invoice || 'Terima kasih 🙏');
+  const ph = (d.customer_telepon || '').replace(/\D/g, '').replace(/^0/, '62');
+  const url = ph
+    ? `https://wa.me/${ph}?text=${encodeURIComponent(L.join('\n'))}`
+    : `https://api.whatsapp.com/send?text=${encodeURIComponent(L.join('\n'))}`;
+  window.open(url, '_blank');
+}
+async function invLunas(id) {
+  const r = INV_CACHE.find(x => x.id === id) || (INV_VIEW && INV_VIEW.id === id ? INV_VIEW : null);
+  const total = Number(r?.total || 0);
+  try {
+    await api('invoice', { method: 'PUT', params: { id }, body: { status_bayar: 'Lunas', nominal_bayar: total } });
+    toast('Invoice ditandai LUNAS ✓');
+    if (INV_VIEW && INV_VIEW.id === id && document.getElementById('invPaper')) invView(id);
+    else pageInvoice();
+  } catch (e) { toast(e.message, 'err'); }
+}
+function invDel(id) {
+  openModal(`<h3>Hapus invoice ini?</h3><p class="mut">Baris penjualan yang dibuat otomatis dari invoice ini ikut dihapus. Transaksi yang hanya ditautkan akan dilepas (tetap ada di Penjualan).</p>
+    <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
+  $('#dl').onclick = async () => {
+    try { await api('invoice', { method: 'DELETE', params: { id } }); toast('Invoice dihapus'); closeModal(); pageInvoice(); }
+    catch (e) { toast(e.message, 'err'); }
+  };
+}
+
+/* ================= PAGE: PENGATURAN (v1.1) ================= */
+async function pagePengaturan() {
+  setPage('Pengaturan', 'Profil usaha — tampil di kop invoice & pesan WhatsApp');
+  const s = await api('pengaturan');
+  $('#content').innerHTML = `
+    <div class="card" style="max-width:680px">
+      <div class="card-head"><b>Profil Usaha</b></div>
+      <div style="padding:16px">
+        <div class="grid2">
+          <div class="field"><label>Nama Usaha *</label><input id="s_nama" value="${esc(s.nama_usaha || '')}"></div>
+          <div class="field"><label>Telepon</label><input id="s_telp" value="${esc(s.telepon || '')}"></div>
+        </div>
+        <div class="field"><label>Alamat</label><textarea id="s_alamat" rows="2">${esc(s.alamat || '')}</textarea></div>
+        <div class="grid2">
+          <div class="field"><label>Email</label><input id="s_email" value="${esc(s.email || '')}"></div>
+          <div class="field"><label>Logo (URL gambar, opsional)</label><input id="s_logo" value="${esc(s.logo_url || '')}" placeholder="https://…"></div>
+        </div>
+        <div class="field"><label>Rekening Pembayaran (tampil di invoice & WA)</label><textarea id="s_rek" rows="3" placeholder="BCA 1234567890 a.n. Nama Anda">${esc(s.rekening || '')}</textarea></div>
+        <div class="field"><label>Catatan Default Invoice</label><input id="s_cat" value="${esc(s.catatan_invoice || '')}"></div>
+        <div class="field"><label>Footer Invoice</label><input id="s_foot" value="${esc(s.footer_invoice || '')}"></div>
+        <div class="form-actions"><button class="btn" id="s_save">Simpan Pengaturan</button></div>
+      </div>
+    </div>`;
+  $('#s_save').onclick = async () => {
+    try {
+      await api('pengaturan', { method: 'PUT', body: {
+        nama_usaha: $('#s_nama').value.trim(), alamat: $('#s_alamat').value.trim(),
+        telepon: $('#s_telp').value.trim(), email: $('#s_email').value.trim(),
+        logo_url: $('#s_logo').value.trim(), rekening: $('#s_rek').value.trim(),
+        catatan_invoice: $('#s_cat').value.trim(), footer_invoice: $('#s_foot').value.trim() } });
+      toast('Pengaturan tersimpan ✓');
+    } catch (e) { toast(e.message, 'err'); }
+  };
+}
+
 /* ================= PAGE: DASHBOARD ================= */
 async function pageDashboard() {
-  setPage('Dashboard', 'Ringkasan performa produksi & penjualan');
+  setPage('Dashboard', 'Ringkasan performa produksi, penjualan & piutang');
   const d = await api('dashboard');
   const max = Math.max(...d.chart.map(c => c.nilai), 1);
   $('#content').innerHTML = `
@@ -883,6 +1382,8 @@ async function pageDashboard() {
       <div class="stat"><span>Net Sales — ${d.periode}</span><b>${rp(d.bulan_ini.net_sales)}</b></div>
       <div class="stat"><span>Laba Bersih — ${d.periode}</span><b class="${d.bulan_ini.laba >= 0 ? 'up' : 'down'}">${rp(d.bulan_ini.laba)}</b><small>Margin ${pct(d.bulan_ini.margin_pct)}</small></div>
       <div class="stat"><span>HPP Terjual — ${d.periode}</span><b>${rp(d.bulan_ini.hpp)}</b></div>
+      <div class="stat"><span>Piutang Invoice</span><b class="${d.piutang_invoice > 0 ? 'down' : 'up'}">${rp(d.piutang_invoice)}</b><small>Belum dibayar pelanggan</small></div>
+      <div class="stat"><span>Pembelian — ${d.periode}</span><b>${rp(d.pembelian_bulan)}</b></div>
       <div class="stat"><span>PO Berjalan</span><b>${d.counts.po_aktif}</b><small>${d.counts.produk} produk · ${d.counts.bahan} bahan</small></div>
     </div>
     <div class="card">
@@ -899,6 +1400,13 @@ async function pageDashboard() {
         <div class="table-wrap"><table class="mini-table">
           <thead><tr><th>PO</th><th>Produk</th><th class="r">HPP / pcs</th><th>Status</th></tr></thead>
           <tbody>${d.hpp_terbaru.length ? d.hpp_terbaru.map(h => `<tr style="cursor:pointer" onclick="showHppBreakdown(${h.id})"><td class="mono">${esc(h.kode_po)}</td><td>${esc(h.nama_produk)}</td><td class="r bold">${rp(h.hpp_per_pcs)}</td><td>${stBadge(h.status)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Belum ada PO.</td></tr>'}</tbody>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><b>Invoice Terbaru</b><button class="btn ghost sm" onclick="go('invoice')">Lihat semua</button></div>
+        <div class="table-wrap"><table class="mini-table">
+          <thead><tr><th>Nomor</th><th>Pelanggan</th><th class="r">Total</th><th>Status</th></tr></thead>
+          <tbody>${(d.invoice_terbaru || []).length ? d.invoice_terbaru.map(v => `<tr style="cursor:pointer" onclick="invView(${v.id})"><td class="mono">${esc(v.nomor)}</td><td>${esc(v.customer_nama)}</td><td class="r bold">${rp(v.total)}</td><td>${payBadge(v.status_bayar)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Belum ada invoice.</td></tr>'}</tbody>
         </table></div>
       </div>
       <div class="card">
