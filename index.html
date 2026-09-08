@@ -4,167 +4,226 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>FinKuvek — Finance Manufaktur Konveksi</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23082F2C'/><text x='50' y='68' font-size='48' font-weight='800' text-anchor='middle' fill='%23F59E0B' font-family='sans-serif'>F</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   FINKUVEK DESIGN SYSTEM v1.2 — "TEAL × AMBER"
+   Two-tone identity: Teal (trust/finance) × Amber (craft/energy)
+   ============================================================ */
 :root{
-  --bg:#f6f7f9; --card:#fff; --line:#e7e9ee; --line2:#f0f2f5;
-  --tx:#0f172a; --tx2:#64748b;
-  --ac:#4f46e5; --ac2:#eef2ff; --ac3:#c7d2fe;
-  --ok:#059669; --ok2:#ecfdf5; --warn:#b45309; --warn2:#fffbeb;
-  --bad:#dc2626; --bad2:#fef2f2; --r:14px;
-  --sh:0 1px 2px rgba(15,23,42,.04),0 2px 8px rgba(15,23,42,.05);
+  /* — Two-tone brand — */
+  --ink:#082F2C; --ink2:#0C3D38;                 /* nada 1: deep teal (sidebar) */
+  --brand-700:#0F766E; --brand-800:#115E59; --brand-600:#0D9488;
+  --brand-100:#CCFBF1; --brand-50:#F0FDFA;
+  --acc-600:#D97706; --acc-500:#F59E0B;          /* nada 2: amber (aksen) */
+  --acc-100:#FEF3C7; --acc-50:#FFFBEB;
+  /* — Netral hangat (stone) — */
+  --bg:#F7F6F3; --card:#FFFFFF; --line:#E7E4DF; --line2:#EFEDE9;
+  --tx:#1C1917; --tx2:#57534E; --tx3:#79716B;
+  /* — Status — */
+  --ok:#15803D; --ok-bg:#F0FDF4;
+  --bad:#B91C1C; --bad-bg:#FEF2F2;
+  --warn:#92400E; --warn-bg:#FEF3C7;
+  --r:14px;
+  --sh1:0 1px 2px rgba(28,25,23,.05),0 1px 3px rgba(28,25,23,.06);
+  --sh2:0 6px 16px rgba(28,25,23,.10),0 2px 4px rgba(28,25,23,.06);
+  /* — Motion tokens — */
+  --dur1:130ms; --dur2:220ms;
+  --ease:cubic-bezier(.2,.8,.2,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:14px;-webkit-tap-highlight-color:transparent}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--tx);
+  font-size:13.5px;line-height:1.5;-webkit-tap-highlight-color:transparent}
 button{font-family:inherit}
-.up{color:var(--ok)} .down{color:var(--bad)} .mut{color:var(--tx2);font-size:13px}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
+.up{color:var(--ok)} .down{color:var(--bad)} .mut{color:var(--tx2);font-size:12.5px}
+h1,h2,h3{letter-spacing:-.02em}
 
-/* ---------- Sidebar ---------- */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:50;transition:transform .25s ease}
-.brand{display:flex;gap:10px;align-items:center;padding:18px 16px}
-.brand-logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
-.brand-text b{display:block;font-size:15px;letter-spacing:-.2px}
-.brand-text span{font-size:11px;color:var(--tx2)}
-nav{flex:1;overflow-y:auto;padding:6px 10px}
-.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:#3f4a5c;cursor:pointer;font-weight:500;margin-bottom:2px;min-height:44px;border:none;background:none;width:100%;font-size:13.5px;text-align:left}
+/* — Focus & aksesibilitas — */
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--acc-600);outline-offset:2px;border-radius:8px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:0 0 10px 0;z-index:300;font-weight:600}
+.skip:focus{left:0}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ============ SIDEBAR (nada 1: deep teal) ============ */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:252px;background:var(--ink);display:flex;flex-direction:column;z-index:50;transition:transform .25s var(--ease)}
+.brand{display:flex;gap:11px;align-items:center;padding:20px 18px 16px}
+.brand-logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--acc-500),var(--acc-600));color:var(--ink);display:grid;place-items:center;font-weight:800;font-size:15px;flex:none;box-shadow:0 2px 8px rgba(245,158,11,.35)}
+.brand-text b{display:block;font-size:15.5px;color:#fff;letter-spacing:-.02em}
+.brand-text span{font-size:10.5px;color:#7FB0A8}
+nav{flex:1;overflow-y:auto;padding:4px 12px 12px}
+nav::-webkit-scrollbar{width:4px} nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+.nav-group{margin:16px 4px 5px;font-size:9.5px;letter-spacing:1.4px;font-weight:700;color:#5E8F87;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:#C9DCD8;cursor:pointer;font-weight:500;margin-bottom:2px;min-height:44px;border:none;background:none;width:100%;font-size:13.5px;text-align:left;position:relative;transition:background var(--dur1) var(--ease),color var(--dur1) var(--ease)}
 .nav-item svg{width:18px;height:18px;flex:none;fill:currentColor;opacity:.75}
-.nav-item:hover{background:var(--line2)}
-.nav-item.active{background:var(--ac2);color:var(--ac)}
-.sidebar-foot{padding:14px 16px;font-size:11px;color:var(--tx2);border-top:1px solid var(--line2)}
-.overlay{position:fixed;inset:0;background:rgba(15,23,42,.4);z-index:40;display:none}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-item.active{background:rgba(245,158,11,.13);color:#FCD34D;font-weight:600}
+.nav-item.active::before{content:'';position:absolute;left:-12px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:var(--acc-500)}
+.sidebar-foot{padding:14px 18px;font-size:10.5px;color:#5E8F87;border-top:1px solid rgba(255,255,255,.08)}
+.overlay{position:fixed;inset:0;background:rgba(8,47,44,.5);z-index:40;display:none;backdrop-filter:blur(2px)}
 .overlay.show{display:block}
 
-/* ---------- Main ---------- */
-.main{margin-left:250px;min-height:100vh;display:flex;flex-direction:column}
-.topbar{position:sticky;top:0;z-index:30;background:rgba(246,247,249,.86);backdrop-filter:blur(8px);display:flex;align-items:center;gap:12px;padding:13px 22px;border-bottom:1px solid var(--line)}
-.topbar h1{font-size:17px;font-weight:700;letter-spacing:-.2px}
-.topbar p{font-size:12px;color:var(--tx2)}
-.icon-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;display:none;place-items:center;cursor:pointer;font-size:17px;flex:none}
-.content{padding:20px 22px 48px;max-width:1280px;width:100%}
+/* ============ MAIN ============ */
+.main{margin-left:252px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(247,246,243,.88);backdrop-filter:blur(10px);display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line)}
+.topbar h1{font-size:18px;font-weight:800}
+.topbar p{font-size:12px;color:var(--tx3)}
+.icon-btn{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:none;place-items:center;cursor:pointer;font-size:17px;flex:none}
+.content{padding:22px 24px 56px;max-width:1300px;width:100%;flex:1}
 @media(max-width:900px){
-  .sidebar{transform:translateX(-100%);box-shadow:0 0 40px rgba(15,23,42,.15)}
+  .sidebar{transform:translateX(-100%);box-shadow:0 0 50px rgba(0,0,0,.35)}
   .sidebar.open{transform:none}
   .main{margin-left:0}
   .icon-btn{display:grid}
-  .content{padding:16px 14px 48px}
-  .topbar{padding:11px 14px}
+  .content{padding:16px 14px 56px}
+  .topbar{padding:12px 14px}
 }
 
-/* ---------- Card & table ---------- */
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:18px;overflow:hidden}
-.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line2);flex-wrap:wrap}
-.card-head b{font-size:14px}
+/* ============ CARD & ENTRANCE MOTION ============ */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh1);margin-bottom:18px;overflow:hidden}
+.stats>.stat,.card{animation:pageIn var(--dur2) var(--ease) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px)}}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line2);flex-wrap:wrap}
+.card-head b{font-size:14px;font-weight:700}
+
+/* ============ TABLE ============ */
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
-th{text-align:left;padding:10px 14px;background:#fafbfc;color:var(--tx2);font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;border-bottom:1px solid var(--line);white-space:nowrap}
-td{padding:11px 14px;border-bottom:1px solid var(--line2);vertical-align:middle}
+th{text-align:left;padding:11px 16px;background:#FAF9F7;color:var(--tx3);font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--line2);vertical-align:middle}
 tbody tr:last-child td{border-bottom:none}
-tbody tr:hover{background:#fafbff}
+tbody tr{transition:background var(--dur1) var(--ease)}
+tbody tr:hover{background:#F6FAF9}
 .mini-table{min-width:0;font-size:12.5px}
 .mini-table th,.mini-table td{padding:8px 10px}
 .r{text-align:right} .c{text-align:center}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--tx2)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--tx3)}
 .bold{font-weight:600}
-.empty{padding:36px 20px;text-align:center;color:var(--tx2);font-size:13px}
-tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#fafbfc}
+.empty{padding:40px 20px;text-align:center;color:var(--tx2);font-size:13px}
+.empty .e-ic{font-size:26px;display:block;margin-bottom:8px;opacity:.6}
+.empty .e-t{font-weight:700;color:var(--tx);display:block;margin-bottom:2px}
+tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#FAF9F7}
 
-/* ---------- Button ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--ac);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:600;font-size:13px;cursor:pointer;min-height:40px;transition:.15s;white-space:nowrap}
-.btn:hover{filter:brightness(1.08)}
-.btn.ghost{background:#fff;color:var(--tx);border:1px solid var(--line)}
-.btn.soft{background:var(--ac2);color:var(--ac)}
-.btn.danger{background:var(--bad)}
-.btn.sm{padding:6px 11px;min-height:34px;font-size:12px;border-radius:8px}
+/* ============ BUTTON ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--brand-700);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:600;font-size:13px;cursor:pointer;min-height:42px;transition:background var(--dur1) var(--ease),transform var(--dur1) var(--ease),box-shadow var(--dur1) var(--ease);white-space:nowrap}
+.btn:hover{background:var(--brand-800);box-shadow:var(--sh1)}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:var(--card);color:var(--tx);border:1px solid var(--line)}
+.btn.ghost:hover{background:#FAF9F7;box-shadow:none}
+.btn.soft{background:var(--brand-50);color:var(--brand-800)}
+.btn.soft:hover{background:var(--brand-100)}
+.btn.acc{background:var(--acc-600)} .btn.acc:hover{background:#B45309}
+.btn.danger{background:var(--bad)} .btn.danger:hover{background:#991B1B}
+.btn.sm{padding:6px 11px;min-height:36px;font-size:12px;border-radius:9px}
 .danger-t{color:var(--bad)!important}
 .act{display:flex;gap:6px;justify-content:flex-end}
 
-/* ---------- Badge & chip ---------- */
-.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap}
-.b-green{background:var(--ok2);color:var(--ok)}
-.b-amber{background:var(--warn2);color:var(--warn)}
-.b-red{background:var(--bad2);color:var(--bad)}
-.b-gray{background:#f1f5f9;color:#475569}
-.b-indigo{background:var(--ac2);color:var(--ac)}
-.chip{background:var(--ac2);color:var(--ac);font-weight:600;font-size:12px;padding:7px 12px;border-radius:99px;white-space:nowrap}
+/* ============ BADGE & CHIP ============ */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap}
+.b-green{background:var(--ok-bg);color:var(--ok)}
+.b-amber{background:var(--warn-bg);color:var(--warn)}
+.b-red{background:var(--bad-bg);color:var(--bad)}
+.b-gray{background:#F5F5F4;color:#44403C}
+.b-teal{background:var(--brand-50);color:var(--brand-800)}
+.chip{background:var(--acc-50);color:var(--warn);font-weight:700;font-size:12px;padding:7px 13px;border-radius:99px;white-space:nowrap;border:1px solid var(--acc-100)}
 
-/* ---------- Stat ---------- */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:18px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
-.stat span{font-size:12px;color:var(--tx2);display:block;margin-bottom:6px}
-.stat b{font-size:19px;font-weight:700;letter-spacing:-.3px}
+/* ============ STAT ============ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--sh1);transition:transform var(--dur1) var(--ease),box-shadow var(--dur1) var(--ease)}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.stat span{font-size:11.5px;color:var(--tx3);display:block;margin-bottom:7px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.stat b{font-size:21px;font-weight:800;letter-spacing:-.02em}
 .stat small{display:block;font-size:11px;color:var(--tx2);margin-top:5px}
-.stat.hi{border-color:var(--ac3);background:linear-gradient(180deg,#fbfbff,#f3f4ff)}
+.stat.hi{background:linear-gradient(180deg,var(--brand-50),#E8FAF7);border-color:#99F6E4}
+.stat.hi b{color:var(--brand-800)}
 
-/* ---------- Grid ---------- */
+/* ============ GRID / KV ============ */
 .grid2c{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 @media(max-width:820px){.grid2c{grid-template-columns:1fr}}
 .kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:13px}
 .kv:last-child{border-bottom:none}
 .kv span{color:var(--tx2)}
 
-/* ---------- Chart ---------- */
+/* ============ CHART ============ */
 .chart{display:flex;align-items:flex-end;gap:5px;height:150px;padding-top:8px}
 .chart .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-width:0;height:100%}
-.chart .bar{width:100%;max-width:26px;background:linear-gradient(180deg,#6366f1,#4f46e5);border-radius:6px 6px 3px 3px;min-height:3px}
-.chart .lbl{font-size:9.5px;color:var(--tx2)}
+.chart .bar{width:100%;max-width:26px;background:linear-gradient(180deg,var(--brand-600),var(--brand-700));border-radius:6px 6px 3px 3px;min-height:3px;transition:filter var(--dur1)}
+.chart .col:hover .bar{filter:brightness(1.15)}
+.chart .bar.acc{background:linear-gradient(180deg,var(--acc-500),var(--acc-600))}
+.chart .lbl{font-size:9.5px;color:var(--tx3)}
 
-/* ---------- Form & modal ---------- */
+/* ============ FORM & MODAL ============ */
 .field{margin-bottom:12px}
-.field label{display:block;font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:5px}
-.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;font-family:inherit;background:#fff;min-height:44px;color:var(--tx)}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;font-family:inherit;background:var(--card);min-height:44px;color:var(--tx);transition:border-color var(--dur1),box-shadow var(--dur1)}
 .field textarea{resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(13,148,136,.16)}
 @media(pointer:coarse){.field input,.field select,.field textarea,.tin{font-size:16px}}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 @media(max-width:480px){.grid2,.grid3{grid-template-columns:1fr}}
 .form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
-.modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:100}
+.modal-backdrop{position:fixed;inset:0;background:rgba(8,47,44,.5);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:100;animation:fadeIn var(--dur1) var(--ease)}
 .modal-backdrop.show{display:flex}
-.modal{background:#fff;width:100%;max-width:580px;border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:20px;animation:up .22s ease}
-@media(min-width:640px){.modal-backdrop{align-items:center;padding:20px}.modal{border-radius:16px;animation:pop .16s ease}}
-@keyframes up{from{transform:translateY(40px);opacity:0}}
+@keyframes fadeIn{from{opacity:0}}
+.modal{background:var(--card);width:100%;max-width:580px;border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:20px;animation:sheetUp .24s var(--ease)}
+@media(min-width:640px){.modal-backdrop{align-items:center;padding:20px}.modal{border-radius:16px;animation:pop .18s var(--ease)}}
+@keyframes sheetUp{from{transform:translateY(48px);opacity:0}}
 @keyframes pop{from{transform:scale(.97);opacity:0}}
-.modal h3{font-size:16px;margin-bottom:12px}
-.modal h4{font-size:13px;margin:16px 0 8px}
+.modal h3{font-size:16px;font-weight:800;margin-bottom:12px}
+.modal h4{font-size:13px;font-weight:700;margin:16px 0 8px}
 
-/* ---------- Search & inputs dalam tabel ---------- */
+/* ============ SEARCH & TABEL INPUT ============ */
 .search{position:relative;flex:1;max-width:280px}
-.search input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px 9px 34px;font-size:13px;font-family:inherit;min-height:40px}
-.search input:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
-.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:none;stroke:var(--tx2);stroke-width:2;stroke-linecap:round}
-.tin{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;font-family:inherit;background:#fff;min-height:38px;color:var(--tx)}
-.tin:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
+.search input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px 9px 34px;font-size:13px;font-family:inherit;min-height:42px;background:var(--card)}
+.search input:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(13,148,136,.16);outline:none}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:none;stroke:var(--tx3);stroke-width:2;stroke-linecap:round}
+.tin{border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit;background:var(--card);min-height:38px;color:var(--tx)}
+.tin:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(13,148,136,.16);outline:none}
 .tin.r{text-align:right}
 select.tin{padding-right:6px}
 
-/* ---------- Preview ---------- */
-.preview{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#f8fafc;border:1px solid var(--line2);border-radius:12px;padding:12px;margin-top:4px}
-.preview span{display:block;font-size:10.5px;color:var(--tx2)}
+/* ============ PREVIEW / HIGHLIGHT BOX ============ */
+.preview{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#FAF9F7;border:1px solid var(--line2);border-radius:12px;padding:12px;margin-top:4px}
+.preview span{display:block;font-size:10.5px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
 .preview b{font-size:12.5px}
-.margin-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--ac2);border:1px solid var(--ac3);border-radius:12px;padding:12px;margin-top:14px}
+.margin-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--brand-50);border:1px solid #99F6E4;border-radius:12px;padding:12px;margin-top:14px}
 .margin-box span{display:block;font-size:10.5px;color:var(--tx2)}
 .margin-box b{font-size:13px}
 
-/* ---------- Invoice paper ---------- */
+/* ============ SKELETON LOADING ============ */
+.sk{position:relative;overflow:hidden;background:var(--line2);border-radius:8px;height:12px}
+.sk::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);animation:shim 1.2s linear infinite}
+@keyframes shim{to{transform:translateX(100%)}}
+.sk-tr td{padding:13px 16px}
+
+/* ============ LOGO (Pengaturan) ============ */
+.logo-tile{width:76px;height:76px;border-radius:14px;background:#FAF9F7;border:2px dashed var(--line);display:grid;place-items:center;overflow:hidden;flex:none;font-size:26px;font-weight:800;color:var(--brand-700)}
+.logo-tile img{width:100%;height:100%;object-fit:contain}
+
+/* ============ INVOICE PAPER (dua nada) ============ */
 .inv{background:#fff;color:#111;font-size:12.5px}
 .inv table{min-width:0}
-.inv-table th{background:#f4f5f7;color:#333;font-size:10px}
-.inv-table td{padding:9px 10px;border-bottom:1px solid #eef0f3}
-.inv-head{display:flex;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:3px solid var(--ac);margin-bottom:16px}
+.inv-table th{background:#F4F3F0;color:#44403C;font-size:10px}
+.inv-table td{padding:9px 10px;border-bottom:1px solid #EFEDE9}
+.inv-head{display:flex;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:3px solid var(--brand-700);margin-bottom:16px}
 @media(max-width:520px){.inv-head{flex-direction:column}}
+.inv-word{font-size:21px;font-weight:800;letter-spacing:5px;color:var(--brand-800)}
+.inv-rule{width:38px;height:3px;background:var(--acc-500);border-radius:2px;margin:5px 0 6px auto}
 .inv-totals{margin-left:auto;max-width:320px;margin-top:14px}
 .inv-totals .kv{padding:6px 0;font-size:12.5px}
-.inv-totals .grand{border-top:2px solid #0f172a;font-size:14px;padding-top:8px;margin-top:4px}
+.inv-totals .grand{border-top:2px solid #1C1917;font-size:14px;padding-top:8px;margin-top:4px}
 .inv-totals .grand b{font-weight:800}
-.inv-pay{margin-top:16px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px}
+.inv-pay{margin-top:16px;background:#FAF9F7;border:1px solid var(--line);border-radius:10px;padding:12px}
 .inv-note{margin-top:10px;font-size:12px}
-.inv-foot{margin-top:26px;padding-top:12px;border-top:1px solid var(--line);text-align:center;color:var(--tx2);font-size:11px}
+.inv-foot{margin-top:26px;padding-top:12px;border-top:1px solid var(--line);text-align:center;color:var(--tx3);font-size:11px}
 
-/* ---------- Print ---------- */
+/* ============ PRINT ============ */
 #printArea{display:none}
 @media print{
   @page{size:A4;margin:12mm}
@@ -174,34 +233,36 @@ select.tin{padding-right:6px}
   .inv{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 
-/* ---------- Toast ---------- */
+/* ============ TOAST ============ */
 .toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;width:max-content;max-width:92vw}
-.toast{background:#0f172a;color:#fff;padding:11px 20px;border-radius:99px;font-size:13px;animation:up .2s;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:100%}
-.toast.err{background:var(--bad)}
+.toast{background:var(--ink);color:#fff;padding:11px 20px;border-radius:99px;font-size:13px;animation:sheetUp .2s var(--ease);box-shadow:var(--sh2);max-width:100%;border-left:3px solid var(--acc-500)}
+.toast.err{background:var(--bad);border-left-color:#FCA5A5}
 </style>
 </head>
 <body>
+
+<a class="skip" href="#content">Langsung ke konten</a>
 
 <aside class="sidebar" id="sidebar">
   <div class="brand">
     <div class="brand-logo">FK</div>
     <div class="brand-text"><b>FinKuvek</b><span>Finance Manufaktur Konveksi</span></div>
   </div>
-  <nav id="nav"></nav>
-  <div class="sidebar-foot">v1.1 · Supabase + Vercel</div>
+  <nav id="nav" aria-label="Menu utama"></nav>
+  <div class="sidebar-foot">v1.2 · Teal × Amber</div>
 </aside>
 <div class="overlay" id="overlay"></div>
 
 <main class="main">
   <header class="topbar">
-    <button class="icon-btn" id="btnMenu" aria-label="Menu">☰</button>
+    <button class="icon-btn" id="btnMenu" aria-label="Buka menu">☰</button>
     <div><h1 id="pageTitle">Dashboard</h1><p id="pageSub"></p></div>
   </header>
-  <div class="content" id="content"></div>
+  <div class="content" id="content" tabindex="-1"></div>
 </main>
 
-<div class="modal-backdrop" id="modalBack"><div class="modal" id="modalBox"></div></div>
-<div class="toast-wrap" id="toastWrap"></div>
+<div class="modal-backdrop" id="modalBack"><div class="modal" id="modalBox" role="dialog" aria-modal="true" tabindex="-1"></div></div>
+<div class="toast-wrap" id="toastWrap" role="status" aria-live="polite"></div>
 <div id="printArea"></div>
 
 <script>
@@ -233,7 +294,11 @@ function toast(msg, type = 'ok') {
   $('#toastWrap').appendChild(t);
   setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 320); }, 2600);
 }
-function openModal(html) { $('#modalBox').innerHTML = html; $('#modalBack').classList.add('show'); }
+function openModal(html) {
+  $('#modalBox').innerHTML = html;
+  $('#modalBack').classList.add('show');
+  $('#modalBox').focus();
+}
 function closeModal() { $('#modalBack').classList.remove('show'); $('#modalBox').innerHTML = ''; }
 function stBadge(s) { const c = s === 'Selesai' ? 'b-green' : s === 'Produksi' ? 'b-amber' : 'b-gray'; return `<span class="badge ${c}">${esc(s)}</span>`; }
 function payBadge(s) { return `<span class="badge ${s === 'Lunas' ? 'b-green' : s === 'DP' ? 'b-amber' : 'b-red'}">${esc(s)}</span>`; }
@@ -248,37 +313,52 @@ function printHTML(html) {
   document.body.classList.add('print-mode');
   setTimeout(() => { window.print(); setTimeout(done, 600); }, 60);
 }
+/* — Skeleton & empty state — */
+function skRow(cols) { return `<tr class="sk-tr">${Array.from({length:cols},()=>'<td><div class="sk" style="width:'+ (45+Math.random()*40) +'%;height:11px"></div></td>').join('')}</tr>`; }
+function skeletonTable(cols, n = 5) { return Array.from({length:n},()=>skRow(cols)).join(''); }
+function pageSkeleton() { return `
+  <div class="stats">${Array.from({length:4},()=>'<div class="stat"><div class="sk" style="width:55%;margin-bottom:10px"></div><div class="sk" style="width:80%;height:20px"></div></div>').join('')}</div>
+  <div class="card"><div style="padding:18px">${Array.from({length:6},()=>'<div class="sk" style="width:'+(40+Math.random()*50)+'%;margin-bottom:14px"></div>').join('')}</div></div>`; }
+function emptyState(icon, title, hint) {
+  return `<div class="empty"><span class="e-ic">${icon}</span><span class="e-t">${esc(title)}</span>${esc(hint)}</div>`;
+}
 
 /* ================= IKON & NAV ================= */
 const IC = {
   dashboard:'<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>',
-  produk:'<path d="M12.9 2.6a2 2 0 0 0-1.5-.6H5a2 2 0 0 0-2 2v6.4c0 .5.2 1 .6 1.4l8.5 8.5a2 2 0 0 0 2.9 0l6.9-6.9a2 2 0 0 0 0-2.9L12.9 2.6Z"/><circle cx="8.2" cy="8.2" r="1.7" fill="#fff"/>',
+  produk:'<path d="M12.9 2.6a2 2 0 0 0-1.5-.6H5a2 2 0 0 0-2 2v6.4c0 .5.2 1 .6 1.4l8.5 8.5a2 2 0 0 0 2.9 0l6.9-6.9a2 2 0 0 0 0-2.9L12.9 2.6Z"/><circle cx="8.2" cy="8.2" r="1.7" fill="#082F2C"/>',
   bahan:'<path d="m12 2 10 5.5-10 5.5L2 7.5 12 2Z"/><path d="M3.5 11 2 11.9l10 5.6 10-5.6-1.5-.9-8.5 4.8L3.5 11Z"/><path d="M3.5 15.6 2 16.5 12 22l10-5.5-1.5-.9-8.5 4.8-8.5-4.8Z"/>',
   supplier:'<path d="M1 5.5A1.5 1.5 0 0 1 2.5 4H13a1 1 0 0 1 1 1v9H3.5A2.5 2.5 0 0 1 1 11.5v-6Z"/><path d="M14 8h3.4a1 1 0 0 1 .8.4l2.4 3.1c.26.35.4.78.4 1.2v1.4a1.9 1.9 0 0 1-1.9 1.9H14V8Z"/><circle cx="6.3" cy="17.8" r="2.1"/><circle cx="16.8" cy="17.8" r="2.1"/>',
   tenagakerja:'<circle cx="12" cy="7.2" r="4.2"/><path d="M3.8 20.5c.4-3.9 4-6.3 8.2-6.3s7.8 2.4 8.2 6.3l.1.9H3.7l.1-.9Z"/>',
-  bom:'<path d="M9 2.5h6a1 1 0 0 1 1 1V4h1.5A2.5 2.5 0 0 1 20 6.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5v-13A2.5 2.5 0 0 1 6.5 4H8v-.5a1 1 0 0 1 1-1Z"/><rect x="8" y="10.5" width="8" height="1.8" rx=".9" fill="#fff"/><rect x="8" y="14.5" width="5.5" height="1.8" rx=".9" fill="#fff"/>',
-  po:'<path d="M2.5 20.5V9.2l5.5 3.4V9.2l5.5 3.4V4.5a1 1 0 0 1 1-1h6.5a1 1 0 0 1 1 1v16H2.5Z"/><rect x="14.5" y="13.5" width="3.2" height="3.2" rx=".6" fill="#fff"/>',
+  bom:'<path d="M9 2.5h6a1 1 0 0 1 1 1V4h1.5A2.5 2.5 0 0 1 20 6.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5v-13A2.5 2.5 0 0 1 6.5 4H8v-.5a1 1 0 0 1 1-1Z"/><rect x="8" y="10.5" width="8" height="1.8" rx=".9" fill="#082F2C"/><rect x="8" y="14.5" width="5.5" height="1.8" rx=".9" fill="#082F2C"/>',
+  po:'<path d="M2.5 20.5V9.2l5.5 3.4V9.2l5.5 3.4V4.5a1 1 0 0 1 1-1h6.5a1 1 0 0 1 1 1v16H2.5Z"/><rect x="14.5" y="13.5" width="3.2" height="3.2" rx=".6" fill="#082F2C"/>',
   pembelian:'<path d="M2 7a1.5 1.5 0 0 1 1.5-1.5h8.6a1 1 0 0 1 1 1V15H4a2 2 0 0 1-2-2V7Z"/><path d="M13.1 8.2h3.1c.3 0 .58.13.77.36l2.7 3.2c.28.33.43.74.43 1.17v1.77A1.5 1.5 0 0 1 18.6 16H13.1V8.2Z"/><circle cx="6.6" cy="18.3" r="2"/><circle cx="16.6" cy="18.3" r="2"/>',
   overhead:'<path d="M3.5 21h17v-1.8h-17V21Z"/><path d="M5.5 17.4h2.2v-7.5H5.5v7.5Zm4 0h2.2v-10H9.5v10Zm4 0h2.2v-7.5h-2.2v7.5Zm4 0h2.2v-10h-2.2v10Z"/><path d="M3 6.8 12 3l9 3.8v1.4H3V6.8Z"/>',
-  hpp:'<circle cx="12" cy="12" r="9.2"/><path d="M12 5.8v12.4" stroke="#fff" stroke-width="1.7" stroke-linecap="round" fill="none"/><path d="M15.2 9.3c-.4-1.1-1.6-1.7-3.1-1.7-1.8 0-3 .9-3 2.2 0 3 6.2 1.6 6.2 4.6 0 1.4-1.3 2.3-3.2 2.3-1.7 0-2.9-.7-3.4-1.9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
+  hpp:'<circle cx="12" cy="12" r="9.2"/><path d="M12 5.8v12.4" stroke="#082F2C" stroke-width="1.7" stroke-linecap="round" fill="none"/><path d="M15.2 9.3c-.4-1.1-1.6-1.7-3.1-1.7-1.8 0-3 .9-3 2.2 0 3 6.2 1.6 6.2 4.6 0 1.4-1.3 2.3-3.2 2.3-1.7 0-2.9-.7-3.4-1.9" stroke="#082F2C" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
   penjualan:'<path d="M2.3 3h2.8a1 1 0 0 1 1 .76L6.7 6h14a.8.8 0 0 1 .77 1l-1.9 7a2 2 0 0 1-1.93 1.5H9.2a2 2 0 0 1-1.95-1.54L4.6 4.8l-.3-1.1a.4.4 0 0 0-.4-.3H2.3a.7.7 0 1 1 0-1.4Z"/><circle cx="9.7" cy="19.3" r="1.7"/><circle cx="16.7" cy="19.3" r="1.7"/>',
-  invoice:'<path d="M5 2h14a1 1 0 0 1 1 1v18.5l-3-1.8-2.5 1.8-2.5-1.8-2.5 1.8-2.5-1.8-3 1.8V3a1 1 0 0 1 1-1Z"/><rect x="7.5" y="6.8" width="9" height="1.7" rx=".85" fill="#fff"/><rect x="7.5" y="10.5" width="9" height="1.7" rx=".85" fill="#fff"/><rect x="7.5" y="14.2" width="5.4" height="1.7" rx=".85" fill="#fff"/>',
-  pengaturan:'<path d="M4 7.2h9.2M17.6 7.2H20M4 16.8h4.4M12.8 16.8H20" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="15.3" cy="7.2" r="2.5"/><circle cx="10.7" cy="16.8" r="2.5"/>',
+  invoice:'<path d="M5 2h14a1 1 0 0 1 1 1v18.5l-3-1.8-2.5 1.8-2.5-1.8-2.5 1.8-2.5-1.8-3 1.8V3a1 1 0 0 1 1-1Z"/><rect x="7.5" y="6.8" width="9" height="1.7" rx=".85" fill="#082F2C"/><rect x="7.5" y="10.5" width="9" height="1.7" rx=".85" fill="#082F2C"/><rect x="7.5" y="14.2" width="5.4" height="1.7" rx=".85" fill="#082F2C"/>',
+  pengaturan:'<path d="M4 7.2h9.2M17.6 7.2H20M4 16.8h4.4M12.8 16.8H20" stroke="#082F2C" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="15.3" cy="7.2" r="2.5"/><circle cx="10.7" cy="16.8" r="2.5"/>',
 };
+/* Navigasi bergrup — hierarki informasi lebih jelas */
 const NAV = [
-  { id:'dashboard',  l:'Dashboard',          ic:'dashboard' },
-  { id:'produk',     l:'Master Produk',      ic:'produk' },
-  { id:'bahan',      l:'Master Bahan',       ic:'bahan' },
-  { id:'supplier',   l:'Master Supplier',    ic:'supplier' },
-  { id:'tenagakerja',l:'Tenaga Kerja',       ic:'tenagakerja' },
-  { id:'bom',        l:'BOM / Resep',        ic:'bom' },
-  { id:'po',         l:'Production Order',   ic:'po' },
-  { id:'pembelian',  l:'Pembelian Bahan',    ic:'pembelian' },
-  { id:'overhead',   l:'Factory Overhead',   ic:'overhead' },
-  { id:'hpp',        l:'HPP & Margin',       ic:'hpp' },
-  { id:'penjualan',  l:'Penjualan',          ic:'penjualan' },
-  { id:'invoice',    l:'Invoice',            ic:'invoice' },
-  { id:'pengaturan', l:'Pengaturan',         ic:'pengaturan' },
+  { g:'Utama' },
+  { id:'dashboard',  l:'Dashboard',        ic:'dashboard' },
+  { g:'Master Data' },
+  { id:'produk',     l:'Produk',           ic:'produk' },
+  { id:'bahan',      l:'Bahan',            ic:'bahan' },
+  { id:'supplier',   l:'Supplier',         ic:'supplier' },
+  { id:'tenagakerja',l:'Tenaga Kerja',     ic:'tenagakerja' },
+  { g:'Produksi' },
+  { id:'bom',        l:'BOM / Resep',      ic:'bom' },
+  { id:'po',         l:'Production Order', ic:'po' },
+  { id:'pembelian',  l:'Pembelian Bahan',  ic:'pembelian' },
+  { id:'overhead',   l:'Factory Overhead', ic:'overhead' },
+  { g:'Keuangan' },
+  { id:'hpp',        l:'HPP & Margin',     ic:'hpp' },
+  { id:'penjualan',  l:'Penjualan',        ic:'penjualan' },
+  { id:'invoice',    l:'Invoice',          ic:'invoice' },
+  { g:'Sistem' },
+  { id:'pengaturan', l:'Pengaturan',       ic:'pengaturan' },
 ];
 const CHANNELS = ['Toko Sendiri','Shopee','Tokopedia','TikTok Shop','Lazada','Instagram','WhatsApp','Lainnya'];
 
@@ -297,10 +377,14 @@ const RENDER = {
 };
 async function go(id) {
   CURRENT = id;
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.id === id));
-  $('#content').innerHTML = '<div class="empty">Memuat…</div>';
+  document.querySelectorAll('.nav-item').forEach(n => {
+    const on = n.dataset.id === id;
+    n.classList.toggle('active', on);
+    if (on) n.setAttribute('aria-current', 'page'); else n.removeAttribute('aria-current');
+  });
+  $('#content').innerHTML = pageSkeleton();
   try { await RENDER[id](); }
-  catch (e) { $('#content').innerHTML = `<div class="card"><div class="empty">⚠ ${esc(e.message)}</div></div>`; }
+  catch (e) { $('#content').innerHTML = `<div class="card">${emptyState('⚠️','Gagal memuat',e.message)}</div>`; }
 }
 
 /* ================= PAGE: GENERIC MASTER ================= */
@@ -319,7 +403,7 @@ const MASTER = {
     ]},
   bahan: {
     t:'Master Bahan', s:'Material, komponen, pendukung, branding & packaging',
-    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama Bahan',bold:1},{k:'kelompok',l:'Kelompok',badge:'b-indigo'},{k:'satuan',l:'Satuan'},{k:'harga',l:'Harga Satuan',fmt:rp,r:1}],
+    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama Bahan',bold:1},{k:'kelompok',l:'Kelompok',badge:'b-teal'},{k:'satuan',l:'Satuan'},{k:'harga',l:'Harga Satuan',fmt:rp,r:1}],
     fields:[
       {k:'kode',l:'Kode Bahan',req:1,ph:'MAT001'},
       {k:'nama',l:'Nama Bahan',req:1,ph:'Canvas'},
@@ -339,7 +423,7 @@ const MASTER = {
     ]},
   tenagakerja: {
     t:'Tenaga Kerja', s:'Direct Labor (borongan/harian) & Supervisor (FOH)',
-    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama',bold:1},{k:'proses',l:'Proses'},{k:'sistem',l:'Sistem',badge:'b-indigo'},{k:'tarif',l:'Tarif',fmt:rp,r:1},{k:'kategori',l:'Kategori',badge:'b-gray'}],
+    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama',bold:1},{k:'proses',l:'Proses'},{k:'sistem',l:'Sistem',badge:'b-teal'},{k:'tarif',l:'Tarif',fmt:rp,r:1},{k:'kategori',l:'Kategori',badge:'b-gray'}],
     fields:[
       {k:'kode',l:'Kode',req:1,ph:'DL001'},
       {k:'nama',l:'Nama / Tim'},
@@ -366,13 +450,13 @@ async function pageMaster(key) {
       <div class="card-head">
         <div class="search">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input id="q" placeholder="Cari kode / nama…" value="${esc(SEARCHQ[key] || '')}">
+          <input id="q" placeholder="Cari kode / nama…" value="${esc(SEARCHQ[key] || '')}" aria-label="Cari data">
         </div>
         <button class="btn" id="addBtn">+ Tambah</button>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr>${cfg.cols.map(c => `<th class="${c.r ? 'r' : ''}">${c.l}</th>`).join('')}<th class="r">Aksi</th></tr></thead>
-        <tbody id="tb"><tr><td colspan="${cfg.cols.length + 1}" class="empty">Memuat…</td></tr></tbody>
+        <thead><tr>${cfg.cols.map(c => `<th scope="col" class="${c.r ? 'r' : ''}">${c.l}</th>`).join('')}<th scope="col" class="r">Aksi</th></tr></thead>
+        <tbody id="tb">${skeletonTable(cfg.cols.length + 1)}</tbody>
       </table></div>
     </div>`;
   $('#addBtn').onclick = () => masterForm(key);
@@ -386,18 +470,18 @@ async function loadMasterRows(key) {
   try {
     const rows = await api(key, { params: SEARCHQ[key] ? { q: SEARCHQ[key] } : {} });
     ROWS_CACHE[key] = rows;
-    if (!rows.length) { tb.innerHTML = `<tr><td colspan="${cfg.cols.length + 1}" class="empty">Belum ada data. Klik “+ Tambah” untuk memulai.</td></tr>`; return; }
+    if (!rows.length) { tb.innerHTML = `<tr><td colspan="${cfg.cols.length + 1}">${emptyState('📦','Belum ada data','Klik “+ Tambah” untuk memulai')}</td></tr>`; return; }
     tb.innerHTML = rows.map(r => `<tr>
       ${cfg.cols.map(c => {
-        if (c.fmt) return `<td class="${c.r ? 'r' : ''}">${c.fmt(r[c.k])}</td>`;
+        if (c.fmt) return `<td class="r num">${c.fmt(r[c.k])}</td>`;
         if (c.badge) return `<td><span class="badge ${c.badge}">${esc(r[c.k] || '-')}</span></td>`;
         return `<td class="${c.bold ? 'bold' : ''} ${c.mono ? 'mono' : ''}">${esc(r[c.k] ?? '-')}</td>`;
       }).join('')}
       <td class="r"><div class="act">
         <button class="btn ghost sm" onclick="masterForm('${key}',${r.id})">Edit</button>
-        <button class="btn ghost sm danger-t" onclick="delMaster('${key}',${r.id})">Hapus</button>
+        <button class="btn ghost sm danger-t" onclick="delMaster('${key}',${r.id})" aria-label="Hapus ${esc(r.nama || r.kode)}">Hapus</button>
       </div></td></tr>`).join('');
-  } catch (e) { tb.innerHTML = `<tr><td colspan="${cfg.cols.length + 1}" class="empty">⚠ ${esc(e.message)}</td></tr>`; }
+  } catch (e) { tb.innerHTML = `<tr><td colspan="${cfg.cols.length + 1}">${emptyState('⚠️','Gagal memuat',e.message)}</td></tr>`; }
 }
 function fieldHTML(f, val) {
   const id = 'f_' + f.k, v = val ?? f.def ?? '';
@@ -408,13 +492,13 @@ function fieldHTML(f, val) {
     inp = `<textarea id="${id}" rows="3" placeholder="${esc(f.ph || '')}">${esc(v)}</textarea>`;
   else
     inp = `<input id="${id}" type="${f.type || 'text'}" value="${esc(v)}" placeholder="${esc(f.ph || '')}" ${f.req ? 'required' : ''} ${f.type === 'number' ? 'min="0" step="any" inputmode="decimal"' : ''}>`;
-  return `<div class="field"><label>${esc(f.l)}${f.req ? ' *' : ''}</label>${inp}</div>`;
+  return `<div class="field"><label for="${id}">${esc(f.l)}${f.req ? ' *' : ''}</label>${inp}</div>`;
 }
 function masterForm(key, id) {
   const cfg = MASTER[key];
   const row = id ? (ROWS_CACHE[key] || []).find(r => r.id === id) : null;
   openModal(`
-    <h3>${row ? 'Edit' : 'Tambah'} ${cfg.t}</h3>
+    <h3 id="mt">${row ? 'Edit' : 'Tambah'} ${cfg.t}</h3>
     <form id="mf">
       ${cfg.fields.map(f => fieldHTML(f, row?.[f.k])).join('')}
       <div class="form-actions">
@@ -436,7 +520,7 @@ function masterForm(key, id) {
   };
 }
 function delMaster(key, id) {
-  openModal(`<h3>Hapus data ini?</h3><p class="mut">Data yang dihapus tidak dapat dikembalikan.</p>
+  openModal(`<h3 id="mt">Hapus data ini?</h3><p class="mut">Data yang dihapus tidak dapat dikembalikan.</p>
     <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
   $('#dl').onclick = async () => {
     try { await api(key, { method: 'DELETE', params: { id } }); toast('Data dihapus'); closeModal(); pageMaster(key); }
@@ -457,25 +541,25 @@ async function pageBom() {
   setPage('BOM / Resep Produk', 'Kebutuhan bahan per 1 pcs — termasuk % waste cutting');
   const [produk, bahan] = await Promise.all([api('produk'), api('bahan')]);
   BL = bahan;
-  if (!produk.length) { $('#content').innerHTML = `<div class="card"><div class="empty">Tambahkan <b>Master Produk</b> terlebih dahulu.</div></div>`; return; }
-  if (!bahan.length) { $('#content').innerHTML = `<div class="card"><div class="empty">Tambahkan <b>Master Bahan</b> terlebih dahulu.</div></div>`; return; }
+  if (!produk.length) { $('#content').innerHTML = `<div class="card">${emptyState('🧵','Tambahkan Master Produk dulu','Produk adalah induk dari resep BOM')}</div>`; return; }
+  if (!bahan.length) { $('#content').innerHTML = `<div class="card">${emptyState('🧶','Tambahkan Master Bahan dulu','Bahan adalah komponen resep BOM')}</div>`; return; }
   $('#content').innerHTML = `
     <div class="card">
       <div class="card-head">
         <div class="field" style="margin:0;flex:1;max-width:340px">
-          <select id="bp"><option value="">— Pilih Produk —</option>
+          <select id="bp" aria-label="Pilih produk"><option value="">— Pilih Produk —</option>
             ${produk.map(p => `<option value="${p.id}">${esc(p.kode)} · ${esc(p.nama)}</option>`).join('')}
           </select>
         </div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <span id="bomTotal" class="chip">DM / pcs: —</span>
+          <span id="bomTotal" class="chip num">DM / pcs: —</span>
           <button class="btn ghost" id="bomAdd">+ Baris</button>
           <button class="btn" id="bomSave">Simpan BOM</button>
         </div>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Bahan</th><th class="r">Qty / pcs</th><th class="r">Waste %</th><th class="r">Qty Efektif</th><th class="r">Harga</th><th class="r">Biaya / pcs</th><th></th></tr></thead>
-        <tbody id="btb"><tr><td colspan="7" class="empty">Pilih produk untuk memuat / menyusun BOM.</td></tr></tbody>
+        <thead><tr><th scope="col">Bahan</th><th scope="col" class="r">Qty / pcs</th><th scope="col" class="r">Waste %</th><th scope="col" class="r">Qty Efektif</th><th scope="col" class="r">Harga</th><th scope="col" class="r">Biaya / pcs</th><th scope="col"><span class="sr-only"></span></th></tr></thead>
+        <tbody id="btb"><tr><td colspan="7">${emptyState('📐','Pilih produk','Untuk memuat / menyusun BOM')}</td></tr></tbody>
       </table></div>
     </div>`;
   $('#bp').onchange = e => loadBom(e.target.value);
@@ -491,18 +575,18 @@ async function loadBom(pid) {
 }
 function renderBomRows() {
   const tb = $('#btb'); if (!tb) return;
-  if (!BROWS.length) { tb.innerHTML = '<tr><td colspan="7" class="empty">Belum ada baris. Klik “+ Baris”.</td></tr>'; bomTotal(); return; }
+  if (!BROWS.length) { tb.innerHTML = `<tr><td colspan="7">${emptyState('➕','Belum ada baris','Klik “+ Baris”')}</td></tr>`; bomTotal(); return; }
   tb.innerHTML = BROWS.map((r, i) => {
     const b = BL.find(x => x.id === Number(r.bahan_id));
     const ef = (Number(r.qty_standar) || 0) * (1 + (Number(r.waste_pct) || 0) / 100);
     return `<tr>
-      <td><select class="tin" style="min-width:200px" onchange="bomSet(${i},'bahan_id',this.value)"><option value="">— Pilih —</option>${bahanOptions(BL, r.bahan_id)}</select></td>
-      <td class="r"><input class="tin r" type="number" step="any" min="0" style="width:90px" value="${r.qty_standar}" oninput="bomSet(${i},'qty_standar',this.value)"></td>
-      <td class="r"><input class="tin r" type="number" step="any" min="0" style="width:70px" value="${r.waste_pct}" oninput="bomSet(${i},'waste_pct',this.value)"></td>
-      <td class="r bold" id="ef_${i}">${nf(ef)} <small class="mono">${esc(b?.satuan || '')}</small></td>
-      <td class="r mono" id="hg_${i}">${rp(b?.harga || 0)}</td>
-      <td class="r bold" id="by_${i}">${rp(ef * (b?.harga || 0))}</td>
-      <td class="r"><button class="btn ghost sm danger-t" onclick="bomDel(${i})">✕</button></td>
+      <td><select class="tin" style="min-width:200px" aria-label="Bahan" onchange="bomSet(${i},'bahan_id',this.value)"><option value="">— Pilih —</option>${bahanOptions(BL, r.bahan_id)}</select></td>
+      <td class="r"><input class="tin r num" type="number" step="any" min="0" style="width:90px" value="${r.qty_standar}" aria-label="Qty standar" oninput="bomSet(${i},'qty_standar',this.value)"></td>
+      <td class="r"><input class="tin r num" type="number" step="any" min="0" style="width:70px" value="${r.waste_pct}" aria-label="Waste persen" oninput="bomSet(${i},'waste_pct',this.value)"></td>
+      <td class="r bold num" id="ef_${i}">${nf(ef)} <small class="mono">${esc(b?.satuan || '')}</small></td>
+      <td class="r mono num" id="hg_${i}">${rp(b?.harga || 0)}</td>
+      <td class="r bold num" id="by_${i}">${rp(ef * (b?.harga || 0))}</td>
+      <td class="r"><button class="btn ghost sm danger-t" aria-label="Hapus baris" onclick="bomDel(${i})">✕</button></td>
     </tr>`;
   }).join('');
   bomTotal();
@@ -525,7 +609,7 @@ function bomTotal() {
     const b = BL.find(x => x.id === Number(r.bahan_id));
     t += (Number(r.qty_standar) || 0) * (1 + (Number(r.waste_pct) || 0) / 100) * (b?.harga || 0);
   });
-  el.textContent = 'Direct Material / pcs: ' + rp(t);
+  el.textContent = 'DM / pcs: ' + rp(t);
 }
 function bomDel(i) { BROWS.splice(i, 1); renderBomRows(); }
 async function saveBom() {
@@ -546,10 +630,10 @@ async function pagePO() {
   PL = produk;
   $('#content').innerHTML = `
     <div class="card">
-      <div class="card-head"><div class="mut">${rows.length} production order</div><button class="btn" onclick="poForm()">+ PO Baru</button></div>
+      <div class="card-head"><div class="mut num">${rows.length} production order</div><button class="btn" onclick="poForm()">+ PO Baru</button></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Kode PO</th><th>Tanggal</th><th>Produk</th><th class="r">Qty</th><th>Status</th><th class="r">HPP / pcs</th><th class="r">Total HPP</th><th class="r">Margin</th><th class="r">Aksi</th></tr></thead>
-        <tbody>${rows.length ? rows.map(poRow).join('') : '<tr><td colspan="9" class="empty">Belum ada PO. Klik “+ PO Baru”.</td></tr>'}</tbody>
+        <thead><tr><th scope="col">Kode PO</th><th scope="col">Tanggal</th><th scope="col">Produk</th><th scope="col" class="r">Qty</th><th scope="col">Status</th><th scope="col" class="r">HPP / pcs</th><th scope="col" class="r">Total HPP</th><th scope="col" class="r">Margin</th><th scope="col" class="r">Aksi</th></tr></thead>
+        <tbody>${rows.length ? rows.map(poRow).join('') : `<tr><td colspan="9">${emptyState('🏭','Belum ada PO','Klik “+ PO Baru” untuk mulai produksi')}</td></tr>`}</tbody>
       </table></div>
     </div>`;
 }
@@ -560,29 +644,29 @@ function poRow(p) {
     <td class="mono">${esc(p.kode_po)}</td>
     <td>${fdate(p.tanggal)}</td>
     <td><b>${esc(p.nama_produk)}</b><br><small class="mono">${esc(p.kode_produk)}</small></td>
-    <td class="r">${nf(p.qty)}</td>
+    <td class="r num">${nf(p.qty)}</td>
     <td>${stBadge(p.status)}</td>
-    <td class="r bold">${rp(p.hpp_per_pcs)}</td>
-    <td class="r">${rp(p.total_hpp)}</td>
+    <td class="r bold num">${rp(p.hpp_per_pcs)}</td>
+    <td class="r num">${rp(p.total_hpp)}</td>
     <td class="r">${margin === null ? '—' : mBadge(margin)}</td>
     <td class="r"><div class="act">
       <button class="btn soft sm" onclick="poDetail(${p.id})">Detail</button>
       ${p.status !== 'Selesai' ? `<button class="btn ghost sm" onclick="poStatus(${p.id},'${p.status}')">${p.status === 'Draft' ? '▶ Mulai' : '✓ Selesai'}</button>` : ''}
-      <button class="btn ghost sm danger-t" onclick="poDel(${p.id})">✕</button>
+      <button class="btn ghost sm danger-t" aria-label="Hapus PO" onclick="poDel(${p.id})">✕</button>
     </div></td></tr>`;
 }
 function poForm() {
   if (!PL.length) return toast('Tambahkan produk dulu di Master Produk', 'err');
   openModal(`
-    <h3>Production Order Baru</h3>
+    <h3 id="mt">Production Order Baru</h3>
     <form id="pf">
-      <div class="field"><label>Produk *</label>
+      <div class="field"><label for="p_prod">Produk *</label>
         <select id="p_prod">${PL.map(p => `<option value="${p.id}">${esc(p.kode)} · ${esc(p.nama)} — ${rp(p.harga_jual)}</option>`).join('')}</select></div>
       <div class="grid2">
-        <div class="field"><label>Qty Produksi *</label><input id="p_qty" type="number" min="1" step="1" required placeholder="2000"></div>
-        <div class="field"><label>Tanggal</label><input id="p_tgl" type="date" value="${today()}"></div>
+        <div class="field"><label for="p_qty">Qty Produksi *</label><input id="p_qty" type="number" min="1" step="1" required placeholder="2000"></div>
+        <div class="field"><label for="p_tgl">Tanggal</label><input id="p_tgl" type="date" value="${today()}"></div>
       </div>
-      <div class="field"><label>Kode PO (opsional)</label><input id="p_kode" placeholder="Kosongkan untuk otomatis"></div>
+      <div class="field"><label for="p_kode">Kode PO (opsional)</label><input id="p_kode" placeholder="Kosongkan untuk otomatis"></div>
       <div class="form-actions"><button type="button" class="btn ghost" data-close>Batal</button><button type="submit" class="btn">Buat PO</button></div>
     </form>`);
   $('#pf').onsubmit = async e => {
@@ -605,7 +689,7 @@ async function poStatus(id, cur) {
   } catch (e) { toast(e.message, 'err'); }
 }
 function poDel(id) {
-  openModal(`<h3>Hapus PO ini?</h3><p class="mut">Data material & tenaga kerja terkait juga terhapus.</p>
+  openModal(`<h3 id="mt">Hapus PO ini?</h3><p class="mut">Data material & tenaga kerja terkait juga terhapus.</p>
     <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
   $('#dl').onclick = async () => {
     try { await api('po', { method: 'DELETE', params: { id } }); toast('PO dihapus'); closeModal(); pagePO(); }
@@ -625,46 +709,46 @@ async function poDetail(id) {
   $('#content').innerHTML = `
     <button class="btn ghost sm" onclick="go('po')" style="margin-bottom:14px">← Kembali ke daftar PO</button>
     <div class="stats">
-      <div class="stat"><span>Direct Material</span><b>${rp(r.dm)}</b><small>${rp(r.dm_per_pcs)}/pcs</small></div>
-      <div class="stat"><span>Direct Labor</span><b>${rp(r.dl)}</b><small>${rp(r.dl_per_pcs)}/pcs</small></div>
-      <div class="stat"><span>Factory Overhead</span><b>${rp(r.foh)}</b><small>${rp(r.foh_per_pcs)}/pcs</small></div>
-      <div class="stat hi"><span>Total HPP</span><b>${rp(r.total_hpp)}</b><small><b>${rp2(r.hpp_per_pcs)}</b>/pcs</small></div>
+      <div class="stat"><span>Direct Material</span><b class="num">${rp(r.dm)}</b><small class="num">${rp(r.dm_per_pcs)}/pcs</small></div>
+      <div class="stat"><span>Direct Labor</span><b class="num">${rp(r.dl)}</b><small class="num">${rp(r.dl_per_pcs)}/pcs</small></div>
+      <div class="stat"><span>Factory Overhead</span><b class="num">${rp(r.foh)}</b><small class="num">${rp(r.foh_per_pcs)}/pcs</small></div>
+      <div class="stat hi"><span>Total HPP</span><b class="num">${rp(r.total_hpp)}</b><small><b class="num">${rp2(r.hpp_per_pcs)}</b>/pcs</small></div>
       <div class="stat"><span>Status</span>${stBadge(d.po.status)}<small>Periode OH: ${d.overhead.periode}</small></div>
     </div>
     <div class="card">
       <div class="card-head"><b>1 · Material — Standar (BOM) vs Aktual</b><button class="btn" onclick="saveMat()">Simpan Realisasi Material</button></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Bahan</th><th class="r">Std / pcs</th><th class="r">Std Total</th><th class="r">Aktual</th><th class="r">Selisih</th><th class="r">Harga</th><th class="r">Biaya Aktual</th></tr></thead>
+        <thead><tr><th scope="col">Bahan</th><th scope="col" class="r">Std / pcs</th><th scope="col" class="r">Std Total</th><th scope="col" class="r">Aktual</th><th scope="col" class="r">Selisih</th><th scope="col" class="r">Harga</th><th scope="col" class="r">Biaya Aktual</th></tr></thead>
         <tbody>${PD.mat.map((m, i) => matRow(m, i)).join('')}</tbody>
-        <tfoot><tr><td colspan="6" class="r bold">Total Material</td><td class="r bold" id="matTot">${rp(PD.mat.reduce((s, m) => s + m.qty_aktual_in * m.harga, 0))}</td></tr></tfoot>
+        <tfoot><tr><td colspan="6" class="r bold">Total Material</td><td class="r bold num" id="matTot">${rp(PD.mat.reduce((s, m) => s + m.qty_aktual_in * m.harga, 0))}</td></tr></tfoot>
       </table></div>
     </div>
     <div class="card">
       <div class="card-head"><b>2 · Tenaga Kerja Langsung</b>
         <div style="display:flex;gap:8px"><button class="btn ghost" onclick="addLab()">+ Baris TK</button><button class="btn" onclick="saveLab()">Simpan Realisasi TK</button></div></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Tenaga Kerja</th><th>Sistem</th><th class="r">Qty Output</th><th class="r">Jml Hari</th><th class="r">Tarif</th><th class="r">Biaya</th><th></th></tr></thead>
-        <tbody id="labTb">${PD.lab.length ? PD.lab.map((l, i) => labRow(l, i)).join('') : '<tr><td colspan="7" class="empty">Belum ada baris. Klik “+ Baris TK”.</td></tr>'}</tbody>
-        <tfoot><tr><td colspan="5" class="r bold">Total Direct Labor</td><td class="r bold" id="labTot">${rp(PD.lab.reduce((s, l) => s + labBiaya(l), 0))}</td><td></td></tr></tfoot>
+        <thead><tr><th scope="col">Tenaga Kerja</th><th scope="col">Sistem</th><th scope="col" class="r">Qty Output</th><th scope="col" class="r">Jml Hari</th><th scope="col" class="r">Tarif</th><th scope="col" class="r">Biaya</th><th scope="col"></th></tr></thead>
+        <tbody id="labTb">${PD.lab.length ? PD.lab.map((l, i) => labRow(l, i)).join('') : `<tr><td colspan="7">${emptyState('👷','Belum ada baris','Klik “+ Baris TK”')}</td></tr>`}</tbody>
+        <tfoot><tr><td colspan="5" class="r bold">Total Direct Labor</td><td class="r bold num" id="labTot">${rp(PD.lab.reduce((s, l) => s + labBiaya(l), 0))}</td><td></td></tr></tfoot>
       </table></div>
     </div>
     <div class="grid2c">
       <div class="card">
         <div class="card-head"><b>3 · Alokasi Factory Overhead</b></div>
-        <div style="padding:14px 16px">
+        <div style="padding:14px 18px">
           ${d.overhead.note ? `<p class="mut">${esc(d.overhead.note)}</p>` : `
-          <div class="kv"><span>Total FOH periode ${d.overhead.periode}</span><b>${rp(d.overhead.total_overhead_bulan)}</b></div>
-          <div class="kv"><span>Basis alokasi (qty produksi selesai bulan itu)</span><b>${nf(d.overhead.basis_qty_bulan)} pcs</b></div>
-          <div class="kv"><span>Rate / pcs</span><b>${rp2(d.overhead.per_pcs)}</b></div>
-          <div class="kv"><span>Dialokasikan ke PO ini (${nf(d.po.qty)} pcs)</span><b>${rp(d.overhead.dialokasikan)}</b></div>`}
+          <div class="kv"><span>Total FOH periode ${d.overhead.periode}</span><b class="num">${rp(d.overhead.total_overhead_bulan)}</b></div>
+          <div class="kv"><span>Basis alokasi (qty selesai bulan itu)</span><b class="num">${nf(d.overhead.basis_qty_bulan)} pcs</b></div>
+          <div class="kv"><span>Rate / pcs</span><b class="num">${rp2(d.overhead.per_pcs)}</b></div>
+          <div class="kv"><span>Dialokasikan (${nf(d.po.qty)} pcs)</span><b class="num">${rp(d.overhead.dialokasikan)}</b></div>`}
         </div>
       </div>
       <div class="card">
         <div class="card-head"><b>4 · HPP & Estimasi Margin</b></div>
-        <div style="padding:14px 16px">
-          <div class="kv"><span>HPP / pcs</span><b>${rp2(r.hpp_per_pcs)}</b></div>
-          <div class="kv"><span>Harga jual</span><b>${rp(d.po.harga_jual)}</b></div>
-          <div class="kv"><span>Est. profit / pcs</span><b class="${r.margin_rp >= 0 ? 'up' : 'down'}">${rp(r.margin_rp)}</b></div>
+        <div style="padding:14px 18px">
+          <div class="kv"><span>HPP / pcs</span><b class="num">${rp2(r.hpp_per_pcs)}</b></div>
+          <div class="kv"><span>Harga jual</span><b class="num">${rp(d.po.harga_jual)}</b></div>
+          <div class="kv"><span>Est. profit / pcs</span><b class="num ${r.margin_rp >= 0 ? 'up' : 'down'}">${rp(r.margin_rp)}</b></div>
           <div class="kv"><span>Est. margin</span>${mBadge(r.margin_pct)}</div>
           ${d.po.status !== 'Selesai' ? `<button class="btn" style="margin-top:14px" onclick="poStatus(${d.po.id},'${d.po.status}')">${d.po.status === 'Draft' ? '▶ Mulai Produksi' : '✓ Tandai Selesai'}</button>` : ''}
         </div>
@@ -675,12 +759,12 @@ function matRow(m, i) {
   const sel = m.qty_aktual_in - m.qty_std_total;
   return `<tr>
     <td><b>${esc(m.nama)}</b><br><small class="mono">${esc(m.kode)}</small></td>
-    <td class="r">${nf(m.qty_std_pcs)} <small class="mono">${esc(m.satuan)}</small></td>
-    <td class="r">${nf(m.qty_std_total)}</td>
-    <td class="r"><input class="tin r" type="number" step="any" min="0" style="width:100px" value="${m.qty_aktual_in}" oninput="matSet(${i},this.value)"></td>
-    <td class="r" id="sd_${i}"><span class="${Math.abs(sel) < 0.0001 ? '' : sel > 0 ? 'down' : 'up'}">${sel > 0 ? '+' : ''}${nf(sel)}</span></td>
-    <td class="r mono">${rp(m.harga)}</td>
-    <td class="r bold" id="ma_${i}">${rp(m.qty_aktual_in * m.harga)}</td></tr>`;
+    <td class="r num">${nf(m.qty_std_pcs)} <small class="mono">${esc(m.satuan)}</small></td>
+    <td class="r num">${nf(m.qty_std_total)}</td>
+    <td class="r"><input class="tin r num" type="number" step="any" min="0" style="width:100px" value="${m.qty_aktual_in}" aria-label="Qty aktual" oninput="matSet(${i},this.value)"></td>
+    <td class="r num" id="sd_${i}"><span class="${Math.abs(sel) < 0.0001 ? '' : sel > 0 ? 'down' : 'up'}">${sel > 0 ? '+' : ''}${nf(sel)}</span></td>
+    <td class="r mono num">${rp(m.harga)}</td>
+    <td class="r bold num" id="ma_${i}">${rp(m.qty_aktual_in * m.harga)}</td></tr>`;
 }
 function matSet(i, v) {
   PD.mat[i].qty_aktual_in = parseFloat(v) || 0;
@@ -702,16 +786,16 @@ function labBiaya(l) {
 }
 function labRow(l, i) {
   return `<tr>
-    <td><select class="tin" style="min-width:190px" onchange="labSet(${i},'tk_id',this.value)">
+    <td><select class="tin" style="min-width:190px" aria-label="Tenaga kerja" onchange="labSet(${i},'tk_id',this.value)">
       <option value="">— Pilih —</option>
       ${PD.tk.map(t => `<option value="${t.id}" ${Number(l.tk_id) === t.id ? 'selected' : ''}>${esc(t.kode)} · ${esc(t.proses)} (${esc(t.sistem)})</option>`).join('')}
     </select></td>
     <td id="ls_${i}">${l.sistem ? esc(l.sistem) : '—'}</td>
-    <td class="r"><input class="tin r" type="number" min="0" step="1" style="width:90px" value="${l.qty_output || ''}" ${l.sistem === 'Harian' ? 'disabled' : ''} oninput="labSet(${i},'qty_output',this.value)"></td>
-    <td class="r"><input class="tin r" type="number" min="0" step="0.5" style="width:80px" value="${l.jumlah_hari || ''}" ${l.sistem !== 'Harian' ? 'disabled' : ''} oninput="labSet(${i},'jumlah_hari',this.value)"></td>
-    <td class="r mono" id="lt_${i}">${rp(l.tarif || 0)}</td>
-    <td class="r bold" id="lb_${i}">${rp(labBiaya(l))}</td>
-    <td class="r"><button class="btn ghost sm danger-t" onclick="labDel(${i})">✕</button></td></tr>`;
+    <td class="r"><input class="tin r num" type="number" min="0" step="1" style="width:90px" value="${l.qty_output || ''}" ${l.sistem === 'Harian' ? 'disabled' : ''} aria-label="Qty output" oninput="labSet(${i},'qty_output',this.value)"></td>
+    <td class="r"><input class="tin r num" type="number" min="0" step="0.5" style="width:80px" value="${l.jumlah_hari || ''}" ${l.sistem !== 'Harian' ? 'disabled' : ''} aria-label="Jumlah hari" oninput="labSet(${i},'jumlah_hari',this.value)"></td>
+    <td class="r mono num" id="lt_${i}">${rp(l.tarif || 0)}</td>
+    <td class="r bold num" id="lb_${i}">${rp(labBiaya(l))}</td>
+    <td class="r"><button class="btn ghost sm danger-t" aria-label="Hapus baris" onclick="labDel(${i})">✕</button></td></tr>`;
 }
 function labSet(i, k, v) {
   const l = PD.lab[i];
@@ -726,7 +810,7 @@ function labSet(i, k, v) {
   document.getElementById('labTot').textContent = rp(PD.lab.reduce((s, x) => s + labBiaya(x), 0));
 }
 function renderLabTb() {
-  $('#labTb').innerHTML = PD.lab.length ? PD.lab.map((l, i) => labRow(l, i)).join('') : '<tr><td colspan="7" class="empty">Belum ada baris.</td></tr>';
+  $('#labTb').innerHTML = PD.lab.length ? PD.lab.map((l, i) => labRow(l, i)).join('') : `<tr><td colspan="7">${emptyState('➕','Belum ada baris','')}</td></tr>`;
   $('#labTot').textContent = rp(PD.lab.reduce((s, x) => s + labBiaya(x), 0));
 }
 function addLab() { PD.lab.push({ tk_id: null, qty_output: '', jumlah_hari: '', sistem: null, tarif: 0 }); renderLabTb(); }
@@ -739,7 +823,7 @@ async function saveLab() {
   } catch (e) { toast(e.message, 'err'); }
 }
 
-/* ================= PAGE: PEMBELIAN BAHAN (v1.1) ================= */
+/* ================= PAGE: PEMBELIAN BAHAN ================= */
 let PB_SUP = [], PB_BAHAN = [], PB_ITEMS = [], PB_CACHE = [];
 async function pagePembelian() {
   setPage('Pembelian Bahan', 'Harga beli aktual dari supplier & sinkronisasi harga master');
@@ -749,22 +833,22 @@ async function pagePembelian() {
   const totB = rows.filter(r => (r.tanggal || '').startsWith(bulan)).reduce((s, r) => s + Number(r.total || 0), 0);
   $('#content').innerHTML = `
     <div class="stats">
-      <div class="stat"><span>Pembelian — ${bulan}</span><b>${rp(totB)}</b></div>
-      <div class="stat"><span>Total Transaksi</span><b>${rows.length}</b></div>
+      <div class="stat"><span>Pembelian — ${bulan}</span><b class="num">${rp(totB)}</b></div>
+      <div class="stat"><span>Total Transaksi</span><b class="num">${rows.length}</b></div>
     </div>
     <div class="card">
-      <div class="card-head"><div class="mut">Nota pembelian bahan — harga di sini bisa jadi harga master terbaru</div><button class="btn" onclick="pbForm()">+ Pembelian Baru</button></div>
+      <div class="card-head"><div class="mut">Harga di sini bisa jadi harga master terbaru</div><button class="btn" onclick="pbForm()">+ Pembelian Baru</button></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Kode</th><th>Tanggal</th><th>Supplier</th><th>No. Nota</th><th class="r">Item</th><th class="r">Total</th><th class="r">Aksi</th></tr></thead>
+        <thead><tr><th scope="col">Kode</th><th scope="col">Tanggal</th><th scope="col">Supplier</th><th scope="col">No. Nota</th><th scope="col" class="r">Item</th><th scope="col" class="r">Total</th><th scope="col" class="r">Aksi</th></tr></thead>
         <tbody>${rows.length ? rows.map(r => `<tr>
           <td class="mono">${esc(r.kode)}</td><td>${fdate(r.tanggal)}</td>
           <td><b>${esc(r.nama_supplier || '—')}</b></td><td>${esc(r.nomor_nota || '—')}</td>
-          <td class="r">${r.jml_item}</td><td class="r bold">${rp(r.total)}</td>
+          <td class="r num">${r.jml_item}</td><td class="r bold num">${rp(r.total)}</td>
           <td class="r"><div class="act">
             <button class="btn soft sm" onclick="pbDetail(${r.id})">Detail</button>
             <button class="btn ghost sm" onclick="pbForm(${r.id})">Edit</button>
-            <button class="btn ghost sm danger-t" onclick="pbDel(${r.id})">✕</button>
-          </div></td></tr>`).join('') : '<tr><td colspan="7" class="empty">Belum ada pembelian.</td></tr>'}</tbody>
+            <button class="btn ghost sm danger-t" aria-label="Hapus pembelian" onclick="pbDel(${r.id})">✕</button>
+          </div></td></tr>`).join('') : `<tr><td colspan="7">${emptyState('🚚','Belum ada pembelian','Klik “+ Pembelian Baru”')}</td></tr>`}</tbody>
       </table></div>
     </div>`;
 }
@@ -774,23 +858,23 @@ async function pbForm(id) {
   if (id) { const d = await api('pembelian', { params: { id } }); row = d; PB_ITEMS = d.items.map(x => ({ bahan_id: x.bahan_id, qty: Number(x.qty), harga_beli: Number(x.harga_beli) })); }
   else PB_ITEMS = [{ bahan_id: 0, qty: '', harga_beli: '' }];
   openModal(`
-    <h3>${row ? 'Edit' : 'Pembelian'} Bahan</h3>
+    <h3 id="mt">${row ? 'Edit' : 'Pembelian'} Bahan</h3>
     <form id="pbf">
       <div class="grid2">
-        <div class="field"><label>Supplier</label><select id="pb_sup">
+        <div class="field"><label for="pb_sup">Supplier</label><select id="pb_sup">
           <option value="">— Tanpa supplier —</option>
           ${PB_SUP.map(s => `<option value="${s.id}" ${row && row.supplier_id === s.id ? 'selected' : ''}>${esc(s.kode)} · ${esc(s.nama)}</option>`).join('')}</select></div>
-        <div class="field"><label>Tanggal</label><input id="pb_tgl" type="date" value="${row?.tanggal || today()}"></div>
+        <div class="field"><label for="pb_tgl">Tanggal</label><input id="pb_tgl" type="date" value="${row?.tanggal || today()}"></div>
       </div>
       <div class="grid2">
-        <div class="field"><label>No. Nota</label><input id="pb_nota" value="${esc(row?.nomor_nota || '')}" placeholder="opsional"></div>
-        <div class="field"><label>Keterangan</label><input id="pb_ket" value="${esc(row?.keterangan || '')}"></div>
+        <div class="field"><label for="pb_nota">No. Nota</label><input id="pb_nota" value="${esc(row?.nomor_nota || '')}" placeholder="opsional"></div>
+        <div class="field"><label for="pb_ket">Keterangan</label><input id="pb_ket" value="${esc(row?.keterangan || '')}"></div>
       </div>
       <h4>Item Pembelian</h4>
       <div class="table-wrap"><table class="mini-table">
-        <thead><tr><th>Bahan</th><th class="r">Qty</th><th class="r">Harga Beli</th><th class="r">Jumlah</th><th></th></tr></thead>
+        <thead><tr><th scope="col">Bahan</th><th scope="col" class="r">Qty</th><th scope="col" class="r">Harga Beli</th><th scope="col" class="r">Jumlah</th><th scope="col"></th></tr></thead>
         <tbody id="pb_tb"></tbody>
-        <tfoot><tr><td colspan="3" class="r bold">Total</td><td class="r bold" id="pb_tot"></td><td></td></tr></tfoot>
+        <tfoot><tr><td colspan="3" class="r bold">Total</td><td class="r bold num" id="pb_tot"></td><td></td></tr></tfoot>
       </table></div>
       <button type="button" class="btn ghost sm" style="margin-top:10px" onclick="pbAdd()">+ Baris Bahan</button>
       <label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:12.5px">
@@ -815,12 +899,12 @@ async function pbForm(id) {
 }
 function pbRowHtml(r, i) {
   return `<tr>
-    <td><select class="tin" style="min-width:190px" onchange="pbSet(${i},'bahan_id',this.value)">
+    <td><select class="tin" style="min-width:190px" aria-label="Bahan" onchange="pbSet(${i},'bahan_id',this.value)">
       <option value="">— Pilih —</option>${bahanOptions(PB_BAHAN, r.bahan_id)}</select></td>
-    <td class="r"><input class="tin r" type="number" min="0" step="any" style="width:85px" value="${r.qty}" oninput="pbSet(${i},'qty',this.value)"></td>
-    <td class="r"><input class="tin r" type="number" min="0" step="any" style="width:110px" value="${r.harga_beli}" oninput="pbSet(${i},'harga_beli',this.value)"></td>
-    <td class="r bold" id="pbj_${i}">${rp((Number(r.qty) || 0) * (Number(r.harga_beli) || 0))}</td>
-    <td class="r"><button type="button" class="btn ghost sm danger-t" onclick="pbDelRow(${i})">✕</button></td></tr>`;
+    <td class="r"><input class="tin r num" type="number" min="0" step="any" style="width:85px" value="${r.qty}" aria-label="Qty" oninput="pbSet(${i},'qty',this.value)"></td>
+    <td class="r"><input class="tin r num" type="number" min="0" step="any" style="width:110px" value="${r.harga_beli}" aria-label="Harga beli" oninput="pbSet(${i},'harga_beli',this.value)"></td>
+    <td class="r bold num" id="pbj_${i}">${rp((Number(r.qty) || 0) * (Number(r.harga_beli) || 0))}</td>
+    <td class="r"><button type="button" class="btn ghost sm danger-t" aria-label="Hapus baris" onclick="pbDelRow(${i})">✕</button></td></tr>`;
 }
 function renderPbRows() {
   const tb = document.getElementById('pb_tb'); if (!tb) return;
@@ -852,18 +936,18 @@ async function pbDetail(id) {
     const tot = (d.items || []).reduce((s, x) => s + Number(x.qty) * Number(x.harga_beli), 0);
     openModal(`
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">${esc(d.kode)} · ${fdate(d.tanggal)}</h3>
-        <button class="btn ghost sm" data-close>✕</button></div>
+        <h3 id="mt" style="margin:0">${esc(d.kode)} · ${fdate(d.tanggal)}</h3>
+        <button class="btn ghost sm" aria-label="Tutup" data-close>✕</button></div>
       <p class="mut" style="margin-top:4px">${esc(d.supplier?.nama || 'Tanpa supplier')}${d.nomor_nota ? ' · Nota: ' + esc(d.nomor_nota) : ''}${d.keterangan ? ' · ' + esc(d.keterangan) : ''}</p>
       <div class="table-wrap"><table class="mini-table">
-        <thead><tr><th>Bahan</th><th class="r">Qty</th><th class="r">Harga Beli</th><th class="r">Jumlah</th></tr></thead>
-        <tbody>${d.items.map(x => `<tr><td><b>${esc(x.bahan?.nama)}</b> <small class="mono">${esc(x.bahan?.kode)}</small></td><td class="r">${nf(x.qty)} <small class="mono">${esc(x.bahan?.satuan || '')}</small></td><td class="r">${rp(x.harga_beli)}</td><td class="r bold">${rp(Number(x.qty) * Number(x.harga_beli))}</td></tr>`).join('')}</tbody>
-        <tfoot><tr><td colspan="3" class="r bold">Total</td><td class="r bold">${rp(tot)}</td></tr></tfoot>
+        <thead><tr><th scope="col">Bahan</th><th scope="col" class="r">Qty</th><th scope="col" class="r">Harga Beli</th><th scope="col" class="r">Jumlah</th></tr></thead>
+        <tbody>${d.items.map(x => `<tr><td><b>${esc(x.bahan?.nama)}</b> <small class="mono">${esc(x.bahan?.kode)}</small></td><td class="r num">${nf(x.qty)} <small class="mono">${esc(x.bahan?.satuan || '')}</small></td><td class="r num">${rp(x.harga_beli)}</td><td class="r bold num">${rp(Number(x.qty) * Number(x.harga_beli))}</td></tr>`).join('')}</tbody>
+        <tfoot><tr><td colspan="3" class="r bold">Total</td><td class="r bold num">${rp(tot)}</td></tr></tfoot>
       </table></div>`);
   } catch (e) { openModal(`<div class="empty">⚠ ${esc(e.message)}</div>`); }
 }
 function pbDel(id) {
-  openModal(`<h3>Hapus pembelian ini?</h3><p class="mut">Item di dalamnya juga terhapus. Harga master tidak ikut berubah.</p>
+  openModal(`<h3 id="mt">Hapus pembelian ini?</h3><p class="mut">Item di dalamnya juga terhapus. Harga master tidak ikut berubah.</p>
     <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
   $('#dl').onclick = async () => {
     try { await api('pembelian', { method: 'DELETE', params: { id } }); toast('Pembelian dihapus'); closeModal(); pagePembelian(); }
@@ -878,19 +962,19 @@ async function pageHPP() {
   $('#content').innerHTML = `
     <div class="card">
       <div class="table-wrap"><table>
-        <thead><tr><th>Kode PO</th><th>Produk</th><th class="r">Qty</th><th class="r">DM</th><th class="r">DL</th><th class="r">FOH</th><th class="r">HPP / pcs</th><th class="r">Harga Jual</th><th class="r">Margin</th><th>Status</th></tr></thead>
+        <thead><tr><th scope="col">Kode PO</th><th scope="col">Produk</th><th scope="col" class="r">Qty</th><th scope="col" class="r">DM</th><th scope="col" class="r">DL</th><th scope="col" class="r">FOH</th><th scope="col" class="r">HPP / pcs</th><th scope="col" class="r">Harga Jual</th><th scope="col" class="r">Margin</th><th scope="col">Status</th></tr></thead>
         <tbody>${rows.length ? rows.map(p => `
           <tr style="cursor:pointer" onclick="showHppBreakdown(${p.id})">
             <td class="mono">${esc(p.kode_po)}</td>
             <td><b>${esc(p.nama_produk)}</b><br><small class="mono">${esc(p.kode_produk)}</small></td>
-            <td class="r">${nf(p.qty)}</td>
-            <td class="r">${rp(p.material_aktual)}</td>
-            <td class="r">${rp(p.biaya_labor)}</td>
-            <td class="r">${rp(p.biaya_overhead)}</td>
-            <td class="r bold">${rp(p.hpp_per_pcs)}</td>
-            <td class="r">${rp(p.harga_jual)}</td>
+            <td class="r num">${nf(p.qty)}</td>
+            <td class="r num">${rp(p.material_aktual)}</td>
+            <td class="r num">${rp(p.biaya_labor)}</td>
+            <td class="r num">${rp(p.biaya_overhead)}</td>
+            <td class="r bold num">${rp(p.hpp_per_pcs)}</td>
+            <td class="r num">${rp(p.harga_jual)}</td>
             <td class="r">${Number(p.hpp_per_pcs) > 0 && Number(p.harga_jual) > 0 ? mBadge((Number(p.harga_jual) - Number(p.hpp_per_pcs)) / Number(p.harga_jual) * 100) : '—'}</td>
-            <td>${stBadge(p.status)}</td></tr>`).join('') : '<tr><td colspan="10" class="empty">Belum ada data PO.</td></tr>'}
+            <td>${stBadge(p.status)}</td></tr>`).join('') : `<tr><td colspan="10">${emptyState('📊','Belum ada data PO','Buat PO dulu di menu Production Order')}</td></tr>`}
         </tbody></table></div>
     </div>`;
 }
@@ -901,33 +985,33 @@ async function showHppBreakdown(poId) {
     const r = d.ringkasan;
     openModal(`
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">${esc(d.po.kode_po)} · ${esc(d.po.produk.nama)}</h3>
-        <button class="btn ghost sm" data-close>✕</button>
+        <h3 id="mt" style="margin:0">${esc(d.po.kode_po)} · ${esc(d.po.produk.nama)}</h3>
+        <button class="btn ghost sm" aria-label="Tutup" data-close>✕</button>
       </div>
       <p class="mut" style="margin-top:4px">${fdate(d.po.tanggal)} · ${nf(d.po.qty)} pcs · ${esc(d.po.status)}</p>
       <div class="preview" style="grid-template-columns:repeat(5,1fr)">
-        <div><span>DM</span><b>${rp(r.dm)}</b></div>
-        <div><span>DL</span><b>${rp(r.dl)}</b></div>
-        <div><span>FOH</span><b>${rp(r.foh)}</b></div>
-        <div><span>Total HPP</span><b>${rp(r.total_hpp)}</b></div>
-        <div><span>HPP / pcs</span><b>${rp2(r.hpp_per_pcs)}</b></div>
+        <div><span>DM</span><b class="num">${rp(r.dm)}</b></div>
+        <div><span>DL</span><b class="num">${rp(r.dl)}</b></div>
+        <div><span>FOH</span><b class="num">${rp(r.foh)}</b></div>
+        <div><span>Total HPP</span><b class="num">${rp(r.total_hpp)}</b></div>
+        <div><span>HPP / pcs</span><b class="num">${rp2(r.hpp_per_pcs)}</b></div>
       </div>
       <h4>Material — Standar vs Aktual</h4>
       <div class="table-wrap"><table class="mini-table">
-        <thead><tr><th>Bahan</th><th class="r">Std</th><th class="r">Aktual</th><th class="r">Biaya</th></tr></thead>
-        <tbody>${d.material.map(m => `<tr><td>${esc(m.nama)}</td><td class="r">${nf(m.qty_std_total)}</td><td class="r">${m.qty_aktual === null ? '<i class="mut">(std)</i>' : nf(m.qty_aktual)}</td><td class="r">${rp(m.biaya_aktual ?? m.biaya_std * d.po.qty)}</td></tr>`).join('')}</tbody>
+        <thead><tr><th scope="col">Bahan</th><th scope="col" class="r">Std</th><th scope="col" class="r">Aktual</th><th scope="col" class="r">Biaya</th></tr></thead>
+        <tbody>${d.material.map(m => `<tr><td>${esc(m.nama)}</td><td class="r num">${nf(m.qty_std_total)}</td><td class="r num">${m.qty_aktual === null ? '<i class="mut">(std)</i>' : nf(m.qty_aktual)}</td><td class="r num">${rp(m.biaya_aktual ?? m.biaya_std * d.po.qty)}</td></tr>`).join('')}</tbody>
       </table></div>
       <h4>Tenaga Kerja</h4>
       ${d.labor.length ? `<div class="table-wrap"><table class="mini-table">
-        <thead><tr><th>Proses</th><th>Sistem</th><th class="r">Biaya</th></tr></thead>
-        <tbody>${d.labor.map(l => `<tr><td>${esc(l.proses)}</td><td>${esc(l.sistem)}</td><td class="r">${rp(l.biaya)}</td></tr>`).join('')}</tbody>
+        <thead><tr><th scope="col">Proses</th><th scope="col">Sistem</th><th scope="col" class="r">Biaya</th></tr></thead>
+        <tbody>${d.labor.map(l => `<tr><td>${esc(l.proses)}</td><td>${esc(l.sistem)}</td><td class="r num">${rp(l.biaya)}</td></tr>`).join('')}</tbody>
       </table></div>` : '<p class="mut">Belum ada realisasi tenaga kerja.</p>'}
       <h4>Factory Overhead</h4>
       <p class="mut" style="font-size:12.5px">Periode ${d.overhead.periode} · rate ${rp2(d.overhead.per_pcs)}/pcs${d.overhead.note ? ' · ' + esc(d.overhead.note) : ''}</p>
       <div class="margin-box">
-        <div><span>Harga jual</span><b>${rp(d.po.harga_jual)}</b></div>
-        <div><span>Est. profit / pcs</span><b class="${r.margin_rp >= 0 ? 'up' : 'down'}">${rp(r.margin_rp)}</b></div>
-        <div><span>Est. margin</span><b>${pct(r.margin_pct)}</b></div>
+        <div><span>Harga jual</span><b class="num">${rp(d.po.harga_jual)}</b></div>
+        <div><span>Est. profit / pcs</span><b class="num ${r.margin_rp >= 0 ? 'up' : 'down'}">${rp(r.margin_rp)}</b></div>
+        <div><span>Est. margin</span><b class="num">${pct(r.margin_pct)}</b></div>
       </div>`);
   } catch (e) { openModal(`<div class="empty">⚠ ${esc(e.message)}</div>`); }
 }
@@ -941,16 +1025,16 @@ async function pagePenjualan() {
   const tot = rows.reduce((a, r) => { a.net += Number(r.net_sales || 0); a.laba += Number(r.laba_bersih || 0); return a; }, { net: 0, laba: 0 });
   $('#content').innerHTML = `
     <div class="stats">
-      <div class="stat"><span>Total Net Sales</span><b>${rp(tot.net)}</b></div>
-      <div class="stat"><span>Total Laba Bersih</span><b class="${tot.laba >= 0 ? 'up' : 'down'}">${rp(tot.laba)}</b></div>
+      <div class="stat"><span>Total Net Sales</span><b class="num">${rp(tot.net)}</b></div>
+      <div class="stat"><span>Total Laba Bersih</span><b class="num ${tot.laba >= 0 ? 'up' : 'down'}">${rp(tot.laba)}</b></div>
       <div class="stat"><span>Margin Gabungan</span><b>${tot.net ? mBadge(tot.laba / tot.net * 100) : '—'}</b></div>
-      <div class="stat"><span>Jumlah Transaksi</span><b>${rows.length}</b></div>
+      <div class="stat"><span>Jumlah Transaksi</span><b class="num">${rows.length}</b></div>
     </div>
     <div class="card">
       <div class="card-head"><div class="mut">Klik 🧾 untuk buat invoice dari transaksi</div><button class="btn" onclick="pjlForm()">+ Catat Penjualan</button></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Tanggal</th><th>Produk</th><th>Channel</th><th class="r">Qty</th><th class="r">Net Sales</th><th class="r">Fee</th><th class="r">HPP</th><th class="r">Laba</th><th class="r">Margin</th><th class="r">Aksi</th></tr></thead>
-        <tbody>${rows.length ? rows.map(pjlRow).join('') : '<tr><td colspan="10" class="empty">Belum ada penjualan.</td></tr>'}</tbody>
+        <thead><tr><th scope="col">Tanggal</th><th scope="col">Produk</th><th scope="col">Channel</th><th scope="col" class="r">Qty</th><th scope="col" class="r">Net Sales</th><th scope="col" class="r">Fee</th><th scope="col" class="r">HPP</th><th scope="col" class="r">Laba</th><th scope="col" class="r">Margin</th><th scope="col" class="r">Aksi</th></tr></thead>
+        <tbody>${rows.length ? rows.map(pjlRow).join('') : `<tr><td colspan="10">${emptyState('🛒','Belum ada penjualan','Klik “+ Catat Penjualan”')}</td></tr>`}</tbody>
       </table></div>
     </div>`;
 }
@@ -959,44 +1043,44 @@ function pjlRow(j) {
   return `<tr>
     <td>${fdate(j.tanggal)}</td>
     <td><b>${esc(j.nama_produk)}</b><br><small class="mono">${esc(j.kode_produk)}</small></td>
-    <td><span class="badge b-indigo">${esc(j.channel)}</span></td>
-    <td class="r">${nf(j.qty)}</td>
-    <td class="r">${rp(j.net_sales)}</td>
-    <td class="r mono">${rp(j.biaya_fee)}</td>
-    <td class="r mono">${rp(j.total_hpp)}</td>
-    <td class="r bold ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td>
+    <td><span class="badge b-teal">${esc(j.channel)}</span></td>
+    <td class="r num">${nf(j.qty)}</td>
+    <td class="r num">${rp(j.net_sales)}</td>
+    <td class="r mono num">${rp(j.biaya_fee)}</td>
+    <td class="r mono num">${rp(j.total_hpp)}</td>
+    <td class="r bold num ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td>
     <td class="r">${mBadge(margin)}</td>
     <td class="r"><div class="act">
-      ${!j.invoice_id ? `<button class="btn soft sm" onclick="invForm(null,{id:${j.id},produk_id:${j.produk_id},qty:${j.qty},harga_jual:${Number(j.harga_jual) || 0},diskon_pct:${Number(j.diskon_pct) || 0},channel:'${esc(j.channel)}',tanggal:'${j.tanggal}'})">🧾 Invoice</button>` : '<span class="badge b-green">Invoiced</span>'}
+      ${!j.invoice_id ? `<button class="btn soft sm" onclick="invForm(null,{id:${j.id},produk_id:${j.produk_id},qty:${j.qty},harga_jual:${Number(j.harga_jual) || 0},diskon_pct:${Number(j.diskon_pct) || 0},channel:'${esc(j.channel)}',tanggal:'${j.tanggal}'})" aria-label="Buat invoice">🧾</button>` : '<span class="badge b-green">Invoiced</span>'}
       <button class="btn ghost sm" onclick="pjlForm(${j.id})">Edit</button>
-      <button class="btn ghost sm danger-t" onclick="pjlDel(${j.id})">✕</button>
+      <button class="btn ghost sm danger-t" aria-label="Hapus transaksi" onclick="pjlDel(${j.id})">✕</button>
     </div></td></tr>`;
 }
 function pjlForm(id) {
   if (!PJ.length) return toast('Tambahkan produk dulu di Master Produk', 'err');
   const row = id ? PJ_CACHE.find(x => x.id === id) : null;
   openModal(`
-    <h3>${row ? 'Edit' : 'Catat'} Penjualan</h3>
+    <h3 id="mt">${row ? 'Edit' : 'Catat'} Penjualan</h3>
     <form id="jf">
       <div class="grid2">
-        <div class="field"><label>Produk *</label>
+        <div class="field"><label for="j_prod">Produk *</label>
           <select id="j_prod">${PJ.map(p => `<option value="${p.id}" data-hj="${p.harga_jual}" ${row && row.produk_id === p.id ? 'selected' : ''}>${esc(p.kode)} · ${esc(p.nama)}</option>`).join('')}</select></div>
-        <div class="field"><label>Tanggal</label><input id="j_tgl" type="date" value="${row?.tanggal || today()}"></div>
+        <div class="field"><label for="j_tgl">Tanggal</label><input id="j_tgl" type="date" value="${row?.tanggal || today()}"></div>
       </div>
       <div class="grid2">
-        <div class="field"><label>Qty *</label><input id="j_qty" type="number" min="1" step="1" value="${row?.qty || 1}" required></div>
-        <div class="field"><label>Channel</label><select id="j_ch">${CHANNELS.map(c => `<option ${row?.channel === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
+        <div class="field"><label for="j_qty">Qty *</label><input id="j_qty" type="number" min="1" step="1" value="${row?.qty || 1}" required></div>
+        <div class="field"><label for="j_ch">Channel</label><select id="j_ch">${CHANNELS.map(c => `<option ${row?.channel === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
       </div>
       <div class="grid3">
-        <div class="field"><label>Harga Jual / pcs *</label><input id="j_hj" type="number" min="0" step="any" value="${row?.harga_jual || ''}" required></div>
-        <div class="field"><label>Diskon %</label><input id="j_dis" type="number" min="0" step="any" value="${row?.diskon_pct ?? 0}"></div>
-        <div class="field"><label>Fee Marketplace %</label><input id="j_fee" type="number" min="0" step="any" value="${row?.fee_pct ?? 0}"></div>
+        <div class="field"><label for="j_hj">Harga Jual / pcs *</label><input id="j_hj" type="number" min="0" step="any" value="${row?.harga_jual || ''}" required></div>
+        <div class="field"><label for="j_dis">Diskon %</label><input id="j_dis" type="number" min="0" step="any" value="${row?.diskon_pct ?? 0}"></div>
+        <div class="field"><label for="j_fee">Fee Marketplace %</label><input id="j_fee" type="number" min="0" step="any" value="${row?.fee_pct ?? 0}"></div>
       </div>
       <div class="grid2">
-        <div class="field"><label>HPP / pcs <span class="mut">(auto dari PO terakhir)</span></label><input id="j_hpp" type="number" min="0" step="any" value="${row?.hpp_satuan || 0}"></div>
-        <div class="field"><label>Biaya lain (ads, packaging)</label><input id="j_lain" type="number" min="0" step="any" value="${row?.biaya_lain || 0}"></div>
+        <div class="field"><label for="j_hpp">HPP / pcs <span class="mut">(auto dari PO)</span></label><input id="j_hpp" type="number" min="0" step="any" value="${row?.hpp_satuan || 0}"></div>
+        <div class="field"><label for="j_lain">Biaya lain (ads, packaging)</label><input id="j_lain" type="number" min="0" step="any" value="${row?.biaya_lain || 0}"></div>
       </div>
-      <div class="preview" id="j_prev"></div>
+      <div class="preview num" id="j_prev"></div>
       <div class="form-actions"><button type="button" class="btn ghost" data-close>Batal</button><button type="submit" class="btn">Simpan</button></div>
     </form>`);
   $('#j_prod').onchange = async () => {
@@ -1034,7 +1118,7 @@ function jPrev() {
     <div><span>Margin</span><b>${pct(m)}</b></div>`;
 }
 function pjlDel(id) {
-  openModal(`<h3>Hapus transaksi ini?</h3>
+  openModal(`<h3 id="mt">Hapus transaksi ini?</h3>
     <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
   $('#dl').onclick = async () => {
     try { await api('penjualan', { method: 'DELETE', params: { id } }); toast('Transaksi dihapus'); closeModal(); pagePenjualan(); }
@@ -1042,7 +1126,7 @@ function pjlDel(id) {
   };
 }
 
-/* ================= PAGE: INVOICE (v1.1) ================= */
+/* ================= PAGE: INVOICE ================= */
 let INV_PRODUK = [], INV_CACHE = [], INV_ITEMS = [], SRC_IDS = [], INV_DIRTY = false, INV_VIEW = null;
 async function pageInvoice() {
   setPage('Invoice', 'Tagihan pelanggan — PDF siap kirim & share WhatsApp');
@@ -1052,15 +1136,15 @@ async function pageInvoice() {
   const lunas = rows.filter(r => r.status_bayar === 'Lunas').reduce((s, r) => s + Number(r.total || 0), 0);
   $('#content').innerHTML = `
     <div class="stats">
-      <div class="stat"><span>Piutang Belum Dibayar</span><b class="${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</b></div>
-      <div class="stat"><span>Sudah Lunas</span><b class="up">${rp(lunas)}</b></div>
-      <div class="stat"><span>Jumlah Invoice</span><b>${rows.length}</b></div>
+      <div class="stat"><span>Piutang Belum Dibayar</span><b class="num ${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</b></div>
+      <div class="stat"><span>Sudah Lunas</span><b class="num up">${rp(lunas)}</b></div>
+      <div class="stat"><span>Jumlah Invoice</span><b class="num">${rows.length}</b></div>
     </div>
     <div class="card">
       <div class="card-head"><div class="mut">Klik 📄 untuk lihat, cetak PDF, atau kirim WA</div><button class="btn" onclick="invForm()">+ Invoice Baru</button></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Nomor</th><th>Tanggal</th><th>Pelanggan</th><th class="r">Item</th><th class="r">Total</th><th class="r">Sisa</th><th>Status</th><th class="r">Aksi</th></tr></thead>
-        <tbody>${rows.length ? rows.map(invRow).join('') : '<tr><td colspan="8" class="empty">Belum ada invoice.</td></tr>'}</tbody>
+        <thead><tr><th scope="col">Nomor</th><th scope="col">Tanggal</th><th scope="col">Pelanggan</th><th scope="col" class="r">Item</th><th scope="col" class="r">Total</th><th scope="col" class="r">Sisa</th><th scope="col">Status</th><th scope="col" class="r">Aksi</th></tr></thead>
+        <tbody>${rows.length ? rows.map(invRow).join('') : `<tr><td colspan="8">${emptyState('🧾','Belum ada invoice','Klik “+ Invoice Baru”')}</td></tr>`}</tbody>
       </table></div>
     </div>`;
 }
@@ -1069,17 +1153,17 @@ function invRow(r) {
   const late = r.jatuh_tempo && sisa > 0 && r.jatuh_tempo < today();
   return `<tr>
     <td class="mono">${esc(r.nomor)}</td>
-    <td>${fdate(r.tanggal)}<br><small class="mut">Tempo: ${fdate(r.jatuh_tempo)}${late ? ' <span class="down" style="font-weight:700">⚠</span>' : ''}</small></td>
+    <td>${fdate(r.tanggal)}<br><small class="mut">Tempo: ${fdate(r.jatuh_tempo)}${late ? ' <span class="down" style="font-weight:700">⚠ lewat</span>' : ''}</small></td>
     <td><b>${esc(r.customer_nama)}</b><br><small class="mono">${esc(r.customer_telepon || '—')}</small></td>
-    <td class="r">${r.jml_item}</td>
-    <td class="r bold">${rp(r.total)}</td>
-    <td class="r ${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</td>
+    <td class="r num">${r.jml_item}</td>
+    <td class="r bold num">${rp(r.total)}</td>
+    <td class="r num ${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</td>
     <td>${payBadge(r.status_bayar)}</td>
     <td class="r"><div class="act">
-      <button class="btn soft sm" onclick="invView(${r.id})">📄 PDF</button>
+      <button class="btn soft sm" onclick="invView(${r.id})" aria-label="Lihat PDF">📄</button>
       ${r.status_bayar !== 'Lunas' ? `<button class="btn ghost sm" onclick="invLunas(${r.id})">✓ Lunas</button>` : ''}
       <button class="btn ghost sm" onclick="invForm(${r.id})">Edit</button>
-      <button class="btn ghost sm danger-t" onclick="invDel(${r.id})">✕</button>
+      <button class="btn ghost sm danger-t" aria-label="Hapus invoice" onclick="invDel(${r.id})">✕</button>
     </div></td></tr>`;
 }
 async function invForm(id, sumber) {
@@ -1099,43 +1183,43 @@ async function invForm(id, sumber) {
   const chDef = (row?.channel) || (sumber?.channel) || 'Invoice';
   const chOpts = ['Invoice', ...CHANNELS.filter(c => c !== 'Invoice')];
   openModal(`
-    <h3>${row ? 'Edit ' + esc(row.nomor) : 'Invoice Baru'}</h3>
+    <h3 id="mt">${row ? 'Edit ' + esc(row.nomor) : 'Invoice Baru'}</h3>
     <form id="ivf">
       <div class="grid2">
-        <div class="field"><label>Nama Pelanggan *</label><input id="iv_nama" required value="${esc(row?.customer_nama || '')}" placeholder="Nama / toko pembeli"></div>
-        <div class="field"><label>No. WhatsApp</label><input id="iv_telp" value="${esc(row?.customer_telepon || '')}" placeholder="08xxxxxxxxxx"></div>
+        <div class="field"><label for="iv_nama">Nama Pelanggan *</label><input id="iv_nama" required value="${esc(row?.customer_nama || '')}" placeholder="Nama / toko pembeli"></div>
+        <div class="field"><label for="iv_telp">No. WhatsApp</label><input id="iv_telp" type="tel" value="${esc(row?.customer_telepon || '')}" placeholder="08xxxxxxxxxx"></div>
       </div>
       <div class="grid2">
-        <div class="field"><label>Email (opsional)</label><input id="iv_email" type="email" value="${esc(row?.customer_email || '')}"></div>
-        <div class="field"><label>Channel</label><select id="iv_ch">${chOpts.map(c => `<option ${chDef === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
+        <div class="field"><label for="iv_email">Email (opsional)</label><input id="iv_email" type="email" value="${esc(row?.customer_email || '')}"></div>
+        <div class="field"><label for="iv_ch">Channel</label><select id="iv_ch">${chOpts.map(c => `<option ${chDef === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
       </div>
-      <div class="field"><label>Alamat</label><textarea id="iv_alamat" rows="2">${esc(row?.customer_alamat || '')}</textarea></div>
+      <div class="field"><label for="iv_alamat">Alamat</label><textarea id="iv_alamat" rows="2">${esc(row?.customer_alamat || '')}</textarea></div>
       <div class="grid2">
-        <div class="field"><label>Tanggal</label><input id="iv_tgl" type="date" value="${row?.tanggal || sumber?.tanggal || today()}"></div>
-        <div class="field"><label>Jatuh Tempo</label><input id="iv_jt" type="date" value="${tempo}"></div>
+        <div class="field"><label for="iv_tgl">Tanggal</label><input id="iv_tgl" type="date" value="${row?.tanggal || sumber?.tanggal || today()}"></div>
+        <div class="field"><label for="iv_jt">Jatuh Tempo</label><input id="iv_jt" type="date" value="${tempo}"></div>
       </div>
       <h4>Item Invoice</h4>
       <div class="table-wrap"><table class="mini-table">
-        <thead><tr><th>Produk</th><th class="r">Qty</th><th class="r">Harga</th><th class="r">Disc %</th><th class="r">Jumlah</th><th></th></tr></thead>
+        <thead><tr><th scope="col">Produk</th><th scope="col" class="r">Qty</th><th scope="col" class="r">Harga</th><th scope="col" class="r">Disc %</th><th scope="col" class="r">Jumlah</th><th scope="col"></th></tr></thead>
         <tbody id="iv_tb"></tbody>
       </table></div>
       <button type="button" class="btn ghost sm" style="margin-top:10px" onclick="invAdd()">+ Baris Produk</button>
       <div class="grid3" style="margin-top:14px">
-        <div class="field"><label>Ongkir (Rp)</label><input id="iv_ongkir" type="number" min="0" step="any" value="${row?.ongkir ?? 0}" oninput="invPrev()"></div>
-        <div class="field"><label>Potongan (Rp)</label><input id="iv_pot" type="number" min="0" step="any" value="${row?.potongan ?? 0}" oninput="invPrev()"></div>
-        <div class="field"><label>Pajak %</label><input id="iv_pjk" type="number" min="0" step="any" value="${row?.pajak_pct ?? 0}" oninput="invPrev()"></div>
+        <div class="field"><label for="iv_ongkir">Ongkir (Rp)</label><input id="iv_ongkir" type="number" min="0" step="any" value="${row?.ongkir ?? 0}" oninput="invPrev()"></div>
+        <div class="field"><label for="iv_pot">Potongan (Rp)</label><input id="iv_pot" type="number" min="0" step="any" value="${row?.potongan ?? 0}" oninput="invPrev()"></div>
+        <div class="field"><label for="iv_pjk">Pajak %</label><input id="iv_pjk" type="number" min="0" step="any" value="${row?.pajak_pct ?? 0}" oninput="invPrev()"></div>
       </div>
       <div class="grid3">
-        <div class="field"><label>Status Bayar</label><select id="iv_st" onchange="ivStatus()">
+        <div class="field"><label for="iv_st">Status Bayar</label><select id="iv_st" onchange="ivStatus()">
           ${['Belum Bayar','DP','Lunas'].map(s => `<option ${((row?.status_bayar) || 'Belum Bayar') === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
-        <div class="field"><label>Sudah Dibayar (Rp)</label><input id="iv_bayar" type="number" min="0" step="any" value="${row?.nominal_bayar ?? 0}" oninput="invPrev()"></div>
-        <div class="field"><label>Metode Bayar</label><input id="iv_met" value="${esc(row?.metode_bayar || '')}" placeholder="Transfer / QRIS / Cash"></div>
+        <div class="field"><label for="iv_bayar">Sudah Dibayar (Rp)</label><input id="iv_bayar" type="number" min="0" step="any" value="${row?.nominal_bayar ?? 0}" oninput="invPrev()"></div>
+        <div class="field"><label for="iv_met">Metode Bayar</label><input id="iv_met" value="${esc(row?.metode_bayar || '')}" placeholder="Transfer / QRIS / Cash"></div>
       </div>
-      <div class="field"><label>Catatan (tampil di invoice)</label><input id="iv_cat" value="${esc(row?.catatan || '')}"></div>
+      <div class="field"><label for="iv_cat">Catatan (tampil di invoice)</label><input id="iv_cat" value="${esc(row?.catatan || '')}"></div>
       ${SRC_IDS.length
-        ? `<p class="mut" style="font-size:12px;background:var(--ok2);padding:9px 12px;border-radius:10px">🔗 Terhubung ke transaksi Penjualan — tidak akan ada pencatatan ganda.</p>`
-        : `<label style="display:flex;gap:8px;align-items:flex-start;margin-top:4px;font-size:12.5px"><input type="checkbox" id="iv_catat" checked style="width:16px;height:16px;margin-top:1px"><span>Catat otomatis ke menu <b>Penjualan</b><br><span class="mut" style="font-size:11px">Nonaktifkan bila transaksi sudah dicatat manual di menu Penjualan.</span></span></label>`}
-      <div class="margin-box" id="iv_prev"></div>
+        ? `<p class="mut" style="font-size:12px;background:var(--ok-bg);padding:9px 12px;border-radius:10px">🔗 Terhubung ke transaksi Penjualan — tidak ada pencatatan ganda.</p>`
+        : `<label style="display:flex;gap:8px;align-items:flex-start;margin-top:4px;font-size:12.5px"><input type="checkbox" id="iv_catat" checked style="width:16px;height:16px;margin-top:1px"><span>Catat otomatis ke menu <b>Penjualan</b><br><span class="mut" style="font-size:11px">Nonaktifkan bila sudah dicatat manual.</span></span></label>`}
+      <div class="margin-box num" id="iv_prev"></div>
       <div class="form-actions"><button type="button" class="btn ghost" data-close>Batal</button><button type="submit" class="btn">Simpan Invoice</button></div>
     </form>`);
   renderInvRows();
@@ -1164,18 +1248,18 @@ async function invForm(id, sumber) {
 }
 function invRowHtml(r, i) {
   return `<tr>
-    <td><select class="tin" style="min-width:190px" onchange="invSet(${i},'produk_id',this.value)">
+    <td><select class="tin" style="min-width:190px" aria-label="Produk" onchange="invSet(${i},'produk_id',this.value)">
       <option value="">— Pilih —</option>
       ${INV_PRODUK.map(p2 => `<option value="${p2.id}" ${Number(r.produk_id) === p2.id ? 'selected' : ''}>${esc(p2.kode)} · ${esc(p2.nama)}</option>`).join('')}</select></td>
-    <td class="r"><input class="tin r" type="number" min="1" step="1" style="width:70px" value="${r.qty}" oninput="invSet(${i},'qty',this.value)"></td>
-    <td class="r"><input class="tin r" type="number" min="0" step="any" style="width:110px" value="${r.harga}" oninput="invSet(${i},'harga',this.value)"></td>
-    <td class="r"><input class="tin r" type="number" min="0" step="any" style="width:60px" value="${r.diskon_pct}" oninput="invSet(${i},'diskon_pct',this.value)"></td>
-    <td class="r bold" id="ivj_${i}">${rp((Number(r.qty) || 0) * (Number(r.harga) || 0) * (1 - (Number(r.diskon_pct) || 0) / 100))}</td>
-    <td class="r"><button type="button" class="btn ghost sm danger-t" onclick="invDelRow(${i})">✕</button></td></tr>`;
+    <td class="r"><input class="tin r num" type="number" min="1" step="1" style="width:70px" value="${r.qty}" aria-label="Qty" oninput="invSet(${i},'qty',this.value)"></td>
+    <td class="r"><input class="tin r num" type="number" min="0" step="any" style="width:110px" value="${r.harga}" aria-label="Harga" oninput="invSet(${i},'harga',this.value)"></td>
+    <td class="r"><input class="tin r num" type="number" min="0" step="any" style="width:60px" value="${r.diskon_pct}" aria-label="Diskon persen" oninput="invSet(${i},'diskon_pct',this.value)"></td>
+    <td class="r bold num" id="ivj_${i}">${rp((Number(r.qty) || 0) * (Number(r.harga) || 0) * (1 - (Number(r.diskon_pct) || 0) / 100))}</td>
+    <td class="r"><button type="button" class="btn ghost sm danger-t" aria-label="Hapus baris" onclick="invDelRow(${i})">✕</button></td></tr>`;
 }
 function renderInvRows() {
   const tb = document.getElementById('iv_tb'); if (!tb) return;
-  tb.innerHTML = INV_ITEMS.length ? INV_ITEMS.map(invRowHtml).join('') : '<tr><td colspan="6" class="empty">Klik “+ Baris Produk”.</td></tr>';
+  tb.innerHTML = INV_ITEMS.length ? INV_ITEMS.map(invRowHtml).join('') : `<tr><td colspan="6">${emptyState('➕','Klik “+ Baris Produk”','')}</td></tr>`;
   invPrev();
 }
 function invSet(i, k, v) {
@@ -1228,9 +1312,9 @@ async function invView(id) {
         <div><b>${esc(d.nomor)}</b><div class="mut" style="font-size:12px">${esc(d.customer_nama)}</div></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn" onclick="printHTML(document.getElementById('invPaper').outerHTML)">🖨️ Cetak / PDF</button>
-          <button class="btn soft" onclick="waInv()">💬 WhatsApp</button>
+          <button class="btn acc" onclick="waInv()">💬 WhatsApp</button>
           ${d.status_bayar !== 'Lunas' ? `<button class="btn ghost" onclick="invLunas(${d.id})">✓ Lunas</button>` : ''}
-          <button class="btn ghost" data-close>✕</button>
+          <button class="btn ghost" aria-label="Tutup" data-close>✕</button>
         </div>
       </div>
       ${invPaper(d, sisa)}`);
@@ -1241,15 +1325,16 @@ function invPaper(d, sisa) {
   const pajakRp = Number(d.total) - Number(d.ongkir || 0) - Math.max(Number(d.subtotal || 0) - Number(d.potongan || 0), 0);
   const initial = esc((s.nama_usaha || 'U').trim().charAt(0).toUpperCase());
   const logo = s.logo_url
-    ? `<img src="${esc(s.logo_url)}" style="height:46px;border-radius:8px;margin-bottom:6px" alt="logo">`
-    : `<div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;margin-bottom:6px">${initial}</div>`;
+    ? `<img src="${esc(s.logo_url)}" style="height:46px;border-radius:8px;margin-bottom:6px" alt="Logo usaha">`
+    : `<div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#F59E0B,#D97706);color:#082F2C;display:grid;place-items:center;font-weight:800;font-size:18px;margin-bottom:6px">${initial}</div>`;
   return `<div class="inv" id="invPaper">
     <div class="inv-head">
-      <div>${logo}<b style="font-size:16px">${esc(s.nama_usaha || '—')}</b>
+      <div>${logo}<b style="font-size:16px;color:#115E59">${esc(s.nama_usaha || '—')}</b>
         ${s.alamat ? `<div class="mut" style="white-space:pre-line">${esc(s.alamat)}</div>` : ''}
         <div class="mut">${esc([s.telepon, s.email].filter(Boolean).join(' · '))}</div></div>
       <div style="text-align:right">
-        <div style="font-size:21px;font-weight:800;letter-spacing:4px;color:var(--ac)">INVOICE</div>
+        <div class="inv-word">INVOICE</div>
+        <div class="inv-rule"></div>
         <div class="mono" style="font-size:12px">${esc(d.nomor)}</div>
         <div class="mut" style="font-size:11.5px;margin-top:4px">Tanggal: ${fdate(d.tanggal)}</div>
         <div class="mut" style="font-size:11.5px">Jatuh Tempo: ${fdate(d.jatuh_tempo)}</div>
@@ -1263,23 +1348,23 @@ function invPaper(d, sisa) {
       ${d.customer_telepon || d.customer_email ? `<div class="mut">${esc([d.customer_telepon, d.customer_email].filter(Boolean).join(' · '))}</div>` : ''}
     </div>
     <div class="table-wrap"><table class="inv-table">
-      <thead><tr><th class="c">#</th><th>Deskripsi</th><th class="r">Qty</th><th class="r">Harga</th><th class="r">Disc</th><th class="r">Jumlah</th></tr></thead>
+      <thead><tr><th scope="col" class="c">#</th><th scope="col">Deskripsi</th><th scope="col" class="r">Qty</th><th scope="col" class="r">Harga</th><th scope="col" class="r">Disc</th><th scope="col" class="r">Jumlah</th></tr></thead>
       <tbody>${(d.items || []).map((it, ix) => `<tr>
         <td class="c mut">${ix + 1}</td>
         <td><b>${esc(it.deskripsi || it.produk?.nama || '—')}</b> <small class="mono">${esc(it.produk?.kode || '')}</small></td>
-        <td class="r">${nf(it.qty)}</td>
-        <td class="r">${rp(it.harga)}</td>
-        <td class="r">${Number(it.diskon_pct) ? pct(it.diskon_pct) : '—'}</td>
-        <td class="r bold">${rp(Number(it.qty) * Number(it.harga) * (1 - Number(it.diskon_pct || 0) / 100))}</td></tr>`).join('')}</tbody>
+        <td class="r num">${nf(it.qty)}</td>
+        <td class="r num">${rp(it.harga)}</td>
+        <td class="r num">${Number(it.diskon_pct) ? pct(it.diskon_pct) : '—'}</td>
+        <td class="r bold num">${rp(Number(it.qty) * Number(it.harga) * (1 - Number(it.diskon_pct || 0) / 100))}</td></tr>`).join('')}</tbody>
     </table></div>
     <div class="inv-totals">
-      <div class="kv"><span>Subtotal</span><b>${rp(d.subtotal)}</b></div>
-      ${Number(d.potongan) ? `<div class="kv"><span>Potongan</span><b>- ${rp(d.potongan)}</b></div>` : ''}
-      ${Number(d.pajak_pct) ? `<div class="kv"><span>Pajak ${pct(d.pajak_pct)}</span><b>${rp(pajakRp)}</b></div>` : ''}
-      ${Number(d.ongkir) ? `<div class="kv"><span>Ongkos Kirim</span><b>${rp(d.ongkir)}</b></div>` : ''}
-      <div class="kv grand"><span>TOTAL</span><b>${rp(d.total)}</b></div>
-      ${Number(d.nominal_bayar) ? `<div class="kv"><span>Dibayar${d.metode_bayar ? ' (' + esc(d.metode_bayar) + ')' : ''}</span><b class="up">- ${rp(d.nominal_bayar)}</b></div>
-      <div class="kv grand"><span>SISA</span><b class="${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</b></div>` : ''}
+      <div class="kv"><span>Subtotal</span><b class="num">${rp(d.subtotal)}</b></div>
+      ${Number(d.potongan) ? `<div class="kv"><span>Potongan</span><b class="num">- ${rp(d.potongan)}</b></div>` : ''}
+      ${Number(d.pajak_pct) ? `<div class="kv"><span>Pajak ${pct(d.pajak_pct)}</span><b class="num">${rp(pajakRp)}</b></div>` : ''}
+      ${Number(d.ongkir) ? `<div class="kv"><span>Ongkos Kirim</span><b class="num">${rp(d.ongkir)}</b></div>` : ''}
+      <div class="kv grand"><span>TOTAL</span><b class="num">${rp(d.total)}</b></div>
+      ${Number(d.nominal_bayar) ? `<div class="kv"><span>Dibayar${d.metode_bayar ? ' (' + esc(d.metode_bayar) + ')' : ''}</span><b class="num up">- ${rp(d.nominal_bayar)}</b></div>
+      <div class="kv grand"><span>SISA</span><b class="num ${sisa > 0 ? 'down' : 'up'}">${rp(sisa)}</b></div>` : ''}
     </div>
     ${s.rekening ? `<div class="inv-pay"><b>💳 Pembayaran</b><div style="white-space:pre-line;margin-top:4px">${esc(s.rekening)}</div></div>` : ''}
     ${d.catatan ? `<div class="inv-note"><b>Catatan:</b> <span style="white-space:pre-line">${esc(d.catatan)}</span></div>` : ''}
@@ -1306,9 +1391,7 @@ function waInv() {
   if (Number(d.nominal_bayar)) { L.push(`Dibayar: ${rp(d.nominal_bayar)}`); L.push(`*Sisa: ${rp(sisa)}*`); }
   L.push('');
   L.push(`Status: *${d.status_bayar}*`);
-  if (s.rekening) L.push('');
-  if (s.rekening) L.push('Pembayaran:');
-  if (s.rekening) L.push(s.rekening);
+  if (s.rekening) { L.push(''); L.push('Pembayaran:'); L.push(s.rekening); }
   if (d.catatan) { L.push(''); L.push('_' + d.catatan + '_'); }
   L.push('');
   L.push(s.footer_invoice || 'Terima kasih 🙏');
@@ -1329,7 +1412,7 @@ async function invLunas(id) {
   } catch (e) { toast(e.message, 'err'); }
 }
 function invDel(id) {
-  openModal(`<h3>Hapus invoice ini?</h3><p class="mut">Baris penjualan yang dibuat otomatis dari invoice ini ikut dihapus. Transaksi yang hanya ditautkan akan dilepas (tetap ada di Penjualan).</p>
+  openModal(`<h3 id="mt">Hapus invoice ini?</h3><p class="mut">Baris penjualan yang dibuat otomatis dari invoice ini ikut dihapus. Transaksi yang hanya ditautkan akan dilepas (tetap ada di Penjualan).</p>
     <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
   $('#dl').onclick = async () => {
     try { await api('invoice', { method: 'DELETE', params: { id } }); toast('Invoice dihapus'); closeModal(); pageInvoice(); }
@@ -1337,26 +1420,52 @@ function invDel(id) {
   };
 }
 
-/* ================= PAGE: PENGATURAN (v1.1) ================= */
+/* ================= PAGE: PENGATURAN + LOGO ================= */
+let CURRENT_SET = {}, LOGO_DRAFT = null;
 async function pagePengaturan() {
-  setPage('Pengaturan', 'Profil usaha — tampil di kop invoice & pesan WhatsApp');
+  setPage('Pengaturan', 'Identitas usaha, logo & kop invoice');
   const s = await api('pengaturan');
+  CURRENT_SET = s || {}; LOGO_DRAFT = null;
+  const hasLogo = !!s.logo_url;
   $('#content').innerHTML = `
-    <div class="card" style="max-width:680px">
-      <div class="card-head"><b>Profil Usaha</b></div>
-      <div style="padding:16px">
-        <div class="grid2">
-          <div class="field"><label>Nama Usaha *</label><input id="s_nama" value="${esc(s.nama_usaha || '')}"></div>
-          <div class="field"><label>Telepon</label><input id="s_telp" value="${esc(s.telepon || '')}"></div>
+    <div class="card" style="max-width:760px">
+      <div class="card-head"><b>Logo Usaha</b><span class="mut">PNG / JPG / WebP / SVG · maks 500 KB</span></div>
+      <div style="padding:16px 18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+        <div class="logo-tile" id="logoPrev" aria-label="Preview logo">${hasLogo
+          ? `<img src="${esc(s.logo_url)}" alt="Logo usaha">`
+          : esc((s.nama_usaha || 'U').trim().charAt(0).toUpperCase())}</div>
+        <div style="flex:1;min-width:220px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <label class="btn ghost sm" for="logoFile" style="cursor:pointer">⬆ ${hasLogo ? 'Ganti Logo' : 'Upload Logo'}</label>
+            <input type="file" id="logoFile" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml" hidden onchange="logoPick(this)">
+            ${hasLogo ? '<button class="btn ghost sm danger-t" onclick="logoDelete()">🗑 Hapus Logo</button>' : ''}
+          </div>
+          <p class="mut" style="margin-top:9px">Logo tampil di kop invoice (cetak & PDF). Setelah memilih file, klik <b>Simpan Pengaturan</b> di bawah untuk menerapkan.</p>
         </div>
-        <div class="field"><label>Alamat</label><textarea id="s_alamat" rows="2">${esc(s.alamat || '')}</textarea></div>
+      </div>
+    </div>
+    <div class="card" style="max-width:760px">
+      <div class="card-head"><b>Profil Usaha</b><span class="mut">Tampil di kop invoice & pesan WhatsApp</span></div>
+      <div style="padding:16px 18px">
         <div class="grid2">
-          <div class="field"><label>Email</label><input id="s_email" value="${esc(s.email || '')}"></div>
-          <div class="field"><label>Logo (URL gambar, opsional)</label><input id="s_logo" value="${esc(s.logo_url || '')}" placeholder="https://…"></div>
+          <div class="field"><label for="s_nama">Nama Usaha *</label><input id="s_nama" value="${esc(s.nama_usaha || '')}"></div>
+          <div class="field"><label for="s_telp">Telepon</label><input id="s_telp" type="tel" value="${esc(s.telepon || '')}"></div>
         </div>
-        <div class="field"><label>Rekening Pembayaran (tampil di invoice & WA)</label><textarea id="s_rek" rows="3" placeholder="BCA 1234567890 a.n. Nama Anda">${esc(s.rekening || '')}</textarea></div>
-        <div class="field"><label>Catatan Default Invoice</label><input id="s_cat" value="${esc(s.catatan_invoice || '')}"></div>
-        <div class="field"><label>Footer Invoice</label><input id="s_foot" value="${esc(s.footer_invoice || '')}"></div>
+        <div class="field"><label for="s_alamat">Alamat</label><textarea id="s_alamat" rows="2">${esc(s.alamat || '')}</textarea></div>
+        <div class="grid2">
+          <div class="field"><label for="s_email">Email</label><input id="s_email" type="email" value="${esc(s.email || '')}"></div>
+          <div class="field"><label>Warna identitas</label>
+            <div style="display:flex;gap:8px;padding-top:6px" aria-hidden="true">
+              <span style="width:34px;height:34px;border-radius:9px;background:#0F766E;display:inline-block;border:1px solid var(--line)"></span>
+              <span style="width:34px;height:34px;border-radius:9px;background:#F59E0B;display:inline-block;border:1px solid var(--line)"></span>
+              <span style="width:34px;height:34px;border-radius:9px;background:#082F2C;display:inline-block;border:1px solid var(--line)"></span>
+            </div></div>
+        </div>
+        <div class="field"><label for="s_rek">Rekening Pembayaran</label><textarea id="s_rek" rows="3" placeholder="BCA 1234567890 a.n. Nama Anda">${esc(s.rekening || '')}</textarea></div>
+        <div class="grid2">
+          <div class="field"><label for="s_cat">Catatan Default Invoice</label><input id="s_cat" value="${esc(s.catatan_invoice || '')}"></div>
+          <div class="field"><label for="s_foot">Footer Invoice</label><input id="s_foot" value="${esc(s.footer_invoice || '')}"></div>
+        </div>
         <div class="form-actions"><button class="btn" id="s_save">Simpan Pengaturan</button></div>
       </div>
     </div>`;
@@ -1365,9 +1474,36 @@ async function pagePengaturan() {
       await api('pengaturan', { method: 'PUT', body: {
         nama_usaha: $('#s_nama').value.trim(), alamat: $('#s_alamat').value.trim(),
         telepon: $('#s_telp').value.trim(), email: $('#s_email').value.trim(),
-        logo_url: $('#s_logo').value.trim(), rekening: $('#s_rek').value.trim(),
+        logo_url: LOGO_DRAFT !== null ? LOGO_DRAFT : (s.logo_url || ''),
+        rekening: $('#s_rek').value.trim(),
         catatan_invoice: $('#s_cat').value.trim(), footer_invoice: $('#s_foot').value.trim() } });
       toast('Pengaturan tersimpan ✓');
+    } catch (e) { toast(e.message, 'err'); }
+  };
+}
+function logoPick(inp) {
+  const f = inp.files && inp.files[0];
+  if (!f) return;
+  const okType = ['image/png','image/jpeg','image/webp','image/svg+xml'].includes(f.type);
+  if (!okType) return toast('Format harus PNG, JPG, WebP, atau SVG', 'err');
+  if (f.size > 500 * 1024) return toast('Ukuran maksimal 500 KB', 'err');
+  const r = new FileReader();
+  r.onload = () => {
+    LOGO_DRAFT = r.result;
+    const el = document.getElementById('logoPrev');
+    if (el) el.innerHTML = `<img src="${LOGO_DRAFT}" alt="Preview logo baru">`;
+    toast('Logo siap — klik Simpan Pengaturan');
+  };
+  r.readAsDataURL(f);
+}
+function logoDelete() {
+  openModal(`<h3 id="mt">Hapus logo?</h3><p class="mut">Logo akan dihilangkan dari kop invoice. Kop akan menampilkan inisial usaha.</p>
+    <div class="form-actions"><button class="btn ghost" data-close>Batal</button><button class="btn danger" id="dl">Ya, Hapus</button></div>`);
+  $('#dl').onclick = async () => {
+    try {
+      await api('pengaturan', { method: 'PUT', body: { logo_url: '' } });
+      LOGO_DRAFT = null; CURRENT_SET.logo_url = '';
+      toast('Logo dihapus'); closeModal(); pagePengaturan();
     } catch (e) { toast(e.message, 'err'); }
   };
 }
@@ -1379,18 +1515,18 @@ async function pageDashboard() {
   const max = Math.max(...d.chart.map(c => c.nilai), 1);
   $('#content').innerHTML = `
     <div class="stats">
-      <div class="stat"><span>Net Sales — ${d.periode}</span><b>${rp(d.bulan_ini.net_sales)}</b></div>
-      <div class="stat"><span>Laba Bersih — ${d.periode}</span><b class="${d.bulan_ini.laba >= 0 ? 'up' : 'down'}">${rp(d.bulan_ini.laba)}</b><small>Margin ${pct(d.bulan_ini.margin_pct)}</small></div>
-      <div class="stat"><span>HPP Terjual — ${d.periode}</span><b>${rp(d.bulan_ini.hpp)}</b></div>
-      <div class="stat"><span>Piutang Invoice</span><b class="${d.piutang_invoice > 0 ? 'down' : 'up'}">${rp(d.piutang_invoice)}</b><small>Belum dibayar pelanggan</small></div>
-      <div class="stat"><span>Pembelian — ${d.periode}</span><b>${rp(d.pembelian_bulan)}</b></div>
-      <div class="stat"><span>PO Berjalan</span><b>${d.counts.po_aktif}</b><small>${d.counts.produk} produk · ${d.counts.bahan} bahan</small></div>
+      <div class="stat"><span>Net Sales — ${d.periode}</span><b class="num">${rp(d.bulan_ini.net_sales)}</b></div>
+      <div class="stat"><span>Laba Bersih — ${d.periode}</span><b class="num ${d.bulan_ini.laba >= 0 ? 'up' : 'down'}">${rp(d.bulan_ini.laba)}</b><small>Margin ${pct(d.bulan_ini.margin_pct)}</small></div>
+      <div class="stat"><span>HPP Terjual — ${d.periode}</span><b class="num">${rp(d.bulan_ini.hpp)}</b></div>
+      <div class="stat"><span>Piutang Invoice</span><b class="num ${d.piutang_invoice > 0 ? 'down' : 'up'}">${rp(d.piutang_invoice)}</b><small>Belum dibayar pelanggan</small></div>
+      <div class="stat"><span>Pembelian — ${d.periode}</span><b class="num">${rp(d.pembelian_bulan)}</b></div>
+      <div class="stat hi"><span>PO Berjalan</span><b class="num">${d.counts.po_aktif}</b><small>${d.counts.produk} produk · ${d.counts.bahan} bahan</small></div>
     </div>
     <div class="card">
       <div class="card-head"><b>Penjualan 14 Hari Terakhir</b><span class="chip">Net Sales / hari</span></div>
-      <div style="padding:16px"><div class="chart">
-        ${d.chart.map(c => `<div class="col" title="${fdate(c.tanggal)}: ${rp(c.nilai)}">
-          <div class="bar" style="height:${Math.max(2, c.nilai / max * 118)}px"></div>
+      <div style="padding:16px 18px"><div class="chart" role="img" aria-label="Grafik penjualan 14 hari terakhir">
+        ${d.chart.map((c, i) => `<div class="col" title="${fdate(c.tanggal)}: ${rp(c.nilai)}">
+          <div class="bar ${i === d.chart.length - 1 ? 'acc' : ''}" style="height:${Math.max(2, c.nilai / max * 118)}px"></div>
           <span class="lbl">${c.tanggal.slice(8)}</span></div>`).join('')}
       </div></div>
     </div>
@@ -1398,36 +1534,43 @@ async function pageDashboard() {
       <div class="card">
         <div class="card-head"><b>HPP Terbaru</b><button class="btn ghost sm" onclick="go('hpp')">Lihat semua</button></div>
         <div class="table-wrap"><table class="mini-table">
-          <thead><tr><th>PO</th><th>Produk</th><th class="r">HPP / pcs</th><th>Status</th></tr></thead>
-          <tbody>${d.hpp_terbaru.length ? d.hpp_terbaru.map(h => `<tr style="cursor:pointer" onclick="showHppBreakdown(${h.id})"><td class="mono">${esc(h.kode_po)}</td><td>${esc(h.nama_produk)}</td><td class="r bold">${rp(h.hpp_per_pcs)}</td><td>${stBadge(h.status)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Belum ada PO.</td></tr>'}</tbody>
+          <thead><tr><th scope="col">PO</th><th scope="col">Produk</th><th scope="col" class="r">HPP / pcs</th><th scope="col">Status</th></tr></thead>
+          <tbody>${d.hpp_terbaru.length ? d.hpp_terbaru.map(h => `<tr style="cursor:pointer" onclick="showHppBreakdown(${h.id})"><td class="mono">${esc(h.kode_po)}</td><td>${esc(h.nama_produk)}</td><td class="r bold num">${rp(h.hpp_per_pcs)}</td><td>${stBadge(h.status)}</td></tr>`).join('') : `<tr><td colspan="4">${emptyState('📊','Belum ada PO','')}</td></tr>`}</tbody>
         </table></div>
       </div>
       <div class="card">
         <div class="card-head"><b>Invoice Terbaru</b><button class="btn ghost sm" onclick="go('invoice')">Lihat semua</button></div>
         <div class="table-wrap"><table class="mini-table">
-          <thead><tr><th>Nomor</th><th>Pelanggan</th><th class="r">Total</th><th>Status</th></tr></thead>
-          <tbody>${(d.invoice_terbaru || []).length ? d.invoice_terbaru.map(v => `<tr style="cursor:pointer" onclick="invView(${v.id})"><td class="mono">${esc(v.nomor)}</td><td>${esc(v.customer_nama)}</td><td class="r bold">${rp(v.total)}</td><td>${payBadge(v.status_bayar)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Belum ada invoice.</td></tr>'}</tbody>
+          <thead><tr><th scope="col">Nomor</th><th scope="col">Pelanggan</th><th scope="col" class="r">Total</th><th scope="col">Status</th></tr></thead>
+          <tbody>${(d.invoice_terbaru || []).length ? d.invoice_terbaru.map(v => `<tr style="cursor:pointer" onclick="invView(${v.id})"><td class="mono">${esc(v.nomor)}</td><td>${esc(v.customer_nama)}</td><td class="r bold num">${rp(v.total)}</td><td>${payBadge(v.status_bayar)}</td></tr>`).join('') : `<tr><td colspan="4">${emptyState('🧾','Belum ada invoice','')}</td></tr>`}</tbody>
         </table></div>
       </div>
       <div class="card">
         <div class="card-head"><b>Penjualan Terbaru</b><button class="btn ghost sm" onclick="go('penjualan')">Lihat semua</button></div>
         <div class="table-wrap"><table class="mini-table">
-          <thead><tr><th>Tanggal</th><th>Produk</th><th class="r">Net</th><th class="r">Laba</th></tr></thead>
-          <tbody>${d.penjualan_terbaru.length ? d.penjualan_terbaru.map(j => `<tr><td>${fdate(j.tanggal)}</td><td>${esc(j.nama_produk)}<br><span class="badge b-indigo" style="margin-top:2px">${esc(j.channel)}</span></td><td class="r">${rp(j.net_sales)}</td><td class="r ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Belum ada penjualan.</td></tr>'}</tbody>
+          <thead><tr><th scope="col">Tanggal</th><th scope="col">Produk</th><th scope="col" class="r">Net</th><th scope="col" class="r">Laba</th></tr></thead>
+          <tbody>${d.penjualan_terbaru.length ? d.penjualan_terbaru.map(j => `<tr><td>${fdate(j.tanggal)}</td><td>${esc(j.nama_produk)}<br><span class="badge b-teal" style="margin-top:2px">${esc(j.channel)}</span></td><td class="r num">${rp(j.net_sales)}</td><td class="r num ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td></tr>`).join('') : `<tr><td colspan="4">${emptyState('🛒','Belum ada penjualan','')}</td></tr>`}</tbody>
         </table></div>
       </div>
     </div>`;
 }
 
 /* ================= INIT ================= */
- $('#nav').innerHTML = NAV.map(n => `
-  <button class="nav-item" data-id="${n.id}" onclick="go('${n.id}')">
-    <svg viewBox="0 0 24 24">${IC[n.ic]}</svg><span>${n.l}</span>
-  </button>`).join('');
+ $('#nav').innerHTML = NAV.map(n => n.g
+  ? `<div class="nav-group">${n.g}</div>`
+  : `<button class="nav-item" data-id="${n.id}" onclick="go('${n.id}')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">${IC[n.ic]}</svg><span>${n.l}</span>
+    </button>`).join('');
  $('#btnMenu').onclick = () => { $('#sidebar').classList.add('open'); $('#overlay').classList.add('show'); };
  $('#overlay').onclick = closeSidebar;
  $('#modalBack').addEventListener('click', e => { if (e.target.id === 'modalBack') closeModal(); });
  $('#modalBox').addEventListener('click', e => { if (e.target.closest('[data-close]')) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if ($('#modalBack').classList.contains('show')) closeModal();
+    closeSidebar();
+  }
+});
 go('dashboard');
 </script>
 </body>
