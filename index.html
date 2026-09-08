@@ -11,9 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   FINKUVEK DESIGN SYSTEM v1.3 — "BLUE × YELLOW" (IKEA-inspired)
-   Nada 1: Biru #003399 (dasar) · Nada 2: Kuning #FFCC00 (aksen)
-   Aturan emas: kuning TIDAK PERNAH jadi teks di atas putih.
+   v1.5 — "BLUE × YELLOW" · nama aplikasi dari menu Pengaturan
    ============================================================ */
 :root{
   --ink:#002B80; --ink2:#003399;
@@ -72,15 +70,18 @@ nav::-webkit-scrollbar{width:4px} nav::-webkit-scrollbar-thumb{background:rgba(2
 .topbar{position:sticky;top:0;z-index:30;background:rgba(245,246,248,.88);backdrop-filter:blur(10px);display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line)}
 .topbar h1{font-size:18px;font-weight:800}
 .topbar p{font-size:12px;color:var(--tx3)}
-.icon-btn{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:none;place-items:center;cursor:pointer;font-size:17px;flex:none}
+.icon-btn{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;font-size:17px;flex:none}
 .content{padding:22px 24px 56px;max-width:1300px;width:100%;flex:1}
 @media(max-width:900px){
   .sidebar{transform:translateX(-100%);box-shadow:0 0 50px rgba(0,0,0,.35)}
   .sidebar.open{transform:none}
   .main{margin-left:0}
-  .icon-btn{display:grid}
   .content{padding:16px 14px 56px}
   .topbar{padding:12px 14px}
+}
+@media(min-width:901px){
+  body.sb-collapsed .sidebar{transform:translateX(-100%)}
+  body.sb-collapsed .main{margin-left:0}
 }
 
 /* ============ CARD ============ */
@@ -245,17 +246,17 @@ select.tin{padding-right:6px}
 
 <aside class="sidebar" id="sidebar">
   <div class="brand">
-    <div class="brand-logo">FK</div>
-    <div class="brand-text"><b>FinKuvek</b><span>Finance Manufaktur Konveksi</span></div>
+    <div class="brand-logo" id="brandLogo">FK</div>
+    <div class="brand-text"><b id="brandName">FinKuvek</b><span id="brandTag">Finance Manufaktur Konveksi</span></div>
   </div>
   <nav id="nav" aria-label="Menu utama"></nav>
-  <div class="sidebar-foot">v1.3 · Blue × Yellow</div>
+  <div class="sidebar-foot">v1.5 · Blue × Yellow</div>
 </aside>
 <div class="overlay" id="overlay"></div>
 
 <main class="main">
   <header class="topbar">
-    <button class="icon-btn" id="btnMenu" aria-label="Buka menu">☰</button>
+    <button class="icon-btn" id="btnMenu" aria-label="Buka / tutup menu">☰</button>
     <div><h1 id="pageTitle">Dashboard</h1><p id="pageSub"></p></div>
   </header>
   <div class="content" id="content" tabindex="-1"></div>
@@ -266,6 +267,32 @@ select.tin{padding-right:6px}
 <div id="printArea"></div>
 
 <script>
+/* ============================================================
+   IDENTITAS APLIKASI — diatur lewat menu PENGATURAN (database).
+   Nilai default di bawah dipakai sebelum data terbaca /
+   bila kolom di Pengaturan masih kosong.
+   ============================================================ */
+const APP_DEFAULTS = { nama: 'FinKuvek', inisial: 'FK', tagline: 'Finance Manufaktur Konveksi' };
+let APP = { ...APP_DEFAULTS };
+
+function applyBrand() {
+  document.title = APP.nama + (APP.tagline ? ' — ' + APP.tagline : '');
+  const bl = document.getElementById('brandLogo'); if (bl) bl.textContent = APP.inisial;
+  const bn = document.getElementById('brandName'); if (bn) bn.textContent = APP.nama;
+  const bt = document.getElementById('brandTag');  if (bt) bt.textContent = APP.tagline;
+  const fv = document.querySelector('link[rel="icon"]');
+  if (fv) fv.href = 'data:image/svg+xml,' + encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#003399'/><text x='50' y='70' font-size='52' font-weight='800' text-anchor='middle' fill='#FFCC00' font-family='sans-serif'>${APP.inisial}</text></svg>`);
+}
+function setAppFromSettings(s) {
+  APP = {
+    nama:    (s?.nama_aplikasi    || '').trim() || APP_DEFAULTS.nama,
+    inisial: ((s?.inisial_aplikasi || '').trim().slice(0, 3).toUpperCase()) || APP_DEFAULTS.inisial,
+    tagline: (s?.tagline_aplikasi || '').trim() || APP_DEFAULTS.tagline,
+  };
+  applyBrand();
+}
+
 /* ================= HELPER ================= */
 const $ = s => document.querySelector(s);
 const rp  = n => 'Rp ' + Math.round(Number(n || 0)).toLocaleString('id-ID');
@@ -695,7 +722,7 @@ function poDel(id) {
   };
 }
 
-/* ===== PART 1 SELESAI — LANJUTKAN DENGAN PART 2 DI BAWAHNYA ===== */
+/* ===== PART 1 SELESAI — BALAS "LANJUT" UNTUK PART 2 ===== */
    /* ---------- PO DETAIL ---------- */
 let PD = null;
 async function poDetail(id) {
@@ -1419,14 +1446,33 @@ function invDel(id) {
   };
 }
 
-/* ================= PAGE: PENGATURAN + LOGO ================= */
-let LOGO_DRAFT = null;
+/* ================= PAGE: PENGATURAN (identitas + logo + profil) ================= */
+let LOGO_DRAFT = null, APP_DRAFT = null;
 async function pagePengaturan() {
-  setPage('Pengaturan', 'Identitas usaha, logo & kop invoice');
+  setPage('Pengaturan', 'Identitas aplikasi, logo & profil usaha');
   const s = await api('pengaturan');
-  LOGO_DRAFT = null;
+  LOGO_DRAFT = null; APP_DRAFT = null;
   const hasLogo = !!s.logo_url;
   $('#content').innerHTML = `
+    <div class="card" style="max-width:760px">
+      <div class="card-head"><b>Identitas Aplikasi</b><span class="mut">Nama & logo muncul di sidebar, judul tab & ikon browser</span></div>
+      <div style="padding:16px 18px">
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
+          <div class="brand-logo" id="appLogoPrev" style="width:52px;height:52px;font-size:18px">${esc(((s.inisial_aplikasi || APP_DEFAULTS.inisial))).slice(0,3).toUpperCase()}</div>
+          <div><b id="appNamePrev" style="font-size:15px;color:var(--brand-800)">${esc(s.nama_aplikasi || APP_DEFAULTS.nama)}</b>
+          <div class="mut" id="appTagPrev">${esc(s.tagline_aplikasi || APP_DEFAULTS.tagline)}</div></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="s_appnama">Nama Aplikasi <span class="mut">(maks 80 huruf)</span></label>
+            <input id="s_appnama" maxlength="80" value="${esc(s.nama_aplikasi || '')}" placeholder="${esc(APP_DEFAULTS.nama)}"></div>
+          <div class="field"><label for="s_appini">Inisial Logo <span class="mut">(1–3 huruf)</span></label>
+            <input id="s_appini" maxlength="3" value="${esc(s.inisial_aplikasi || '')}" placeholder="${esc(APP_DEFAULTS.inisial)}" style="text-transform:uppercase"></div>
+        </div>
+        <div class="field"><label for="s_apptag">Tagline / Deskripsi Singkat</label>
+          <input id="s_apptag" maxlength="120" value="${esc(s.tagline_aplikasi || '')}" placeholder="${esc(APP_DEFAULTS.tagline)}"></div>
+        <p class="mut">Preview di atas & sidebar berubah seketika saat mengetik. Klik <b>Simpan Pengaturan</b> agar tersimpan untuk semua pengguna.</p>
+      </div>
+    </div>
     <div class="card" style="max-width:760px">
       <div class="card-head"><b>Logo Usaha</b><span class="mut">PNG / JPG / WebP / SVG · maks 500 KB</span></div>
       <div style="padding:16px 18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap">
@@ -1439,7 +1485,7 @@ async function pagePengaturan() {
             <input type="file" id="logoFile" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml" hidden onchange="logoPick(this)">
             ${hasLogo ? '<button class="btn ghost sm danger-t" onclick="logoDelete()">🗑 Hapus Logo</button>' : ''}
           </div>
-          <p class="mut" style="margin-top:9px">Logo tampil di kop invoice (cetak & PDF). Setelah memilih file, klik <b>Simpan Pengaturan</b> di bawah untuk menerapkan.</p>
+          <p class="mut" style="margin-top:9px">Logo tampil di kop invoice (cetak & PDF). Setelah memilih file, klik <b>Simpan Pengaturan</b>.</p>
         </div>
       </div>
     </div>
@@ -1451,15 +1497,7 @@ async function pagePengaturan() {
           <div class="field"><label for="s_telp">Telepon</label><input id="s_telp" type="tel" value="${esc(s.telepon || '')}"></div>
         </div>
         <div class="field"><label for="s_alamat">Alamat</label><textarea id="s_alamat" rows="2">${esc(s.alamat || '')}</textarea></div>
-        <div class="grid2">
-          <div class="field"><label for="s_email">Email</label><input id="s_email" type="email" value="${esc(s.email || '')}"></div>
-          <div class="field"><label>Warna identitas</label>
-            <div style="display:flex;gap:8px;padding-top:6px" aria-hidden="true">
-              <span style="width:34px;height:34px;border-radius:9px;background:#003399;display:inline-block;border:1px solid var(--line)"></span>
-              <span style="width:34px;height:34px;border-radius:9px;background:#FFCC00;display:inline-block;border:1px solid var(--line)"></span>
-              <span style="width:34px;height:34px;border-radius:9px;background:#002B80;display:inline-block;border:1px solid var(--line)"></span>
-            </div></div>
-        </div>
+        <div class="field"><label for="s_email">Email</label><input id="s_email" type="email" value="${esc(s.email || '')}"></div>
         <div class="field"><label for="s_rek">Rekening Pembayaran</label><textarea id="s_rek" rows="3" placeholder="BCA 1234567890 a.n. Nama Anda">${esc(s.rekening || '')}</textarea></div>
         <div class="grid2">
           <div class="field"><label for="s_cat">Catatan Default Invoice</label><input id="s_cat" value="${esc(s.catatan_invoice || '')}"></div>
@@ -1468,14 +1506,35 @@ async function pagePengaturan() {
         <div class="form-actions"><button class="btn" id="s_save">Simpan Pengaturan</button></div>
       </div>
     </div>`;
+  /* — Preview live identitas — */
+  const appDraft = () => ({
+    nama_aplikasi: document.getElementById('s_appnama').value,
+    inisial_aplikasi: document.getElementById('s_appini').value,
+    tagline_aplikasi: document.getElementById('s_apptag').value,
+  });
+  const refreshPreview = () => {
+    const d = appDraft(); APP_DRAFT = d;
+    const nama = (d.nama_aplikasi || '').trim() || APP_DEFAULTS.nama;
+    const ini = ((d.inisial_aplikasi || '').trim().slice(0, 3).toUpperCase()) || APP_DEFAULTS.inisial;
+    const tag = (d.tagline_aplikasi || '').trim() || APP_DEFAULTS.tagline;
+    document.getElementById('appNamePrev').textContent = nama;
+    document.getElementById('appTagPrev').textContent = tag;
+    document.getElementById('appLogoPrev').textContent = ini;
+    setAppFromSettings(d); // sidebar + judul tab + favicon ikut berubah seketika
+  };
+  ['s_appnama','s_appini','s_apptag'].forEach(id => document.getElementById(id).addEventListener('input', refreshPreview));
+  /* — Simpan semua — */
   $('#s_save').onclick = async () => {
     try {
+      const d = appDraft();
       await api('pengaturan', { method: 'PUT', body: {
         nama_usaha: $('#s_nama').value.trim(), alamat: $('#s_alamat').value.trim(),
         telepon: $('#s_telp').value.trim(), email: $('#s_email').value.trim(),
         logo_url: LOGO_DRAFT !== null ? LOGO_DRAFT : (s.logo_url || ''),
         rekening: $('#s_rek').value.trim(),
-        catatan_invoice: $('#s_cat').value.trim(), footer_invoice: $('#s_foot').value.trim() } });
+        catatan_invoice: $('#s_cat').value.trim(), footer_invoice: $('#s_foot').value.trim(),
+        nama_aplikasi: d.nama_aplikasi.trim(), inisial_aplikasi: d.inisial_aplikasi.trim(),
+        tagline_aplikasi: d.tagline_aplikasi.trim() } });
       toast('Pengaturan tersimpan ✓');
     } catch (e) { toast(e.message, 'err'); }
   };
@@ -1560,7 +1619,13 @@ async function pageDashboard() {
   : `<button class="nav-item" data-id="${n.id}" onclick="go('${n.id}')">
       <svg viewBox="0 0 24 24" aria-hidden="true">${IC[n.ic]}</svg><span>${n.l}</span>
     </button>`).join('');
- $('#btnMenu').onclick = () => { $('#sidebar').classList.add('open'); $('#overlay').classList.add('show'); };
+ $('#btnMenu').onclick = () => {
+  if (window.matchMedia('(max-width:900px)').matches) {
+    $('#sidebar').classList.add('open'); $('#overlay').classList.add('show');
+  } else {
+    document.body.classList.toggle('sb-collapsed');
+  }
+};
  $('#overlay').onclick = closeSidebar;
  $('#modalBack').addEventListener('click', e => { if (e.target.id === 'modalBack') closeModal(); });
  $('#modalBox').addEventListener('click', e => { if (e.target.closest('[data-close]')) closeModal(); });
@@ -1570,7 +1635,13 @@ document.addEventListener('keydown', e => {
     closeSidebar();
   }
 });
-go('dashboard');
+/* Muat identitas aplikasi dari database, lalu mulai */
+applyBrand();
+(async () => {
+  try { const s = await api('pengaturan'); setAppFromSettings(s); }
+  catch { applyBrand(); }
+  go('dashboard');
+})();
 </script>
 </body>
 </html>
