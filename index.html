@@ -3,34 +3,32 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#003399"/>
 <title>FinKuvek — Finance Manufaktur Konveksi</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23082F2C'/><text x='50' y='68' font-size='48' font-weight='800' text-anchor='middle' fill='%23F59E0B' font-family='sans-serif'>F</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23003399'/><text x='50' y='70' font-size='52' font-weight='800' text-anchor='middle' fill='%23FFCC00' font-family='sans-serif'>F</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   FINKUVEK DESIGN SYSTEM v1.2 — "TEAL × AMBER"
-   Two-tone identity: Teal (trust/finance) × Amber (craft/energy)
+   FINKUVEK DESIGN SYSTEM v1.3 — "BLUE × YELLOW" (IKEA-inspired)
+   Nada 1: Biru #003399 (dasar) · Nada 2: Kuning #FFCC00 (aksen)
+   Aturan emas: kuning TIDAK PERNAH jadi teks di atas putih.
    ============================================================ */
 :root{
-  /* — Two-tone brand — */
-  --ink:#082F2C; --ink2:#0C3D38;                 /* nada 1: deep teal (sidebar) */
-  --brand-700:#0F766E; --brand-800:#115E59; --brand-600:#0D9488;
-  --brand-100:#CCFBF1; --brand-50:#F0FDFA;
-  --acc-600:#D97706; --acc-500:#F59E0B;          /* nada 2: amber (aksen) */
-  --acc-100:#FEF3C7; --acc-50:#FFFBEB;
-  /* — Netral hangat (stone) — */
-  --bg:#F7F6F3; --card:#FFFFFF; --line:#E7E4DF; --line2:#EFEDE9;
-  --tx:#1C1917; --tx2:#57534E; --tx3:#79716B;
-  /* — Status — */
-  --ok:#15803D; --ok-bg:#F0FDF4;
-  --bad:#B91C1C; --bad-bg:#FEF2F2;
-  --warn:#92400E; --warn-bg:#FEF3C7;
+  --ink:#002B80; --ink2:#003399;
+  --brand-700:#003399; --brand-800:#002773; --brand-600:#1A4DBF;
+  --brand-100:#D6E2FF; --brand-50:#F0F5FF;
+  --acc-500:#FFCC00; --acc-600:#E6B800;
+  --acc-100:#FFF3B3; --acc-50:#FFFAE6;
+  --bg:#F5F6F8; --card:#FFFFFF; --line:#E4E7EC; --line2:#EEF0F4;
+  --tx:#101828; --tx2:#475467; --tx3:#667085;
+  --ok:#067647; --ok-bg:#ECFDF3;
+  --bad:#B42318; --bad-bg:#FEF3F2;
+  --warn:#93370D; --warn-bg:#FFFAEB;
   --r:14px;
-  --sh1:0 1px 2px rgba(28,25,23,.05),0 1px 3px rgba(28,25,23,.06);
-  --sh2:0 6px 16px rgba(28,25,23,.10),0 2px 4px rgba(28,25,23,.06);
-  /* — Motion tokens — */
+  --sh1:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.06);
+  --sh2:0 6px 16px rgba(16,24,40,.10),0 2px 4px rgba(16,24,40,.06);
   --dur1:130ms; --dur2:220ms;
   --ease:cubic-bezier(.2,.8,.2,1);
 }
@@ -39,38 +37,39 @@ html{-webkit-text-size-adjust:100%}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--tx);
   font-size:13.5px;line-height:1.5;-webkit-tap-highlight-color:transparent}
 button{font-family:inherit}
+::selection{background:var(--acc-500);color:var(--brand-800)}
 .num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
 .up{color:var(--ok)} .down{color:var(--bad)} .mut{color:var(--tx2);font-size:12.5px}
 h1,h2,h3{letter-spacing:-.02em}
-
-/* — Focus & aksesibilitas — */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 :focus{outline:none}
-:focus-visible{outline:2px solid var(--acc-600);outline-offset:2px;border-radius:8px}
-.skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:0 0 10px 0;z-index:300;font-weight:600}
+:focus-visible{outline:2px solid var(--brand-700);outline-offset:2px;border-radius:8px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--brand-800);color:#fff;padding:10px 16px;border-radius:0 0 10px 0;z-index:300;font-weight:600}
 .skip:focus{left:0}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
-/* ============ SIDEBAR (nada 1: deep teal) ============ */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:252px;background:var(--ink);display:flex;flex-direction:column;z-index:50;transition:transform .25s var(--ease)}
+/* ============ SIDEBAR ============ */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:252px;background:linear-gradient(180deg,var(--ink2),var(--ink));display:flex;flex-direction:column;z-index:50;transition:transform .25s var(--ease)}
 .brand{display:flex;gap:11px;align-items:center;padding:20px 18px 16px}
-.brand-logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--acc-500),var(--acc-600));color:var(--ink);display:grid;place-items:center;font-weight:800;font-size:15px;flex:none;box-shadow:0 2px 8px rgba(245,158,11,.35)}
+.brand-logo{width:40px;height:40px;border-radius:12px;background:var(--acc-500);color:var(--brand-800);display:grid;place-items:center;font-weight:800;font-size:15px;flex:none;box-shadow:0 2px 8px rgba(255,204,0,.35)}
 .brand-text b{display:block;font-size:15.5px;color:#fff;letter-spacing:-.02em}
-.brand-text span{font-size:10.5px;color:#7FB0A8}
+.brand-text span{font-size:10.5px;color:#9DB4E8}
 nav{flex:1;overflow-y:auto;padding:4px 12px 12px}
-nav::-webkit-scrollbar{width:4px} nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
-.nav-group{margin:16px 4px 5px;font-size:9.5px;letter-spacing:1.4px;font-weight:700;color:#5E8F87;text-transform:uppercase}
-.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:#C9DCD8;cursor:pointer;font-weight:500;margin-bottom:2px;min-height:44px;border:none;background:none;width:100%;font-size:13.5px;text-align:left;position:relative;transition:background var(--dur1) var(--ease),color var(--dur1) var(--ease)}
-.nav-item svg{width:18px;height:18px;flex:none;fill:currentColor;opacity:.75}
-.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
-.nav-item.active{background:rgba(245,158,11,.13);color:#FCD34D;font-weight:600}
+nav::-webkit-scrollbar{width:4px} nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:4px}
+.nav-group{margin:16px 4px 5px;font-size:9.5px;letter-spacing:1.4px;font-weight:700;color:#7E9BDD;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:#CBD8F5;cursor:pointer;font-weight:500;margin-bottom:2px;min-height:44px;border:none;background:none;width:100%;font-size:13.5px;text-align:left;position:relative;transition:background var(--dur1) var(--ease),color var(--dur1) var(--ease)}
+.nav-item svg{width:18px;height:18px;flex:none;fill:currentColor;opacity:.78}
+.nav-item:hover{background:rgba(255,255,255,.09);color:#fff}
+.nav-item.active{background:rgba(255,204,0,.14);color:var(--acc-500);font-weight:700}
 .nav-item.active::before{content:'';position:absolute;left:-12px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:var(--acc-500)}
-.sidebar-foot{padding:14px 18px;font-size:10.5px;color:#5E8F87;border-top:1px solid rgba(255,255,255,.08)}
-.overlay{position:fixed;inset:0;background:rgba(8,47,44,.5);z-index:40;display:none;backdrop-filter:blur(2px)}
+.nav-item:focus-visible{outline-color:var(--acc-500)}
+.sidebar-foot{padding:14px 18px;font-size:10.5px;color:#7E9BDD;border-top:1px solid rgba(255,255,255,.1)}
+.overlay{position:fixed;inset:0;background:rgba(0,43,128,.5);z-index:40;display:none;backdrop-filter:blur(2px)}
 .overlay.show{display:block}
 
 /* ============ MAIN ============ */
 .main{margin-left:252px;min-height:100vh;display:flex;flex-direction:column}
-.topbar{position:sticky;top:0;z-index:30;background:rgba(247,246,243,.88);backdrop-filter:blur(10px);display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(245,246,248,.88);backdrop-filter:blur(10px);display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line)}
 .topbar h1{font-size:18px;font-weight:800}
 .topbar p{font-size:12px;color:var(--tx3)}
 .icon-btn{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:none;place-items:center;cursor:pointer;font-size:17px;flex:none}
@@ -84,7 +83,7 @@ nav::-webkit-scrollbar{width:4px} nav::-webkit-scrollbar-thumb{background:rgba(2
   .topbar{padding:12px 14px}
 }
 
-/* ============ CARD & ENTRANCE MOTION ============ */
+/* ============ CARD ============ */
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh1);margin-bottom:18px;overflow:hidden}
 .stats>.stat,.card{animation:pageIn var(--dur2) var(--ease) both}
 @keyframes pageIn{from{opacity:0;transform:translateY(6px)}}
@@ -94,11 +93,11 @@ nav::-webkit-scrollbar{width:4px} nav::-webkit-scrollbar-thumb{background:rgba(2
 /* ============ TABLE ============ */
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
-th{text-align:left;padding:11px 16px;background:#FAF9F7;color:var(--tx3);font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;border-bottom:1px solid var(--line);white-space:nowrap}
+th{text-align:left;padding:11px 16px;background:#F8F9FB;color:var(--tx3);font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;border-bottom:1px solid var(--line);white-space:nowrap}
 td{padding:12px 16px;border-bottom:1px solid var(--line2);vertical-align:middle}
 tbody tr:last-child td{border-bottom:none}
 tbody tr{transition:background var(--dur1) var(--ease)}
-tbody tr:hover{background:#F6FAF9}
+tbody tr:hover{background:#F5F8FF}
 .mini-table{min-width:0;font-size:12.5px}
 .mini-table th,.mini-table td{padding:8px 10px}
 .r{text-align:right} .c{text-align:center}
@@ -107,18 +106,19 @@ tbody tr:hover{background:#F6FAF9}
 .empty{padding:40px 20px;text-align:center;color:var(--tx2);font-size:13px}
 .empty .e-ic{font-size:26px;display:block;margin-bottom:8px;opacity:.6}
 .empty .e-t{font-weight:700;color:var(--tx);display:block;margin-bottom:2px}
-tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#FAF9F7}
+tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#F8F9FB}
 
 /* ============ BUTTON ============ */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--brand-700);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:600;font-size:13px;cursor:pointer;min-height:42px;transition:background var(--dur1) var(--ease),transform var(--dur1) var(--ease),box-shadow var(--dur1) var(--ease);white-space:nowrap}
 .btn:hover{background:var(--brand-800);box-shadow:var(--sh1)}
 .btn:active{transform:scale(.98)}
 .btn.ghost{background:var(--card);color:var(--tx);border:1px solid var(--line)}
-.btn.ghost:hover{background:#FAF9F7;box-shadow:none}
+.btn.ghost:hover{background:#F8F9FB;box-shadow:none}
 .btn.soft{background:var(--brand-50);color:var(--brand-800)}
 .btn.soft:hover{background:var(--brand-100)}
-.btn.acc{background:var(--acc-600)} .btn.acc:hover{background:#B45309}
-.btn.danger{background:var(--bad)} .btn.danger:hover{background:#991B1B}
+.btn.acc{background:var(--acc-500);color:var(--brand-800)}
+.btn.acc:hover{background:var(--acc-600)}
+.btn.danger{background:var(--bad)} .btn.danger:hover{background:#912018}
 .btn.sm{padding:6px 11px;min-height:36px;font-size:12px;border-radius:9px}
 .danger-t{color:var(--bad)!important}
 .act{display:flex;gap:6px;justify-content:flex-end}
@@ -128,9 +128,9 @@ tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#FAF9F7}
 .b-green{background:var(--ok-bg);color:var(--ok)}
 .b-amber{background:var(--warn-bg);color:var(--warn)}
 .b-red{background:var(--bad-bg);color:var(--bad)}
-.b-gray{background:#F5F5F4;color:#44403C}
-.b-teal{background:var(--brand-50);color:var(--brand-800)}
-.chip{background:var(--acc-50);color:var(--warn);font-weight:700;font-size:12px;padding:7px 13px;border-radius:99px;white-space:nowrap;border:1px solid var(--acc-100)}
+.b-gray{background:#F2F4F7;color:#344054}
+.b-blue{background:var(--brand-50);color:var(--brand-800)}
+.chip{background:var(--acc-500);color:var(--brand-800);font-weight:800;font-size:12px;padding:7px 13px;border-radius:99px;white-space:nowrap}
 
 /* ============ STAT ============ */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin-bottom:18px}
@@ -139,7 +139,7 @@ tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#FAF9F7}
 .stat span{font-size:11.5px;color:var(--tx3);display:block;margin-bottom:7px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .stat b{font-size:21px;font-weight:800;letter-spacing:-.02em}
 .stat small{display:block;font-size:11px;color:var(--tx2);margin-top:5px}
-.stat.hi{background:linear-gradient(180deg,var(--brand-50),#E8FAF7);border-color:#99F6E4}
+.stat.hi{background:linear-gradient(180deg,#F0F5FF,#E7EEFF);border-color:#C3D4FB}
 .stat.hi b{color:var(--brand-800)}
 
 /* ============ GRID / KV ============ */
@@ -153,7 +153,7 @@ tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#FAF9F7}
 .chart{display:flex;align-items:flex-end;gap:5px;height:150px;padding-top:8px}
 .chart .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-width:0;height:100%}
 .chart .bar{width:100%;max-width:26px;background:linear-gradient(180deg,var(--brand-600),var(--brand-700));border-radius:6px 6px 3px 3px;min-height:3px;transition:filter var(--dur1)}
-.chart .col:hover .bar{filter:brightness(1.15)}
+.chart .col:hover .bar{filter:brightness(1.18)}
 .chart .bar.acc{background:linear-gradient(180deg,var(--acc-500),var(--acc-600))}
 .chart .lbl{font-size:9.5px;color:var(--tx3)}
 
@@ -162,13 +162,13 @@ tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#FAF9F7}
 .field label{display:block;font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:5px}
 .field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;font-family:inherit;background:var(--card);min-height:44px;color:var(--tx);transition:border-color var(--dur1),box-shadow var(--dur1)}
 .field textarea{resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(13,148,136,.16)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(26,77,191,.15)}
 @media(pointer:coarse){.field input,.field select,.field textarea,.tin{font-size:16px}}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 @media(max-width:480px){.grid2,.grid3{grid-template-columns:1fr}}
 .form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
-.modal-backdrop{position:fixed;inset:0;background:rgba(8,47,44,.5);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:100;animation:fadeIn var(--dur1) var(--ease)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,43,128,.5);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:100;animation:fadeIn var(--dur1) var(--ease)}
 .modal-backdrop.show{display:flex}
 @keyframes fadeIn{from{opacity:0}}
 .modal{background:var(--card);width:100%;max-width:580px;border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:20px;animation:sheetUp .24s var(--ease)}
@@ -181,45 +181,45 @@ tfoot td{border-top:1px solid var(--line);border-bottom:none;background:#FAF9F7}
 /* ============ SEARCH & TABEL INPUT ============ */
 .search{position:relative;flex:1;max-width:280px}
 .search input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px 9px 34px;font-size:13px;font-family:inherit;min-height:42px;background:var(--card)}
-.search input:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(13,148,136,.16);outline:none}
+.search input:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(26,77,191,.15);outline:none}
 .search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:none;stroke:var(--tx3);stroke-width:2;stroke-linecap:round}
 .tin{border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:13px;font-family:inherit;background:var(--card);min-height:38px;color:var(--tx)}
-.tin:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(13,148,136,.16);outline:none}
+.tin:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(26,77,191,.15);outline:none}
 .tin.r{text-align:right}
 select.tin{padding-right:6px}
 
-/* ============ PREVIEW / HIGHLIGHT BOX ============ */
-.preview{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#FAF9F7;border:1px solid var(--line2);border-radius:12px;padding:12px;margin-top:4px}
+/* ============ PREVIEW / HIGHLIGHT ============ */
+.preview{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#F8F9FB;border:1px solid var(--line2);border-radius:12px;padding:12px;margin-top:4px}
 .preview span{display:block;font-size:10.5px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
 .preview b{font-size:12.5px}
-.margin-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--brand-50);border:1px solid #99F6E4;border-radius:12px;padding:12px;margin-top:14px}
+.margin-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--brand-50);border:1px solid #C3D4FB;border-radius:12px;padding:12px;margin-top:14px}
 .margin-box span{display:block;font-size:10.5px;color:var(--tx2)}
 .margin-box b{font-size:13px}
 
-/* ============ SKELETON LOADING ============ */
+/* ============ SKELETON ============ */
 .sk{position:relative;overflow:hidden;background:var(--line2);border-radius:8px;height:12px}
-.sk::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);animation:shim 1.2s linear infinite}
+.sk::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);animation:shim 1.2s linear infinite}
 @keyframes shim{to{transform:translateX(100%)}}
 .sk-tr td{padding:13px 16px}
 
-/* ============ LOGO (Pengaturan) ============ */
-.logo-tile{width:76px;height:76px;border-radius:14px;background:#FAF9F7;border:2px dashed var(--line);display:grid;place-items:center;overflow:hidden;flex:none;font-size:26px;font-weight:800;color:var(--brand-700)}
-.logo-tile img{width:100%;height:100%;object-fit:contain}
+/* ============ LOGO ============ */
+.logo-tile{width:76px;height:76px;border-radius:14px;background:var(--acc-50);border:2px dashed var(--acc-600);display:grid;place-items:center;overflow:hidden;flex:none;font-size:28px;font-weight:800;color:var(--brand-800)}
+.logo-tile img{width:100%;height:100%;object-fit:contain;background:#fff}
 
-/* ============ INVOICE PAPER (dua nada) ============ */
+/* ============ INVOICE PAPER ============ */
 .inv{background:#fff;color:#111;font-size:12.5px}
 .inv table{min-width:0}
-.inv-table th{background:#F4F3F0;color:#44403C;font-size:10px}
-.inv-table td{padding:9px 10px;border-bottom:1px solid #EFEDE9}
+.inv-table th{background:#F4F6FA;color:#344054;font-size:10px}
+.inv-table td{padding:9px 10px;border-bottom:1px solid #EEF0F4}
 .inv-head{display:flex;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:3px solid var(--brand-700);margin-bottom:16px}
 @media(max-width:520px){.inv-head{flex-direction:column}}
 .inv-word{font-size:21px;font-weight:800;letter-spacing:5px;color:var(--brand-800)}
 .inv-rule{width:38px;height:3px;background:var(--acc-500);border-radius:2px;margin:5px 0 6px auto}
 .inv-totals{margin-left:auto;max-width:320px;margin-top:14px}
 .inv-totals .kv{padding:6px 0;font-size:12.5px}
-.inv-totals .grand{border-top:2px solid #1C1917;font-size:14px;padding-top:8px;margin-top:4px}
+.inv-totals .grand{border-top:2px solid #101828;font-size:14px;padding-top:8px;margin-top:4px}
 .inv-totals .grand b{font-weight:800}
-.inv-pay{margin-top:16px;background:#FAF9F7;border:1px solid var(--line);border-radius:10px;padding:12px}
+.inv-pay{margin-top:16px;background:#F8F9FB;border:1px solid var(--line);border-radius:10px;padding:12px}
 .inv-note{margin-top:10px;font-size:12px}
 .inv-foot{margin-top:26px;padding-top:12px;border-top:1px solid var(--line);text-align:center;color:var(--tx3);font-size:11px}
 
@@ -235,8 +235,8 @@ select.tin{padding-right:6px}
 
 /* ============ TOAST ============ */
 .toast-wrap{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;width:max-content;max-width:92vw}
-.toast{background:var(--ink);color:#fff;padding:11px 20px;border-radius:99px;font-size:13px;animation:sheetUp .2s var(--ease);box-shadow:var(--sh2);max-width:100%;border-left:3px solid var(--acc-500)}
-.toast.err{background:var(--bad);border-left-color:#FCA5A5}
+.toast{background:var(--brand-800);color:#fff;padding:11px 20px;border-radius:99px;font-size:13px;animation:sheetUp .2s var(--ease);box-shadow:var(--sh2);max-width:100%;border-left:3px solid var(--acc-500)}
+.toast.err{background:var(--bad);border-left-color:#FDA29B}
 </style>
 </head>
 <body>
@@ -249,7 +249,7 @@ select.tin{padding-right:6px}
     <div class="brand-text"><b>FinKuvek</b><span>Finance Manufaktur Konveksi</span></div>
   </div>
   <nav id="nav" aria-label="Menu utama"></nav>
-  <div class="sidebar-foot">v1.2 · Teal × Amber</div>
+  <div class="sidebar-foot">v1.3 · Blue × Yellow</div>
 </aside>
 <div class="overlay" id="overlay"></div>
 
@@ -313,7 +313,6 @@ function printHTML(html) {
   document.body.classList.add('print-mode');
   setTimeout(() => { window.print(); setTimeout(done, 600); }, 60);
 }
-/* — Skeleton & empty state — */
 function skRow(cols) { return `<tr class="sk-tr">${Array.from({length:cols},()=>'<td><div class="sk" style="width:'+ (45+Math.random()*40) +'%;height:11px"></div></td>').join('')}</tr>`; }
 function skeletonTable(cols, n = 5) { return Array.from({length:n},()=>skRow(cols)).join(''); }
 function pageSkeleton() { return `
@@ -326,20 +325,19 @@ function emptyState(icon, title, hint) {
 /* ================= IKON & NAV ================= */
 const IC = {
   dashboard:'<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>',
-  produk:'<path d="M12.9 2.6a2 2 0 0 0-1.5-.6H5a2 2 0 0 0-2 2v6.4c0 .5.2 1 .6 1.4l8.5 8.5a2 2 0 0 0 2.9 0l6.9-6.9a2 2 0 0 0 0-2.9L12.9 2.6Z"/><circle cx="8.2" cy="8.2" r="1.7" fill="#082F2C"/>',
+  produk:'<path d="M12.9 2.6a2 2 0 0 0-1.5-.6H5a2 2 0 0 0-2 2v6.4c0 .5.2 1 .6 1.4l8.5 8.5a2 2 0 0 0 2.9 0l6.9-6.9a2 2 0 0 0 0-2.9L12.9 2.6Z"/><circle cx="8.2" cy="8.2" r="1.7" fill="#002B80"/>',
   bahan:'<path d="m12 2 10 5.5-10 5.5L2 7.5 12 2Z"/><path d="M3.5 11 2 11.9l10 5.6 10-5.6-1.5-.9-8.5 4.8L3.5 11Z"/><path d="M3.5 15.6 2 16.5 12 22l10-5.5-1.5-.9-8.5 4.8-8.5-4.8Z"/>',
   supplier:'<path d="M1 5.5A1.5 1.5 0 0 1 2.5 4H13a1 1 0 0 1 1 1v9H3.5A2.5 2.5 0 0 1 1 11.5v-6Z"/><path d="M14 8h3.4a1 1 0 0 1 .8.4l2.4 3.1c.26.35.4.78.4 1.2v1.4a1.9 1.9 0 0 1-1.9 1.9H14V8Z"/><circle cx="6.3" cy="17.8" r="2.1"/><circle cx="16.8" cy="17.8" r="2.1"/>',
   tenagakerja:'<circle cx="12" cy="7.2" r="4.2"/><path d="M3.8 20.5c.4-3.9 4-6.3 8.2-6.3s7.8 2.4 8.2 6.3l.1.9H3.7l.1-.9Z"/>',
-  bom:'<path d="M9 2.5h6a1 1 0 0 1 1 1V4h1.5A2.5 2.5 0 0 1 20 6.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5v-13A2.5 2.5 0 0 1 6.5 4H8v-.5a1 1 0 0 1 1-1Z"/><rect x="8" y="10.5" width="8" height="1.8" rx=".9" fill="#082F2C"/><rect x="8" y="14.5" width="5.5" height="1.8" rx=".9" fill="#082F2C"/>',
-  po:'<path d="M2.5 20.5V9.2l5.5 3.4V9.2l5.5 3.4V4.5a1 1 0 0 1 1-1h6.5a1 1 0 0 1 1 1v16H2.5Z"/><rect x="14.5" y="13.5" width="3.2" height="3.2" rx=".6" fill="#082F2C"/>',
+  bom:'<path d="M9 2.5h6a1 1 0 0 1 1 1V4h1.5A2.5 2.5 0 0 1 20 6.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5v-13A2.5 2.5 0 0 1 6.5 4H8v-.5a1 1 0 0 1 1-1Z"/><rect x="8" y="10.5" width="8" height="1.8" rx=".9" fill="#002B80"/><rect x="8" y="14.5" width="5.5" height="1.8" rx=".9" fill="#002B80"/>',
+  po:'<path d="M2.5 20.5V9.2l5.5 3.4V9.2l5.5 3.4V4.5a1 1 0 0 1 1-1h6.5a1 1 0 0 1 1 1v16H2.5Z"/><rect x="14.5" y="13.5" width="3.2" height="3.2" rx=".6" fill="#002B80"/>',
   pembelian:'<path d="M2 7a1.5 1.5 0 0 1 1.5-1.5h8.6a1 1 0 0 1 1 1V15H4a2 2 0 0 1-2-2V7Z"/><path d="M13.1 8.2h3.1c.3 0 .58.13.77.36l2.7 3.2c.28.33.43.74.43 1.17v1.77A1.5 1.5 0 0 1 18.6 16H13.1V8.2Z"/><circle cx="6.6" cy="18.3" r="2"/><circle cx="16.6" cy="18.3" r="2"/>',
   overhead:'<path d="M3.5 21h17v-1.8h-17V21Z"/><path d="M5.5 17.4h2.2v-7.5H5.5v7.5Zm4 0h2.2v-10H9.5v10Zm4 0h2.2v-7.5h-2.2v7.5Zm4 0h2.2v-10h-2.2v10Z"/><path d="M3 6.8 12 3l9 3.8v1.4H3V6.8Z"/>',
-  hpp:'<circle cx="12" cy="12" r="9.2"/><path d="M12 5.8v12.4" stroke="#082F2C" stroke-width="1.7" stroke-linecap="round" fill="none"/><path d="M15.2 9.3c-.4-1.1-1.6-1.7-3.1-1.7-1.8 0-3 .9-3 2.2 0 3 6.2 1.6 6.2 4.6 0 1.4-1.3 2.3-3.2 2.3-1.7 0-2.9-.7-3.4-1.9" stroke="#082F2C" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
+  hpp:'<circle cx="12" cy="12" r="9.2"/><path d="M12 5.8v12.4" stroke="#002B80" stroke-width="1.7" stroke-linecap="round" fill="none"/><path d="M15.2 9.3c-.4-1.1-1.6-1.7-3.1-1.7-1.8 0-3 .9-3 2.2 0 3 6.2 1.6 6.2 4.6 0 1.4-1.3 2.3-3.2 2.3-1.7 0-2.9-.7-3.4-1.9" stroke="#002B80" stroke-width="1.6" stroke-linecap="round" fill="none"/>',
   penjualan:'<path d="M2.3 3h2.8a1 1 0 0 1 1 .76L6.7 6h14a.8.8 0 0 1 .77 1l-1.9 7a2 2 0 0 1-1.93 1.5H9.2a2 2 0 0 1-1.95-1.54L4.6 4.8l-.3-1.1a.4.4 0 0 0-.4-.3H2.3a.7.7 0 1 1 0-1.4Z"/><circle cx="9.7" cy="19.3" r="1.7"/><circle cx="16.7" cy="19.3" r="1.7"/>',
-  invoice:'<path d="M5 2h14a1 1 0 0 1 1 1v18.5l-3-1.8-2.5 1.8-2.5-1.8-2.5 1.8-2.5-1.8-3 1.8V3a1 1 0 0 1 1-1Z"/><rect x="7.5" y="6.8" width="9" height="1.7" rx=".85" fill="#082F2C"/><rect x="7.5" y="10.5" width="9" height="1.7" rx=".85" fill="#082F2C"/><rect x="7.5" y="14.2" width="5.4" height="1.7" rx=".85" fill="#082F2C"/>',
-  pengaturan:'<path d="M4 7.2h9.2M17.6 7.2H20M4 16.8h4.4M12.8 16.8H20" stroke="#082F2C" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="15.3" cy="7.2" r="2.5"/><circle cx="10.7" cy="16.8" r="2.5"/>',
+  invoice:'<path d="M5 2h14a1 1 0 0 1 1 1v18.5l-3-1.8-2.5 1.8-2.5-1.8-2.5 1.8-2.5-1.8-3 1.8V3a1 1 0 0 1 1-1Z"/><rect x="7.5" y="6.8" width="9" height="1.7" rx=".85" fill="#002B80"/><rect x="7.5" y="10.5" width="9" height="1.7" rx=".85" fill="#002B80"/><rect x="7.5" y="14.2" width="5.4" height="1.7" rx=".85" fill="#002B80"/>',
+  pengaturan:'<path d="M4 7.2h9.2M17.6 7.2H20M4 16.8h4.4M12.8 16.8H20" stroke="#002B80" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="15.3" cy="7.2" r="2.5"/><circle cx="10.7" cy="16.8" r="2.5"/>',
 };
-/* Navigasi bergrup — hierarki informasi lebih jelas */
 const NAV = [
   { g:'Utama' },
   { id:'dashboard',  l:'Dashboard',        ic:'dashboard' },
@@ -403,7 +401,7 @@ const MASTER = {
     ]},
   bahan: {
     t:'Master Bahan', s:'Material, komponen, pendukung, branding & packaging',
-    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama Bahan',bold:1},{k:'kelompok',l:'Kelompok',badge:'b-teal'},{k:'satuan',l:'Satuan'},{k:'harga',l:'Harga Satuan',fmt:rp,r:1}],
+    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama Bahan',bold:1},{k:'kelompok',l:'Kelompok',badge:'b-blue'},{k:'satuan',l:'Satuan'},{k:'harga',l:'Harga Satuan',fmt:rp,r:1}],
     fields:[
       {k:'kode',l:'Kode Bahan',req:1,ph:'MAT001'},
       {k:'nama',l:'Nama Bahan',req:1,ph:'Canvas'},
@@ -423,7 +421,7 @@ const MASTER = {
     ]},
   tenagakerja: {
     t:'Tenaga Kerja', s:'Direct Labor (borongan/harian) & Supervisor (FOH)',
-    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama',bold:1},{k:'proses',l:'Proses'},{k:'sistem',l:'Sistem',badge:'b-teal'},{k:'tarif',l:'Tarif',fmt:rp,r:1},{k:'kategori',l:'Kategori',badge:'b-gray'}],
+    cols:[{k:'kode',l:'Kode',mono:1},{k:'nama',l:'Nama',bold:1},{k:'proses',l:'Proses'},{k:'sistem',l:'Sistem',badge:'b-blue'},{k:'tarif',l:'Tarif',fmt:rp,r:1},{k:'kategori',l:'Kategori',badge:'b-gray'}],
     fields:[
       {k:'kode',l:'Kode',req:1,ph:'DL001'},
       {k:'nama',l:'Nama / Tim'},
@@ -558,7 +556,7 @@ async function pageBom() {
         </div>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th scope="col">Bahan</th><th scope="col" class="r">Qty / pcs</th><th scope="col" class="r">Waste %</th><th scope="col" class="r">Qty Efektif</th><th scope="col" class="r">Harga</th><th scope="col" class="r">Biaya / pcs</th><th scope="col"><span class="sr-only"></span></th></tr></thead>
+        <thead><tr><th scope="col">Bahan</th><th scope="col" class="r">Qty / pcs</th><th scope="col" class="r">Waste %</th><th scope="col" class="r">Qty Efektif</th><th scope="col" class="r">Harga</th><th scope="col" class="r">Biaya / pcs</th><th scope="col"><span class="sr-only">Aksi</span></th></tr></thead>
         <tbody id="btb"><tr><td colspan="7">${emptyState('📐','Pilih produk','Untuk memuat / menyusun BOM')}</td></tr></tbody>
       </table></div>
     </div>`;
@@ -697,7 +695,8 @@ function poDel(id) {
   };
 }
 
-/* ---------- PO DETAIL ---------- */
+/* ===== PART 1 SELESAI — LANJUTKAN DENGAN PART 2 DI BAWAHNYA ===== */
+   /* ---------- PO DETAIL ---------- */
 let PD = null;
 async function poDetail(id) {
   const [d, tkAll] = await Promise.all([api('hpp-detail', { params: { po_id: id } }), api('tenagakerja')]);
@@ -1043,7 +1042,7 @@ function pjlRow(j) {
   return `<tr>
     <td>${fdate(j.tanggal)}</td>
     <td><b>${esc(j.nama_produk)}</b><br><small class="mono">${esc(j.kode_produk)}</small></td>
-    <td><span class="badge b-teal">${esc(j.channel)}</span></td>
+    <td><span class="badge b-blue">${esc(j.channel)}</span></td>
     <td class="r num">${nf(j.qty)}</td>
     <td class="r num">${rp(j.net_sales)}</td>
     <td class="r mono num">${rp(j.biaya_fee)}</td>
@@ -1308,7 +1307,7 @@ async function invView(id) {
     INV_VIEW = d;
     const sisa = Math.max(0, Number(d.total) - Number(d.nominal_bayar));
     openModal(`
-      <div class="no-print" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
         <div><b>${esc(d.nomor)}</b><div class="mut" style="font-size:12px">${esc(d.customer_nama)}</div></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn" onclick="printHTML(document.getElementById('invPaper').outerHTML)">🖨️ Cetak / PDF</button>
@@ -1326,10 +1325,10 @@ function invPaper(d, sisa) {
   const initial = esc((s.nama_usaha || 'U').trim().charAt(0).toUpperCase());
   const logo = s.logo_url
     ? `<img src="${esc(s.logo_url)}" style="height:46px;border-radius:8px;margin-bottom:6px" alt="Logo usaha">`
-    : `<div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#F59E0B,#D97706);color:#082F2C;display:grid;place-items:center;font-weight:800;font-size:18px;margin-bottom:6px">${initial}</div>`;
+    : `<div style="width:46px;height:46px;border-radius:10px;background:#FFCC00;color:#002773;display:grid;place-items:center;font-weight:800;font-size:18px;margin-bottom:6px">${initial}</div>`;
   return `<div class="inv" id="invPaper">
     <div class="inv-head">
-      <div>${logo}<b style="font-size:16px;color:#115E59">${esc(s.nama_usaha || '—')}</b>
+      <div>${logo}<b style="font-size:16px;color:#002773">${esc(s.nama_usaha || '—')}</b>
         ${s.alamat ? `<div class="mut" style="white-space:pre-line">${esc(s.alamat)}</div>` : ''}
         <div class="mut">${esc([s.telepon, s.email].filter(Boolean).join(' · '))}</div></div>
       <div style="text-align:right">
@@ -1421,11 +1420,11 @@ function invDel(id) {
 }
 
 /* ================= PAGE: PENGATURAN + LOGO ================= */
-let CURRENT_SET = {}, LOGO_DRAFT = null;
+let LOGO_DRAFT = null;
 async function pagePengaturan() {
   setPage('Pengaturan', 'Identitas usaha, logo & kop invoice');
   const s = await api('pengaturan');
-  CURRENT_SET = s || {}; LOGO_DRAFT = null;
+  LOGO_DRAFT = null;
   const hasLogo = !!s.logo_url;
   $('#content').innerHTML = `
     <div class="card" style="max-width:760px">
@@ -1456,9 +1455,9 @@ async function pagePengaturan() {
           <div class="field"><label for="s_email">Email</label><input id="s_email" type="email" value="${esc(s.email || '')}"></div>
           <div class="field"><label>Warna identitas</label>
             <div style="display:flex;gap:8px;padding-top:6px" aria-hidden="true">
-              <span style="width:34px;height:34px;border-radius:9px;background:#0F766E;display:inline-block;border:1px solid var(--line)"></span>
-              <span style="width:34px;height:34px;border-radius:9px;background:#F59E0B;display:inline-block;border:1px solid var(--line)"></span>
-              <span style="width:34px;height:34px;border-radius:9px;background:#082F2C;display:inline-block;border:1px solid var(--line)"></span>
+              <span style="width:34px;height:34px;border-radius:9px;background:#003399;display:inline-block;border:1px solid var(--line)"></span>
+              <span style="width:34px;height:34px;border-radius:9px;background:#FFCC00;display:inline-block;border:1px solid var(--line)"></span>
+              <span style="width:34px;height:34px;border-radius:9px;background:#002B80;display:inline-block;border:1px solid var(--line)"></span>
             </div></div>
         </div>
         <div class="field"><label for="s_rek">Rekening Pembayaran</label><textarea id="s_rek" rows="3" placeholder="BCA 1234567890 a.n. Nama Anda">${esc(s.rekening || '')}</textarea></div>
@@ -1502,7 +1501,7 @@ function logoDelete() {
   $('#dl').onclick = async () => {
     try {
       await api('pengaturan', { method: 'PUT', body: { logo_url: '' } });
-      LOGO_DRAFT = null; CURRENT_SET.logo_url = '';
+      LOGO_DRAFT = null;
       toast('Logo dihapus'); closeModal(); pagePengaturan();
     } catch (e) { toast(e.message, 'err'); }
   };
@@ -1549,7 +1548,7 @@ async function pageDashboard() {
         <div class="card-head"><b>Penjualan Terbaru</b><button class="btn ghost sm" onclick="go('penjualan')">Lihat semua</button></div>
         <div class="table-wrap"><table class="mini-table">
           <thead><tr><th scope="col">Tanggal</th><th scope="col">Produk</th><th scope="col" class="r">Net</th><th scope="col" class="r">Laba</th></tr></thead>
-          <tbody>${d.penjualan_terbaru.length ? d.penjualan_terbaru.map(j => `<tr><td>${fdate(j.tanggal)}</td><td>${esc(j.nama_produk)}<br><span class="badge b-teal" style="margin-top:2px">${esc(j.channel)}</span></td><td class="r num">${rp(j.net_sales)}</td><td class="r num ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td></tr>`).join('') : `<tr><td colspan="4">${emptyState('🛒','Belum ada penjualan','')}</td></tr>`}</tbody>
+          <tbody>${d.penjualan_terbaru.length ? d.penjualan_terbaru.map(j => `<tr><td>${fdate(j.tanggal)}</td><td>${esc(j.nama_produk)}<br><span class="badge b-blue" style="margin-top:2px">${esc(j.channel)}</span></td><td class="r num">${rp(j.net_sales)}</td><td class="r num ${Number(j.laba_bersih) >= 0 ? 'up' : 'down'}">${rp(j.laba_bersih)}</td></tr>`).join('') : `<tr><td colspan="4">${emptyState('🛒','Belum ada penjualan','')}</td></tr>`}</tbody>
         </table></div>
       </div>
     </div>`;
