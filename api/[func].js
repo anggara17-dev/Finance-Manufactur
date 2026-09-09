@@ -93,7 +93,7 @@ module.exports = async (req, res) => {
           return ok(res, data || { nama_usaha: 'Nama Usaha Anda' });
         }
         if (req.method === 'PUT') {
-          const allow = ['nama_usaha','alamat','telepon','email','rekening','catatan_invoice','footer_invoice','logo_url'];
+          const allow = ['nama_usaha','alamat','telepon','email','rekening','catatan_invoice','footer_invoice','logo_url','nama_aplikasi','inisial_aplikasi','tagline_aplikasi'];
           const patch = {};
           allow.forEach(k => { if (body[k] !== undefined) patch[k] = body[k] === '' ? null : body[k]; });
           if (patch.nama_usaha === null) patch.nama_usaha = 'Nama Usaha Anda';
