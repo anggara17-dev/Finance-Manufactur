@@ -11,7 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   v1.5 — "BLUE × YELLOW" · nama aplikasi dari menu Pengaturan
+   FINKUVEK v1.7 — "BLUE × YELLOW" · PERFORMANCE EDITION
+   Cache master data · boot paralel · anti dobel-klik
    ============================================================ */
 :root{
   --ink:#002B80; --ink2:#003399;
@@ -35,6 +36,7 @@ html{-webkit-text-size-adjust:100%}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--tx);
   font-size:13.5px;line-height:1.5;-webkit-tap-highlight-color:transparent}
 button{font-family:inherit}
+button:disabled{opacity:.7;cursor:wait}
 ::selection{background:var(--acc-500);color:var(--brand-800)}
 .num{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
 .up{color:var(--ok)} .down{color:var(--bad)} .mut{color:var(--tx2);font-size:12.5px}
@@ -250,7 +252,7 @@ select.tin{padding-right:6px}
     <div class="brand-text"><b id="brandName">FinKuvek</b><span id="brandTag">Finance Manufaktur Konveksi</span></div>
   </div>
   <nav id="nav" aria-label="Menu utama"></nav>
-  <div class="sidebar-foot">v1.5 · Blue × Yellow</div>
+  <div class="sidebar-foot">v1.7 · Blue × Yellow</div>
 </aside>
 <div class="overlay" id="overlay"></div>
 
@@ -269,8 +271,6 @@ select.tin{padding-right:6px}
 <script>
 /* ============================================================
    IDENTITAS APLIKASI — diatur lewat menu PENGATURAN (database).
-   Nilai default di bawah dipakai sebelum data terbaca /
-   bila kolom di Pengaturan masih kosong.
    ============================================================ */
 const APP_DEFAULTS = { nama: 'FinKuvek', inisial: 'FK', tagline: 'Finance Manufaktur Konveksi' };
 let APP = { ...APP_DEFAULTS };
@@ -303,7 +303,17 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const today = () => new Date().toISOString().slice(0, 10);
 const fdate = d => d ? new Date(d + 'T00:00:00').toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
 
+/* ⚡ v1.7 — Cache master data: pindah menu jadi instan (TTL 2 menit).
+   Data transaksi (po, penjualan, invoice, pembelian) TIDAK di-cache,
+   selalu fresh. Simpan/edit/hapus otomatis membersihkan cache terkait. */
+const API_CACHE = {}, CACHE_TTL = 120000;
+const CACHEABLE = ['produk','bahan','supplier','tenagakerja','overhead','pengaturan'];
 async function api(func, { method = 'GET', params = {}, body } = {}) {
+  const key = func + '?' + new URLSearchParams(params).toString();
+  if (method === 'GET' && CACHEABLE.includes(func)) {
+    const c = API_CACHE[key];
+    if (c && Date.now() - c.t < CACHE_TTL) return c.d;
+  }
   const qs = new URLSearchParams(params).toString();
   const res = await fetch(`/api/${func}${qs ? '?' + qs : ''}`, {
     method,
@@ -312,8 +322,11 @@ async function api(func, { method = 'GET', params = {}, body } = {}) {
   });
   let j = {}; try { j = await res.json(); } catch {}
   if (!res.ok) throw new Error(j.error || 'HTTP ' + res.status);
+  if (method === 'GET' && CACHEABLE.includes(func)) API_CACHE[key] = { d: j, t: Date.now() };
+  else if (CACHEABLE.includes(func)) Object.keys(API_CACHE).forEach(k => { if (k === func || k.startsWith(func + '?')) delete API_CACHE[k]; });
   return j;
 }
+
 function toast(msg, type = 'ok') {
   const t = document.createElement('div');
   t.className = 'toast' + (type === 'err' ? ' err' : '');
@@ -1447,11 +1460,11 @@ function invDel(id) {
 }
 
 /* ================= PAGE: PENGATURAN (identitas + logo + profil) ================= */
-let LOGO_DRAFT = null, APP_DRAFT = null;
+let LOGO_DRAFT = null;
 async function pagePengaturan() {
   setPage('Pengaturan', 'Identitas aplikasi, logo & profil usaha');
   const s = await api('pengaturan');
-  LOGO_DRAFT = null; APP_DRAFT = null;
+  LOGO_DRAFT = null;
   const hasLogo = !!s.logo_url;
   $('#content').innerHTML = `
     <div class="card" style="max-width:760px">
@@ -1474,7 +1487,7 @@ async function pagePengaturan() {
       </div>
     </div>
     <div class="card" style="max-width:760px">
-      <div class="card-head"><b>Logo Usaha</b><span class="mut">PNG / JPG / WebP / SVG · maks 500 KB</span></div>
+      <div class="card-head"><b>Logo Usaha</b><span class="mut">PNG / JPG / WebP / SVG · maks 500 KB · kompres ≤200 KB agar cepat</span></div>
       <div style="padding:16px 18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap">
         <div class="logo-tile" id="logoPrev" aria-label="Preview logo">${hasLogo
           ? `<img src="${esc(s.logo_url)}" alt="Logo usaha">`
@@ -1506,24 +1519,22 @@ async function pagePengaturan() {
         <div class="form-actions"><button class="btn" id="s_save">Simpan Pengaturan</button></div>
       </div>
     </div>`;
-  /* — Preview live identitas — */
   const appDraft = () => ({
     nama_aplikasi: document.getElementById('s_appnama').value,
     inisial_aplikasi: document.getElementById('s_appini').value,
     tagline_aplikasi: document.getElementById('s_apptag').value,
   });
   const refreshPreview = () => {
-    const d = appDraft(); APP_DRAFT = d;
+    const d = appDraft();
     const nama = (d.nama_aplikasi || '').trim() || APP_DEFAULTS.nama;
     const ini = ((d.inisial_aplikasi || '').trim().slice(0, 3).toUpperCase()) || APP_DEFAULTS.inisial;
     const tag = (d.tagline_aplikasi || '').trim() || APP_DEFAULTS.tagline;
     document.getElementById('appNamePrev').textContent = nama;
     document.getElementById('appTagPrev').textContent = tag;
     document.getElementById('appLogoPrev').textContent = ini;
-    setAppFromSettings(d); // sidebar + judul tab + favicon ikut berubah seketika
+    setAppFromSettings(d);
   };
   ['s_appnama','s_appini','s_apptag'].forEach(id => document.getElementById(id).addEventListener('input', refreshPreview));
-  /* — Simpan semua — */
   $('#s_save').onclick = async () => {
     try {
       const d = appDraft();
@@ -1613,7 +1624,7 @@ async function pageDashboard() {
     </div>`;
 }
 
-/* ================= INIT ================= */
+/* ================= INIT (v1.7) ================= */
  $('#nav').innerHTML = NAV.map(n => n.g
   ? `<div class="nav-group">${n.g}</div>`
   : `<button class="nav-item" data-id="${n.id}" onclick="go('${n.id}')">
@@ -1635,13 +1646,22 @@ document.addEventListener('keydown', e => {
     closeSidebar();
   }
 });
-/* Muat identitas aplikasi dari database, lalu mulai */
+
+/* ⚡ v1.7 — Anti dobel-klik: tombol submit jadi "⏳ Memproses…" lalu auto-pulih */
+document.addEventListener('submit', e => {
+  const b = e.target.querySelector('button[type="submit"]');
+  if (!b || b.disabled) return;
+  const old = b.innerHTML;
+  b.disabled = true;
+  b.innerHTML = '⏳ Memproses…';
+  setTimeout(() => { b.disabled = false; b.innerHTML = old; }, 8000);
+}, true);
+
+/* ⚡ v1.7 — Boot paralel: Dashboard langsung jalan,
+   identitas aplikasi menyusul di belakang (tidak memblokir) */
 applyBrand();
-(async () => {
-  try { const s = await api('pengaturan'); setAppFromSettings(s); }
-  catch { applyBrand(); }
-  go('dashboard');
-})();
+api('pengaturan').then(setAppFromSettings).catch(() => {});
+go('dashboard');
 </script>
 </body>
 </html>
