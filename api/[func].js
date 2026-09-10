@@ -1,8 +1,9 @@
 // =========================================================
-// api/[func].js — v1.1
+// api/[func].js — v1.7 (PERFORMANCE)
+// Query paralel · dashboard via RPC · simpan lebih cepat
 // Master CRUD: produk|bahan|supplier|tenagakerja|overhead|penjualan
-// Modul: bom|po|po-material|po-labor|hpp-detail|hpp-latest|dashboard
-// Baru : pembelian | invoice | pengaturan
+// Modul: bom|po|po-material|po-labor|hpp-detail|hpp-latest
+//        pembelian|invoice|pengaturan|dashboard
 // =========================================================
 const { createClient } = require('@supabase/supabase-js');
 
@@ -244,7 +245,7 @@ module.exports = async (req, res) => {
         return bad(res, 'Method tidak didukung', 405);
       }
 
-      /* ================= RINCIAN HPP PER PO ================= */
+      /* ================= RINCIAN HPP PER PO (PARALEL v1.7) ================= */
       case 'hpp-detail': {
         const poId = Number(req.query.po_id);
         if (!poId) return bad(res, '?po_id= wajib');
@@ -253,11 +254,25 @@ module.exports = async (req, res) => {
         if (e0) throw e0;
         if (!po) return bad(res, 'PO tidak ditemukan', 404);
         const qty = Number(po.qty) || 0;
-        const { data: bahanAll } = await sb().from('bahan').select('id, kode, nama, satuan, harga');
+        const periode = String(po.tanggal).slice(0, 7);
+
+        // Semua query independen dijalankan BERSAMAAN (dulu: urut-urutan)
+        const [rBahan, rBom, rAct, rLab, rOh] = await Promise.all([
+          sb().from('bahan').select('id, kode, nama, satuan, harga'),
+          sb().from('bom').select('*, bom_detail(*, bahan(kode, nama, satuan, harga))')
+            .eq('produk_id', po.produk_id).eq('aktif', true).maybeSingle(),
+          sb().from('po_material').select('bahan_id, qty_aktual').eq('po_id', poId),
+          sb().from('po_labor').select('*, tenaga_kerja(proses, sistem, tarif, kategori)').eq('po_id', poId),
+          sb().from('v_overhead_periode').select('*').eq('periode', periode).maybeSingle(),
+        ]);
+
+        const bahanAll = rBahan.data;
+        const bom = rBom.data;
+        const act = rAct.data;
+        const labRows = rLab.data;
+        const oh = rOh.data;
+
         const bMap = Object.fromEntries((bahanAll || []).map(b => [b.id, b]));
-        const { data: bom } = await sb().from('bom')
-          .select('*, bom_detail(*, bahan(kode, nama, satuan, harga))')
-          .eq('produk_id', po.produk_id).eq('aktif', true).maybeSingle();
         const material = (bom?.bom_detail || []).map(d => {
           const harga = Number(d.bahan?.harga || 0);
           const perPcs = Number(d.qty_efektif || 0);
@@ -267,7 +282,6 @@ module.exports = async (req, res) => {
             biaya_std: perPcs * harga, qty_aktual: null, biaya_aktual: null,
           };
         });
-        const { data: act } = await sb().from('po_material').select('bahan_id, qty_aktual').eq('po_id', poId);
         (act || []).forEach(a => {
           const m = material.find(x => x.bahan_id === a.bahan_id);
           if (m) { m.qty_aktual = Number(a.qty_aktual); m.biaya_aktual = m.qty_aktual * m.harga; }
@@ -283,8 +297,6 @@ module.exports = async (req, res) => {
           }
         });
         const dm = material.reduce((s, m) => s + (m.biaya_aktual ?? m.biaya_std * qty), 0);
-        const { data: labRows } = await sb().from('po_labor')
-          .select('*, tenaga_kerja(proses, sistem, tarif, kategori)').eq('po_id', poId);
         const labor = (labRows || []).map(l => {
           const tk = l.tenaga_kerja || {}; const tarif = Number(tk.tarif || 0);
           return { tk_id: l.tenaga_kerja_id, proses: tk.proses, sistem: tk.sistem, tarif,
@@ -292,8 +304,6 @@ module.exports = async (req, res) => {
             biaya: tk.sistem === 'Harian' ? Number(l.jumlah_hari || 0) * tarif : Number(l.qty_output || 0) * tarif };
         });
         const dl = labor.reduce((s, l) => s + l.biaya, 0);
-        const periode = String(po.tanggal).slice(0, 7);
-        const { data: oh } = await sb().from('v_overhead_periode').select('*').eq('periode', periode).maybeSingle();
         const ohPerPcs = Number(oh?.overhead_per_pcs || 0);
         const foh = ohPerPcs * qty;
         const total = dm + dl + foh;
@@ -320,18 +330,18 @@ module.exports = async (req, res) => {
         return ok(res, { hpp: await latestHpp(pid) });
       }
 
-      /* ================= PEMBELIAN BAHAN (v1.1) ================= */
+      /* ================= PEMBELIAN BAHAN ================= */
       case 'pembelian': {
         if (req.method === 'GET') {
           if (id) {
-            const { data: pb, error } = await sb().from('pembelian')
-              .select('*, supplier(kode, nama)').eq('id', id).maybeSingle();
-            if (error) throw error;
-            if (!pb) return bad(res, 'Pembelian tidak ditemukan', 404);
-            const { data: items, error: e2 } = await sb().from('pembelian_detail')
-              .select('*, bahan(kode, nama, satuan, harga)').eq('pembelian_id', id).order('id');
-            if (e2) throw e2;
-            return ok(res, { ...pb, items: items || [] });
+            const [rPb, rItems] = await Promise.all([
+              sb().from('pembelian').select('*, supplier(kode, nama)').eq('id', id).maybeSingle(),
+              sb().from('pembelian_detail').select('*, bahan(kode, nama, satuan, harga)').eq('pembelian_id', id).order('id'),
+            ]);
+            if (rPb.error) throw rPb.error;
+            if (!rPb.data) return bad(res, 'Pembelian tidak ditemukan', 404);
+            if (rItems.error) throw rItems.error;
+            return ok(res, { ...rPb.data, items: rItems.data || [] });
           }
           const { data, error } = await sb().from('v_pembelian').select('*')
             .order('tanggal', { ascending: false }).order('id', { ascending: false });
@@ -364,8 +374,9 @@ module.exports = async (req, res) => {
             .insert(items.map(i => ({ ...i, pembelian_id: pbId })));
           if (e3) throw e3;
           if (body.update_master) {
-            for (const it of items)
-              await sb().from('bahan').update({ harga: it.harga_beli }).eq('id', it.bahan_id);
+            // Update harga master BERSAMAAN (dulu: satu-satu)
+            await Promise.all(items.map(it =>
+              sb().from('bahan').update({ harga: it.harga_beli }).eq('id', it.bahan_id)));
           }
           return ok(res, { success: true, id: pbId, items: items.length });
         }
@@ -378,7 +389,7 @@ module.exports = async (req, res) => {
         return bad(res, 'Method tidak didukung', 405);
       }
 
-      /* ================= INVOICE (v1.1) ================= */
+      /* ================= INVOICE ================= */
       case 'invoice': {
         const calcInv = (items, pot, pjk, ong) => {
           const sub = items.reduce((s, i) => s + Number(i.qty) * Number(i.harga) * (1 - Number(i.diskon_pct || 0) / 100), 0);
@@ -395,10 +406,11 @@ module.exports = async (req, res) => {
             const { data: inv, error } = await sb().from('invoice').select('*').eq('id', id).maybeSingle();
             if (error) throw error;
             if (!inv) return bad(res, 'Invoice tidak ditemukan', 404);
-            const { data: items } = await sb().from('invoice_detail')
-              .select('*, produk(kode, nama, satuan)').eq('invoice_id', id).order('id');
-            const { data: set } = await sb().from('pengaturan').select('*').eq('id', 1).maybeSingle();
-            return ok(res, { ...inv, items: items || [], set: set || {} });
+            const [rItems, rSet] = await Promise.all([
+              sb().from('invoice_detail').select('*, produk(kode, nama, satuan)').eq('invoice_id', id).order('id'),
+              sb().from('pengaturan').select('*').eq('id', 1).maybeSingle(),
+            ]);
+            return ok(res, { ...inv, items: rItems.data || [], set: rSet.data || {} });
           }
           const { data, error } = await sb().from('v_invoice').select('*')
             .order('tanggal', { ascending: false }).order('id', { ascending: false });
@@ -498,8 +510,14 @@ module.exports = async (req, res) => {
         return bad(res, 'Method tidak didukung', 405);
       }
 
-      /* ================= DASHBOARD ================= */
+      /* ================= DASHBOARD (1 panggilan via RPC + fallback) ================= */
       case 'dashboard': {
+        // Cepat: semua dihitung di database dalam SATU query
+        try {
+          const { data, error } = await sb().rpc('dashboard_summary');
+          if (!error && data) return ok(res, data);
+        } catch (_) { /* fallback di bawah */ }
+
         const bulan = tgl().slice(0, 7);
         const awalBulan = bulan + '-01';
         const awalChart = new Date(Date.now() - 13 * 864e5).toISOString().slice(0, 10);
@@ -570,15 +588,14 @@ async function nextNum(table, col, prefix) {
 }
 
 async function createSalesFromInvoice(inv, items) {
-  const rows = [];
-  for (const it of items) {
-    rows.push({
-      tanggal: inv.tanggal, produk_id: it.produk_id, qty: it.qty,
-      channel: inv.channel || 'Invoice', harga_jual: it.harga, diskon_pct: it.diskon_pct || 0,
-      fee_pct: 0, biaya_lain: 0, hpp_satuan: await latestHpp(it.produk_id),
-      invoice_id: inv.id, dari_invoice: true,
-    });
-  }
+  // HPP semua item diambil BERSAMAAN (dulu: satu-satu berurutan)
+  const hpps = await Promise.all(items.map(it => latestHpp(it.produk_id)));
+  const rows = items.map((it, i) => ({
+    tanggal: inv.tanggal, produk_id: it.produk_id, qty: it.qty,
+    channel: inv.channel || 'Invoice', harga_jual: it.harga, diskon_pct: it.diskon_pct || 0,
+    fee_pct: 0, biaya_lain: 0, hpp_satuan: hpps[i],
+    invoice_id: inv.id, dari_invoice: true,
+  }));
   if (rows.length) {
     const { error } = await sb().from('penjualan').insert(rows);
     if (error) throw error;
